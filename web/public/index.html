@@ -37,6 +37,7 @@
         <button class="chip chip-btn" id="btnMusicHome" aria-pressed="true">♪ 背景音樂</button>
         <span class="chip" id="homeHintsChip">錦囊 ×3</span>
         <span class="chip chip-muted" id="homeProgressChip">已過 0 章</span>
+        <button class="chip chip-btn chip-danger" id="btnResetHome">↺ 重置進度</button>
       </div>
       <p class="home-note" id="homeServerNote">連線中…</p>
     </div>
@@ -49,6 +50,7 @@
       <div class="topbar-title"><b>選關</b><span id="levelsSubtitle">共 10 章</span></div>
       <div class="topbar-right">
         <span class="chip" id="levelsHintsChip">錦囊 ×3</span>
+        <button class="icon-btn" id="btnResetGame" title="重置我的遊戲進度">↺</button>
         <button class="icon-btn" id="btnMusicLevels" title="背景音樂">♪</button>
       </div>
     </header>
@@ -136,6 +138,23 @@
     <h2 id="lbTitle">排行榜</h2>
     <div class="board" id="boardBody"><p class="modal-text">載入中…</p></div>
     <button class="btn btn-ghost" data-close-modal>關閉</button>
+  </div>
+
+  <div class="modal" id="modalReset" hidden role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+    <h2 id="resetTitle">重置遊戲進度</h2>
+    <p class="modal-text">
+      這會清空<b>你這個身分</b>的所有紀錄，而且無法復原：
+    </p>
+    <ul class="reset-list" id="resetSummary">
+      <li>全部章節的過關進度與已找到的物件</li>
+      <li>排行榜上的成績與最佳時間</li>
+      <li>錦囊的使用與獲得紀錄</li>
+    </ul>
+    <p class="modal-text">重置後錦囊會回到 <b>3 個</b>，名號保留不變。</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" id="btnResetConfirm">確認重置</button>
+      <button class="btn btn-ghost" data-close-modal>取消</button>
+    </div>
   </div>
 
   <div class="modal" id="modalHelp" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">

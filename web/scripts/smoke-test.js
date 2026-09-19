@@ -49,8 +49,12 @@ async function main() {
   const health = await api('GET', '/api/health');
   check('GET /api/health is 200', health.status === 200, `status ${health.status}`);
   check('MySQL is connected', health.json?.database?.connected === true);
-  check('ten chapters are seeded', health.json?.database?.chapters === 10, `chapters=${health.json?.database?.chapters}`);
-  check('100 objects are seeded', health.json?.database?.objects === 100, `objects=${health.json?.database?.objects}`);
+  const chapterTotal = health.json?.database?.chapters;
+  const objectTotal = health.json?.database?.objects;
+  // Chapter/object counts are data-driven: adding a volume must not require
+  // editing this test, but a full two-volume game is expected here.
+  check('at least 20 chapters are seeded', chapterTotal >= 20, `chapters=${chapterTotal}`);
+  check('every chapter contributed its 10 objects', objectTotal === chapterTotal * 10, `objects=${objectTotal} chapters=${chapterTotal}`);
   check('rules expose 3 starter 錦囊', health.json?.rules?.startHints === 3, JSON.stringify(health.json?.rules));
 
   console.log('\n2. player');
@@ -63,11 +67,16 @@ async function main() {
   console.log('\n3. chapters');
   const list = await api('GET', `/api/levels?player=${playerKey}`);
   check('GET /api/levels is 200', list.status === 200, `status ${list.status}`);
-  check('ten chapters returned', list.json?.levels?.length === 10, `count=${list.json?.levels?.length}`);
+  check('every seeded chapter is returned', list.json?.levels?.length === chapterTotal, `count=${list.json?.levels?.length} expected=${chapterTotal}`);
   check(
     'every chapter reports 10 seeded objects',
     (list.json?.levels ?? []).every((l) => l.seededObjects === 10),
-    JSON.stringify((list.json?.levels ?? []).map((l) => l.seededObjects)),
+    JSON.stringify((list.json?.levels ?? []).map((l) => l.seededObjects).filter((n) => n !== 10)),
+  );
+  check(
+    'chapters are grouped into volumes',
+    new Set((list.json?.levels ?? []).map((l) => l.collection)).size >= 2,
+    JSON.stringify([...new Set((list.json?.levels ?? []).map((l) => l.collection))]),
   );
   const firstLevel = list.json?.levels?.[0];
   check('chapter titles are populated', Boolean(firstLevel?.title), JSON.stringify(firstLevel?.title));
@@ -220,6 +229,45 @@ async function main() {
   check('the sloppy run carries a 9 second penalty', sloppyRow?.scoreMs >= 9000, `scoreMs=${sloppyRow?.scoreMs}`);
   check('the clean run keeps a zero-wrong-click record', cleanRow?.wrongTaps === 0, `wrongTaps=${cleanRow?.wrongTaps}`);
   check('fewer wrong clicks earns the better rank', cleanRow !== undefined && sloppyRow !== undefined && cleanRow.rank < sloppyRow.rank, `clean #${cleanRow?.rank} vs sloppy #${sloppyRow?.rank}`);
+
+  console.log('\n6c. reset wipes that player only');
+  const resetNick = `重置測試${stamp}`;
+  const keeperNick = `不動如山${stamp}`;
+  const resetPlayer = (await api('POST', '/api/players', { nickname: resetNick })).json.player;
+  const keeperPlayer = (await api('POST', '/api/players', { nickname: keeperNick })).json.player;
+  const resetKey = resetPlayer.playerKey;
+  const keeperKey = keeperPlayer.playerKey;
+
+  // Both players clear chapter 1, but the first one also burns a 錦囊.
+  for (const key of [resetKey, keeperKey]) {
+    const run = await api('POST', `/api/players/${key}/levels/1/start`, {});
+    if (key === resetKey) {
+      await api('POST', `/api/players/${key}/levels/1/hint`, { mode: 'locate', sessionId: run.json.sessionId });
+    }
+    for (const object of chapterOne.objects) {
+      await api('POST', `/api/players/${key}/levels/1/found`, { objectId: object.id, sessionId: run.json.sessionId });
+    }
+  }
+  const beforeReset = (await api('GET', `/api/players/${resetKey}`)).json;
+  check('the test player has progress and a spent 錦囊 before reset', beforeReset.player.levelsCleared === 1 && beforeReset.player.hints === 2, `cleared=${beforeReset.player.levelsCleared} hints=${beforeReset.player.hints}`);
+  const boardBefore = (await api('GET', '/api/leaderboard?limit=50')).json.leaderboard;
+  check('the player is on the leaderboard before reset', boardBefore.some((r) => r.nickname === resetNick));
+
+  const resetResponse = await api('POST', `/api/players/${resetKey}/reset`, {});
+  check('POST /players/:key/reset is 200', resetResponse.status === 200, `status ${resetResponse.status}`);
+  check('reset reports what it cleared', (resetResponse.json?.cleared?.play_sessions ?? 0) >= 1, JSON.stringify(resetResponse.json?.cleared));
+  check('reset is idempotent-safe (hints back to 3)', resetResponse.json?.player?.hints === 3, `hints=${resetResponse.json?.player?.hints}`);
+  check('reset zeroes the counters', resetResponse.json?.player?.levelsCleared === 0 && resetResponse.json?.player?.totalMs === 0, JSON.stringify(resetResponse.json?.player));
+
+  const afterReset = (await api('GET', `/api/players/${resetKey}`)).json;
+  check('no chapter progress is left', afterReset.progress.every((p) => !p.completed && p.foundCount === 0), JSON.stringify(afterReset.progress));
+  check('the nickname survives the reset', afterReset.player.nickname === resetNick, afterReset.player.nickname);
+  const boardAfter = (await api('GET', '/api/leaderboard?limit=50')).json.leaderboard;
+  check('the reset player disappears from the leaderboard', !boardAfter.some((r) => r.nickname === resetNick));
+  check('other players are untouched by the reset', boardAfter.some((r) => r.nickname === keeperNick));
+
+  const resetAgain = await api('POST', `/api/players/${resetKey}/reset`, {});
+  check('resetting twice is harmless', resetAgain.status === 200 && resetAgain.json?.player?.hints === 3, `status ${resetAgain.status}`);
 
   console.log('\n7. error handling');
   const noPlayer = await api('GET', '/api/players/00000000-0000-0000-0000-000000000000');

@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.photohunter.game.UiState
 import com.photohunter.game.data.ChapterSummary
 import com.photohunter.game.game.GameRules
@@ -70,8 +71,26 @@ fun ChapterSelectScreen(
                 )
             }
 
-            items(state.chapters, key = { it.id }) { chapter ->
-                ChapterCard(chapter = chapter, onClick = { onOpenChapter(chapter.id) })
+            // One header per volume (卷一 / 卷二), so twenty cards stay readable.
+            var lastCollection: String? = null
+            state.chapters.forEach { chapter ->
+                if (chapter.collection.isNotEmpty() && chapter.collection != lastCollection) {
+                    lastCollection = chapter.collection
+                    val volumeChapters = state.chapters.filter { it.collection == chapter.collection }
+                    val volumeCleared = volumeChapters.count { it.completed }
+                    item(
+                        key = "header-${chapter.collection}",
+                        span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) },
+                    ) {
+                        CollectionHeader(
+                            name = chapter.collection,
+                            progress = "$volumeCleared/${volumeChapters.size} 章已破",
+                        )
+                    }
+                }
+                item(key = "chapter-${chapter.id}") {
+                    ChapterCard(chapter = chapter, onClick = { onOpenChapter(chapter.id) })
+                }
             }
 
             item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) {
@@ -83,6 +102,25 @@ fun ChapterSelectScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun CollectionHeader(name: String, progress: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp, bottom = 2.dp),
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        Text(
+            text = name,
+            color = GoldSoft,
+            style = MaterialTheme.typography.titleMedium,
+            letterSpacing = 2.sp,
+        )
+        Text(text = progress, color = TextDim, style = MaterialTheme.typography.labelMedium)
     }
 }
 

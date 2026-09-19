@@ -26,6 +26,7 @@ data class LevelObject(
 data class LevelDefinition(
     val id: Int,
     val slug: String,
+    val collection: String,
     val title: String,
     val subtitle: String,
     val era: String,
@@ -38,6 +39,7 @@ data class LevelDefinition(
 
 data class ChapterSummary(
     val id: Int,
+    val collection: String,
     val title: String,
     val subtitle: String,
     val era: String,

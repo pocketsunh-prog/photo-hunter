@@ -60,15 +60,17 @@ export async function loadLevelsFromDisk(log = console.log) {
 export async function seedLevels(conn, levels, log = console.log) {
   for (const level of levels) {
     await conn.execute(
-      `INSERT INTO levels (id, slug, title, subtitle, era, image, image_width, image_height, object_count, sort_order)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO levels (id, slug, collection, title, subtitle, era, image, image_width, image_height, object_count, sort_order)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
-         slug = VALUES(slug), title = VALUES(title), subtitle = VALUES(subtitle), era = VALUES(era),
-         image = VALUES(image), image_width = VALUES(image_width), image_height = VALUES(image_height),
+         slug = VALUES(slug), collection = VALUES(collection), title = VALUES(title),
+         subtitle = VALUES(subtitle), era = VALUES(era), image = VALUES(image),
+         image_width = VALUES(image_width), image_height = VALUES(image_height),
          object_count = VALUES(object_count), sort_order = VALUES(sort_order)`,
       [
         level.id,
         level.slug,
+        level.collection ?? '',
         level.title,
         level.subtitle ?? '',
         level.era ?? '',

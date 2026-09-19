@@ -26,6 +26,8 @@ data class PlayerEntity(
 data class LevelEntity(
     @PrimaryKey val id: Int,
     val slug: String,
+    /** volume this chapter belongs to, e.g. 卷一・古畫尋穿越 */
+    val collection: String = "",
     val title: String,
     val subtitle: String,
     val era: String,

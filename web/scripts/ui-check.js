@@ -107,7 +107,12 @@ async function main() {
     await page.waitForSelector('#screen-home.is-active', { timeout: 15000 });
     check('home screen becomes active', true);
     const serverNote = await page.$eval('#homeServerNote', (el) => el.textContent.trim());
-    check('home screen reports the MySQL contents', serverNote.includes('10 章') && serverNote.includes('100 件物品'), serverNote);
+    const noteMatch = serverNote.match(/(\d+)\s*章\s*·\s*(\d+)\s*件物品/);
+    check(
+      'home screen reports the MySQL contents',
+      Boolean(noteMatch) && Number(noteMatch[1]) >= 20 && Number(noteMatch[2]) === Number(noteMatch[1]) * 10,
+      serverNote,
+    );
 
     await page.click('#nicknameInput');
     await page.type('#nicknameInput', '煙測捕快');
@@ -115,19 +120,32 @@ async function main() {
 
     // ── level select ──────────────────────────────────────────────────────
     console.log('\n2. chapter select');
+    // Chapter count comes from the API so this test survives new volumes.
+    const expectedChapters = (await (await fetch(`${BASE}/api/levels`)).json()).levels.length;
     await page.click('#btnStart');
     await page.waitForSelector('#screen-levels.is-active', { timeout: 15000 });
-    await page.waitForFunction(() => document.querySelectorAll('.level-card').length === 10, { timeout: 15000 });
-    check('ten chapter cards are rendered', true);
-    // The thumbnails are lazy-loaded, so wait for the decode instead of sampling
-    // immediately (this used to be a flaky check).
+    await page.waitForFunction((n) => document.querySelectorAll('.level-card').length === n, { timeout: 15000 }, expectedChapters);
+    check(`all ${expectedChapters} chapter cards are rendered`, true);
+    // Thumbnails are lazy-loaded, so scroll through the whole map first and then
+    // wait for every decode - with twenty cards most of them start off-screen.
+    await page.evaluate(async () => {
+      const wrap = document.querySelector('.levels-wrap');
+      const pause = () => new Promise((resolve) => setTimeout(resolve, 120));
+      for (let y = 0; y <= wrap.scrollHeight; y += 400) {
+        wrap.scrollTop = y;
+        await pause();
+      }
+      wrap.scrollTop = 0;
+      await pause();
+    });
     await page
       .waitForFunction(
-        () => {
+        (n) => {
           const images = [...document.querySelectorAll('.level-card img')];
-          return images.length === 10 && images.every((img) => img.complete && img.naturalWidth > 0);
+          return images.length === n && images.every((img) => img.complete && img.naturalWidth > 0);
         },
-        { timeout: 20000 },
+        { timeout: 30000 },
+        expectedChapters,
       )
       .catch(() => {});
     const hintsChip = await page.$eval('#levelsHintsChip', (el) => el.textContent.trim());
@@ -135,8 +153,20 @@ async function main() {
     const thumbsOk = await page.$$eval('.level-card img', (imgs) =>
       imgs.filter((img) => img.complete && img.naturalWidth > 0).length,
     );
-    check('all chapter thumbnails load', thumbsOk === 10, `loaded=${thumbsOk}`);
+    check('all chapter thumbnails load', thumbsOk === expectedChapters, `loaded=${thumbsOk}/${expectedChapters}`);
+    const sections = await page.$$eval('.level-section b', (els) => els.map((el) => el.textContent.trim()));
+    check('the map is grouped into volumes', sections.length >= 2, JSON.stringify(sections));
     await page.screenshot({ path: path.join(SHOTS, '02-chapters.png') });
+    await page.evaluate(() => {
+      const header = document.querySelectorAll('.level-section')[1];
+      if (header) header.scrollIntoView({ block: 'start' });
+    });
+    await sleep(400);
+    await page.screenshot({ path: path.join(SHOTS, '02b-volume-2.png') });
+    await page.evaluate(() => {
+      const wrap = document.querySelector('.levels-wrap');
+      if (wrap) wrap.scrollTop = 0;
+    });
 
     // ── game ──────────────────────────────────────────────────────────────
     console.log('\n3. play chapter 1 by tapping the photo');
@@ -296,7 +326,45 @@ async function main() {
     await page.screenshot({ path: path.join(SHOTS, '08-leaderboard.png') });
     await page.evaluate(() => document.querySelector('#modalLeaderboard [data-close-modal]').click());
 
-    console.log('\n8. console hygiene');
+    console.log('\n8. reset button clears this player only');
+    await page.evaluate(() => document.querySelector('#modalLeaderboard [data-close-modal]').click());
+    await page.waitForFunction(() => document.getElementById('modalLeaderboard').hidden, { timeout: 5000 });
+    // This runs after the reload above, so we are on the home screen.
+    await page.click('#btnResetHome');
+    await page.waitForFunction(() => !document.getElementById('modalReset').hidden, { timeout: 5000 });
+    const resetSummary = await page.$eval('#resetSummary', (el) => el.textContent.replace(/\s+/g, ' ').trim());
+    check('the reset dialog warns what will be deleted', /章進度/.test(resetSummary) && /排行榜/.test(resetSummary), resetSummary);
+    await page.screenshot({ path: path.join(SHOTS, '09-reset-dialog.png') });
+    await page.click('#btnResetConfirm');
+    await page.waitForFunction(
+      () => {
+        const progress = document.getElementById('homeProgressChip');
+        const hints = document.getElementById('homeHintsChip');
+        return progress && /已過 0 章/.test(progress.textContent) && hints && /×3/.test(hints.textContent);
+      },
+      { timeout: 15000 },
+    );
+    check('reset returns the home screen to 0 chapters and 3 錦囊', true);
+    const homeAfter = await page.evaluate(() => ({
+      progress: document.getElementById('homeProgressChip').textContent.trim(),
+      hints: document.getElementById('homeHintsChip').textContent.trim(),
+    }));
+    check('the 錦囊 counter is back to 3', /×3/.test(homeAfter.hints), homeAfter.hints);
+
+    await page.click('#btnStart');
+    await page.waitForSelector('#screen-levels.is-active', { timeout: 15000 });
+    await page.waitForFunction((n) => document.querySelectorAll('.level-card').length === n, { timeout: 15000 }, expectedChapters);
+    const mapAfter = await page.evaluate(() => ({
+      cards: document.querySelectorAll('.level-card').length,
+      done: document.querySelectorAll('.level-card.is-done').length,
+      statRow: document.getElementById('statRow').textContent.replace(/\s+/g, ' ').trim(),
+    }));
+    check('no chapter stays marked as cleared', mapAfter.done === 0, `done=${mapAfter.done}`);
+    check('the chapter list is intact after reset', mapAfter.cards === expectedChapters, `cards=${mapAfter.cards}`);
+    check('the map progress counter is back to zero', /0\/\d+/.test(mapAfter.statRow), mapAfter.statRow);
+    await page.screenshot({ path: path.join(SHOTS, '10-after-reset.png') });
+
+    console.log('\n9. console hygiene');
     check('no uncaught page errors', pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '));
     const realErrors = consoleErrors.filter((text) => !/favicon|autoplay|AudioContext|not allowed to start/i.test(text));
     check('no console errors', realErrors.length === 0, realErrors.slice(0, 3).join(' | '));

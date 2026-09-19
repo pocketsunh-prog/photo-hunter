@@ -23,6 +23,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +45,7 @@ fun HomeScreen(
     onHelp: () -> Unit,
     onToggleMute: () -> Unit,
     onShowRanking: () -> Unit,
+    onReset: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -154,5 +156,13 @@ fun HomeScreen(
             color = TextDim,
             style = MaterialTheme.typography.labelMedium,
         )
+        Spacer(Modifier.height(10.dp))
+        TextButton(onClick = onReset) {
+            Text(
+                text = "↺ 重置遊戲進度",
+                color = Vermilion,
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
     }
 }

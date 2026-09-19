@@ -47,6 +47,7 @@ export const api = {
   createPlayer: (nickname) => request('POST', '/players', { nickname }),
   getPlayer: (key) => request('GET', `/players/${encodeURIComponent(key)}`),
   renamePlayer: (key, nickname) => request('PATCH', `/players/${encodeURIComponent(key)}`, { nickname }),
+  resetPlayer: (key) => request('POST', `/players/${encodeURIComponent(key)}/reset`, {}),
   listLevels: (playerKey) => request('GET', `/levels${playerKey ? `?player=${encodeURIComponent(playerKey)}` : ''}`),
   getLevel: (id, playerKey) => request('GET', `/levels/${id}${playerKey ? `?player=${encodeURIComponent(playerKey)}` : ''}`),
   startLevel: (key, id, body = {}) => request('POST', `/players/${encodeURIComponent(key)}/levels/${id}/start`, body),

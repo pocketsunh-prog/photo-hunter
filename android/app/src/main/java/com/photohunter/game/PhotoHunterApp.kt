@@ -41,6 +41,7 @@ import com.photohunter.game.ui.Ink700
 import com.photohunter.game.ui.Ink900
 import com.photohunter.game.ui.Paper
 import com.photohunter.game.ui.RankingDialog
+import com.photohunter.game.ui.ResetDialog
 import com.photohunter.game.ui.Gold
 import kotlinx.coroutines.delay
 
@@ -150,6 +151,7 @@ fun PhotoHunterApp(viewModel: GameViewModel = viewModel()) {
                 onHelp = viewModel::showHelp,
                 onToggleMute = viewModel::toggleMute,
                 onShowRanking = viewModel::showRanking,
+                onReset = viewModel::requestReset,
             )
 
             Screen.Chapters -> ChapterSelectScreen(
@@ -218,6 +220,15 @@ fun PhotoHunterApp(viewModel: GameViewModel = viewModel()) {
             DialogState.Ranking -> RankingDialog(
                 ranking = state.ranking ?: Ranking(),
                 nickname = state.nickname,
+                onDismiss = viewModel::dismissDialog,
+            )
+
+            DialogState.ResetConfirm -> ResetDialog(
+                chaptersCleared = state.chapters.count { it.completed },
+                totalChapters = state.chapters.size,
+                foundObjects = state.chapters.sumOf { it.foundCount },
+                hints = state.hints,
+                onConfirm = viewModel::performReset,
                 onDismiss = viewModel::dismissDialog,
             )
 

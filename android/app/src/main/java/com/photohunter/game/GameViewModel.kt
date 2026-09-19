@@ -29,6 +29,7 @@ sealed interface DialogState {
     data object HintChoice : DialogState
     data object Help : DialogState
     data object Ranking : DialogState
+    data object ResetConfirm : DialogState
     data class Info(val title: String, val body: String) : DialogState
     data class ChapterClear(
         val levelId: Int,
@@ -126,6 +127,41 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun showHelp() = _state.update { it.copy(dialog = DialogState.Help) }
+
+    /** Ask for confirmation before wiping this device's progress. */
+    fun requestReset() {
+        emitSfx(Sfx.Click)
+        _state.update { it.copy(dialog = DialogState.ResetConfirm) }
+    }
+
+    /**
+     * Wipe this device's game environment: progress, every attempt (emptying the
+     * 成績榜) and the 錦囊 history. The nickname survives and the 錦囊 count goes
+     * back to the starter amount.
+     */
+    fun performReset() {
+        viewModelScope.launch {
+            repository.resetProgress()
+            val profile = repository.loadProfile()
+            val chapters = repository.chapters()
+            val ranking = repository.ranking()
+            applyProfile(profile)
+            _state.update {
+                it.copy(
+                    chapters = chapters,
+                    ranking = ranking,
+                    level = null,
+                    found = emptySet(),
+                    revealed = emptySet(),
+                    hintTargetId = null,
+                    dialog = null,
+                    screen = Screen.Home,
+                    message = "已重置：進度、成績與錦囊紀錄都清空了，錦囊回到 ${GameRules.START_HINTS} 個。",
+                )
+            }
+            emitSfx(Sfx.Bonus)
+        }
+    }
 
     /** Recompute and show the local 成績榜 (best attempt per chapter). */
     fun showRanking() {

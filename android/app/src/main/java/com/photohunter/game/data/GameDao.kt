@@ -91,6 +91,12 @@ interface GameDao {
     @Query("DELETE FROM progress")
     suspend fun clearProgress()
 
+    @Query("DELETE FROM sessions")
+    suspend fun clearSessions()
+
     @Query("DELETE FROM hint_events")
     suspend fun clearHintEvents()
+
+    @Query("DELETE FROM hint_grants")
+    suspend fun clearHintGrants()
 }

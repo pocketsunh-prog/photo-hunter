@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities = [
@@ -16,7 +18,7 @@ import androidx.room.RoomDatabase
         HintGrantEntity::class,
         MetaEntity::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = true,
 )
 abstract class GameDatabase : RoomDatabase() {
@@ -25,6 +27,17 @@ abstract class GameDatabase : RoomDatabase() {
 
     companion object {
         private const val NAME = "photo_hunter.db"
+
+        /**
+         * v1 -> v2: chapters gained a `collection` column so the level map can be
+         * grouped by volume. A real migration is used (instead of the destructive
+         * fallback) so an existing player keeps their progress, 錦囊 and records.
+         */
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE levels ADD COLUMN collection TEXT NOT NULL DEFAULT ''")
+            }
+        }
 
         @Volatile
         private var instance: GameDatabase? = null
@@ -36,9 +49,9 @@ abstract class GameDatabase : RoomDatabase() {
                     GameDatabase::class.java,
                     NAME,
                 )
-                    // Chapters live in the APK assets; if the on-disk schema ever
-                    // changes, rebuilding from assets is harmless (player rows are
-                    // re-created with default values only when the table is empty).
+                    .addMigrations(MIGRATION_1_2)
+                    // Last resort for a version with no migration path: chapters
+                    // are re-seeded from the APK assets anyway.
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { instance = it }

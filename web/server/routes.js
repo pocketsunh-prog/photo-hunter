@@ -331,6 +331,36 @@ router.patch('/players/:key', asyncRoute(async (req, res) => {
   res.json({ player: playerPayload(row) });
 }));
 
+/**
+ * Wipe everything this player owns and start over: chapter progress, every
+ * attempt (so the leaderboard entry disappears), and the 錦囊 audit trail.
+ * The player row itself is kept (same playerKey and nickname) and gets a fresh
+ * set of starter 錦囊, which is what makes this safe to offer as a button.
+ */
+router.post('/players/:key/reset', asyncRoute(async (req, res) => {
+  const player = await getPlayer(req.params.key);
+  const cleared = await transaction(async (conn) => {
+    const counts = {};
+    for (const table of ['play_sessions', 'level_progress', 'hint_events', 'hint_grants']) {
+      const [result] = await conn.execute(`DELETE FROM ${table} WHERE player_id = ?`, [player.id]);
+      counts[table] = Number(result.affectedRows) || 0;
+    }
+    await conn.execute(
+      `UPDATE players
+          SET hints = ?, hints_granted = 0, hints_spent = 0, levels_cleared = 0, total_ms = 0
+        WHERE id = ?`,
+      [RULES.startHints, player.id],
+    );
+    return counts;
+  });
+  const row = await queryOne('SELECT * FROM players WHERE id = ?', [player.id]);
+  res.json({
+    player: playerPayload(row),
+    cleared,
+    message: `已重置：清除 ${cleared.level_progress} 章進度、${cleared.play_sessions} 筆挑戰紀錄，錦囊回到 ${RULES.startHints} 個。`,
+  });
+}));
+
 // ---------------------------------------------------------------- levels
 
 router.get('/levels', asyncRoute(async (req, res) => {
@@ -349,6 +379,7 @@ router.get('/levels', asyncRoute(async (req, res) => {
     levels: levels.map((level) => ({
       id: Number(level.id),
       slug: level.slug,
+      collection: level.collection || '',
       title: level.title,
       subtitle: level.subtitle,
       era: level.era,
@@ -422,6 +453,7 @@ router.post('/players/:key/levels/:id/start', asyncRoute(async (req, res) => {
     player: playerPayload(player),
     level: {
       id: Number(level.id),
+      collection: level.collection || '',
       title: level.title,
       subtitle: level.subtitle,
       era: level.era,

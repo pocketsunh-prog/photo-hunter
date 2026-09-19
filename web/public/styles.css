@@ -168,6 +168,24 @@ body {
 .btn-lg { padding: 15px 18px; font-size: 17px; }
 .btn-ghost { background: transparent; border-color: rgba(244, 233, 214, 0.14); color: var(--text-dim); }
 
+.btn-danger {
+  background: linear-gradient(165deg, #d1503a, #a02f1e);
+  border-color: rgba(255, 200, 180, 0.4);
+  color: #fff1e8;
+  font-weight: 700;
+}
+.btn-danger:hover { background: linear-gradient(165deg, #e2654c, #b53a26); }
+
+.reset-list {
+  margin: 0 0 14px;
+  padding-left: 20px;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.9;
+  color: var(--paper-dim);
+}
+.reset-list li::marker { color: var(--vermilion); }
+
 .icon-btn {
   width: 38px; height: 38px;
   display: grid; place-items: center;
@@ -196,6 +214,12 @@ body {
 .chip-muted { color: var(--text-dim); background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.12); }
 .chip-btn { cursor: pointer; font-family: var(--font-sans); }
 .chip-btn.is-off { color: #6d6153; background: rgba(255, 255, 255, 0.03); }
+.chip-danger {
+  color: #e08b76;
+  background: rgba(192, 68, 47, 0.14);
+  border-color: rgba(192, 68, 47, 0.4);
+}
+.chip-danger:hover { background: rgba(192, 68, 47, 0.24); }
 
 /* ── top bar ─────────────────────────────────────────────────────────── */
 .topbar {
@@ -249,6 +273,23 @@ body {
   margin: 0 auto;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
+
+.level-section {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 0 -2px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(217, 164, 65, 0.22);
+}
+.level-section b {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  letter-spacing: 0.12em;
+  color: var(--gold-soft);
+}
+.level-section span { font-size: 11.5px; color: var(--text-dim); letter-spacing: 0.06em; }
 
 .level-card {
   position: relative;

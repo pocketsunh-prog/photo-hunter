@@ -62,10 +62,27 @@ export async function ensureSchema(log = console.log) {
     for (const statement of statements) {
       await conn.query(statement);
     }
+    // Columns added after the first release: MySQL 8 has no
+    // "ADD COLUMN IF NOT EXISTS", so check the catalogue first. This keeps an
+    // existing Docker volume working after an upgrade.
+    const added = [];
+    if (!(await hasColumn(conn, 'levels', 'collection'))) {
+      await conn.query("ALTER TABLE levels ADD COLUMN collection VARCHAR(32) NOT NULL DEFAULT '' AFTER slug");
+      added.push('levels.collection');
+    }
+    if (added.length) log(`[db] added column(s): ${added.join(', ')}`);
   } finally {
     conn.release();
   }
   log(`[db] schema ready (${statements.length} statements)`);
+}
+
+async function hasColumn(conn, table, column) {
+  const [rows] = await conn.query(
+    'SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
+    [table, column],
+  );
+  return rows.length > 0;
 }
 
 export async function query(sql, params = []) {

@@ -18,7 +18,10 @@ class GameRepository(private val context: Context) {
 
     suspend fun ensureSeeded(): Int = withContext(Dispatchers.IO) {
         val definition = LevelCatalog.load(context)
-        val fingerprint = definition.joinToString("|") { "${it.id}:${it.objectCount}:${it.slug}" }
+        // The fingerprint covers everything the UI reads from the levels table,
+        // including the volume name, so new chapters (or a new volume) trigger a
+        // re-seed while player progress is left untouched.
+        val fingerprint = definition.joinToString("|") { "${it.id}:${it.objectCount}:${it.collection}:${it.slug}" }
         val stored = dao.meta(META_LEVELS).valueOrNull()
         val complete = dao.levelCount() == definition.size && dao.objectCount() == definition.sumOf { it.objectCount }
         if (stored == fingerprint && complete) return@withContext definition.size
@@ -28,6 +31,7 @@ class GameRepository(private val context: Context) {
                 LevelEntity(
                     id = it.id,
                     slug = it.slug,
+                    collection = it.collection,
                     title = it.title,
                     subtitle = it.subtitle,
                     era = it.era,
@@ -103,6 +107,7 @@ class GameRepository(private val context: Context) {
             val row = progress[level.id]
             ChapterSummary(
                 id = level.id,
+                collection = level.collection,
                 title = level.title,
                 subtitle = level.subtitle,
                 era = level.era,
@@ -133,6 +138,7 @@ class GameRepository(private val context: Context) {
         LevelDefinition(
             id = level.id,
             slug = level.slug,
+            collection = level.collection,
             title = level.title,
             subtitle = level.subtitle,
             era = level.era,
@@ -199,10 +205,21 @@ class GameRepository(private val context: Context) {
         RankingCalculator.build(dao.completedSessions(), titles)
     }
 
+    /**
+     * Wipe this device's whole game environment: chapter progress, every attempt
+     * (so the local 成績榜 is emptied) and the 錦囊 audit trail. The nickname is
+     * kept and the 錦囊 count goes back to the starter amount, matching what the
+     * web build's POST /players/:key/reset does.
+     */
     suspend fun resetProgress() = withContext(Dispatchers.IO) {
         dao.clearProgress()
+        dao.clearSessions()
         dao.clearHintEvents()
-        dao.upsertPlayer(PlayerEntity(hints = com.photohunter.game.game.GameRules.START_HINTS))
+        dao.clearHintGrants()
+        val nickname = dao.player()?.nickname ?: "無名捕手"
+        dao.upsertPlayer(
+            PlayerEntity(id = 1, nickname = nickname, hints = com.photohunter.game.game.GameRules.START_HINTS),
+        )
     }
 
     private fun PlayerEntity.toProfile() = PlayerProfile(

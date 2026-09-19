@@ -6,6 +6,7 @@
 CREATE TABLE IF NOT EXISTS levels (
   id            INT          NOT NULL,
   slug          VARCHAR(64)  NOT NULL,
+  collection    VARCHAR(32)  NOT NULL DEFAULT '',
   title         VARCHAR(64)  NOT NULL,
   subtitle      VARCHAR(160) NOT NULL,
   era           VARCHAR(32)  NOT NULL,

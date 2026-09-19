@@ -143,19 +143,31 @@ function renderLevels() {
   grid.innerHTML = '';
 
   const clearedChapters = state.levels.filter((l) => l.progress?.completed).length;
+  const totalObjects = state.levels.reduce((sum, l) => sum + l.objectCount, 0);
   // A cleared chapter always reads as full, even if the player replayed it and
   // left the photo half-finished.
   const foundOf = (level) => (level.progress?.completed ? level.objectCount : level.progress?.foundCount ?? 0);
   const foundObjects = state.levels.reduce((sum, l) => sum + foundOf(l), 0);
   $('statRow').innerHTML = `
     <div class="stat"><b>${state.player?.hints ?? 0}</b><span>錦囊</span></div>
-    <div class="stat"><b>${clearedChapters}/10</b><span>已破章節</span></div>
-    <div class="stat"><b>${foundObjects}/100</b><span>已找到物件</span></div>
+    <div class="stat"><b>${clearedChapters}/${state.levels.length}</b><span>已破章節</span></div>
+    <div class="stat"><b>${foundObjects}/${totalObjects}</b><span>已找到物件</span></div>
   `;
   $('levelsSubtitle').textContent = `共 ${state.levels.length} 章 · 每章 10 件`;
   $('levelsHintsChip').textContent = `錦囊 ×${state.player?.hints ?? 0}`;
 
+  let lastCollection = null;
   for (const level of state.levels) {
+    // Section header whenever the volume changes (卷一 / 卷二).
+    if (level.collection && level.collection !== lastCollection) {
+      lastCollection = level.collection;
+      const header = document.createElement('div');
+      header.className = 'level-section';
+      const cleared = state.levels.filter((l) => l.collection === level.collection && l.progress?.completed).length;
+      const total = state.levels.filter((l) => l.collection === level.collection).length;
+      header.innerHTML = `<b>${level.collection}</b><span>${cleared}/${total} 章已破</span>`;
+      grid.appendChild(header);
+    }
     const progress = level.progress;
     const foundCount = foundOf(level);
     const card = document.createElement('button');
@@ -605,6 +617,50 @@ function leaveLevel() {
     .finally(() => showScreen('levels'));
 }
 
+// ─────────────────────────────────────────────────────────── reset
+
+/**
+ * Wipe this player's own environment: progress, every attempt (so the
+ * leaderboard entry goes away) and the 錦囊 audit trail. The playerKey and
+ * nickname stay, so the browser keeps the same identity.
+ */
+async function resetGame() {
+  if (!storage.playerKey) {
+    toast('還沒有建立角色。', 'bad');
+    return;
+  }
+  const confirmButton = $('btnResetConfirm');
+  confirmButton.disabled = true;
+  try {
+    const response = await api.resetPlayer(storage.playerKey);
+    state.player = response.player;
+    state.lastStats = null;
+    state.found = new Set();
+    state.revealed = new Set();
+    await refreshLevels();
+    renderLevels();
+    renderHomeStats();
+    audio.play('bonus');
+    closeModal();
+    toast(response.message || '已重置遊戲進度。', 'info', 4200);
+  } catch (error) {
+    toast(error.message || '重置失敗，請再試一次。', 'bad', 4200);
+  } finally {
+    confirmButton.disabled = false;
+  }
+}
+
+function openResetDialog() {
+  audio.play('click');
+  const cleared = state.levels.filter((l) => l.progress?.completed).length;
+  const found = state.levels.reduce((sum, l) => sum + (l.progress?.foundCount ?? 0), 0);
+  $('resetSummary').innerHTML = `
+    <li>目前的 <b>${cleared}/${state.levels.length}</b> 章進度與 <b>${found}</b> 件已找到的物件</li>
+    <li>排行榜上的成績與最佳時間</li>
+    <li>錦囊的使用與獲得紀錄（目前 ×${state.player?.hints ?? 0}）</li>`;
+  showModal('modalReset');
+}
+
 // ─────────────────────────────────────────────────────────── leaderboard
 
 async function openLeaderboard() {
@@ -706,6 +762,9 @@ function wireStaticHandlers() {
   });
 
   $('btnLeaderboard').addEventListener('click', openLeaderboard);
+  $('btnResetGame').addEventListener('click', openResetDialog);
+  $('btnResetHome').addEventListener('click', openResetDialog);
+  $('btnResetConfirm').addEventListener('click', resetGame);
   $('btnGameClearBoard').addEventListener('click', () => {
     closeModal();
     openLeaderboard();

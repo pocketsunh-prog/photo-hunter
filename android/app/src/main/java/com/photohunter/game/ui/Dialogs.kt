@@ -242,6 +242,51 @@ fun GameClearDialog(state: DialogState.GameClear, onMap: () -> Unit) {
 }
 
 /**
+ * Destructive confirmation for the reset button: spells out exactly what this
+ * device loses, because there is no undo.
+ */
+@Composable
+fun ResetDialog(
+    chaptersCleared: Int,
+    totalChapters: Int,
+    foundObjects: Int,
+    hints: Int,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    HunterDialog(
+        title = "重置遊戲進度",
+        onDismiss = onDismiss,
+        confirm = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(containerColor = Vermilion, contentColor = Color(0xFFFFEEDE)),
+            ) {
+                Text("確認重置", fontWeight = FontWeight.Bold)
+            }
+        },
+        dismiss = { OutlinedButton(onClick = onDismiss) { Text("取消") } },
+        content = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text("這會清空這台裝置上的所有紀錄，而且無法復原：", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    "• 目前的 $chaptersCleared/$totalChapters 章進度與 $foundObjects 件已找到的物件\n" +
+                        "• 成績榜上的每一筆成績與最佳時間\n" +
+                        "• 錦囊的使用與獲得紀錄（目前 ×$hints）",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Paper,
+                )
+                Text(
+                    "重置後錦囊會回到 ${GameRules.START_HINTS} 個，名號保留不變。",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = TextDim,
+                )
+            }
+        },
+    )
+}
+
+/**
  * Local 成績榜: every chapter's best attempt, ranked by
  * 成績 = 用時 + 誤點 × 罰時 (smaller is better) - the same rule the web
  * leaderboard uses, so the two builds are directly comparable.

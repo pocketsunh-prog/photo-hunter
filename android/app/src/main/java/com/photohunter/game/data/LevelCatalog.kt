@@ -50,6 +50,7 @@ object LevelCatalog {
         return LevelDefinition(
             id = json.getInt("id"),
             slug = json.optString("slug", "chapter-${json.getInt("id")}"),
+            collection = json.optString("collection", ""),
             title = json.getString("title"),
             subtitle = json.optString("subtitle", ""),
             era = json.optString("era", ""),

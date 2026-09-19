@@ -13,8 +13,7 @@
 | **卷一・古畫尋穿越** | 第 1–10 章 | 古代場景（吉卜力風） | **現代物件**跑進了古代 |
 | **卷二・今世覓古物** | 第 11–20 章 | 現代真人風格照片 | **古代文物**被現代人穿戴、攜帶、擺放 |
 
-> **目前狀態**：卷一（第 1–10 章）已完成並在兩個 App 上運作。
-> 卷二需要 10 張相片，`images2/` 目前有 8 張，等 10 張到齊才會一次接上（第 11–20 章）。
+> **目前狀態**：兩卷共 **20 章** 全部完成並在兩個 App 上運作（卷一 100 件現代物件、卷二 100 件古代文物，共 200 件）。
 
 同一個遊戲做了兩個版本：
 
@@ -30,23 +29,27 @@
 
 ## 畫面
 
-| Web 版選關 | Web 版過關結算（含本章成績） | Web 版提示位置 |
+| Web 版選關（卷一） | Web 版選關（卷二） | Web 版排行榜 |
 |---|---|---|
-| ![web 選關](docs/screenshots/web-02-chapters.png) | ![web 過關](docs/screenshots/web-03-chapter-clear.png) | ![web 提示](docs/screenshots/web-04-locate-hint.png) |
+| ![web 卷一](docs/screenshots/web-02-chapters.png) | ![web 卷二](docs/screenshots/web-07-volume-2.png) | ![web 排行榜](docs/screenshots/web-06-leaderboard.png) |
 
-| Web 版排行榜 | Android 首頁 | Android 選關 |
+| Web 版過關結算（含本章成績） | Web 版提示位置 | Android 首頁 |
 |---|---|---|
-| ![web 排行榜](docs/screenshots/web-06-leaderboard.png) | ![android 首頁](docs/screenshots/android-01-home.png) | ![android 選關](docs/screenshots/android-02-chapters.png) |
+| ![web 過關](docs/screenshots/web-03-chapter-clear.png) | ![web 提示](docs/screenshots/web-04-locate-hint.png) | ![android 首頁](docs/screenshots/android-01-home.png) |
 
-| Android 遊戲中 | Android 成績榜 |
+| Android 選關（20 章） | Android 卷二分界 | Android 遊戲中 | Android 成績榜 |
+|---|---|---|---|
+| ![android 選關](docs/screenshots/android-02-chapters.png) | ![android 卷二](docs/screenshots/android-05-volume-2.png) | ![android 遊戲](docs/screenshots/android-03-game.png) | ![android 成績榜](docs/screenshots/android-04-ranking.png) |
+
+| Web 版重置確認 | Android 重置確認 |
 |---|---|
-| ![android 遊戲](docs/screenshots/android-03-game.png) | ![android 成績榜](docs/screenshots/android-04-ranking.png) |
+| ![web 重置](docs/screenshots/web-08-reset.png) | ![android 重置](docs/screenshots/android-06-reset.png) |
 
 十關的命中框人工複核（每一格是該關相片加上十個框）：
 
 ![標註複核](docs/screenshots/annotation-check-all-chapters.jpg)
 
-卷二已標註完成的 8 關（第 11–18 章，尚未上線）：
+卷二已標註完成的 10 關（第 11–20 章，現代照片裡找古代文物）：
 
 ![卷二標註複核](docs/screenshots/annotation-check-volume-2.jpg)
 
@@ -120,8 +123,22 @@ tools/                         素材產生、驗證與標註工具
 | 9 | 第九章・官衙議事庭院 | 明代 | 現代物件 | `…(8).png` |
 | 10 | 第十章・清代官署書房 | 清代 | 現代物件 | `…(9).png` |
 
-**卷二・今世覓古物**（現代照片裡找古代文物）— 等 `images2/` 收齊 10 張後接上，章號為 11–20。
-`tools/prepare_assets.py` 已把章號與檔名綁定（`PINNED`），之後新增相片只會往後追加章號，不會動到既有標註。
+**卷二・今世覓古物**（現代照片裡找古代文物，第 11–20 章）：
+
+| 章 | 標題 | 照片場景 | 要找到 | 相片 |
+|---|---|---|---|---|
+| 11 | 第十一章・玻璃幕牆下的青銅 | 現代辦公室 | 青銅鼎、竹簡、玉印、銅鐘… | `images2/生成吉卜力风格古代照片.png` |
+| 12 | 第十二章・咖啡香裡的古物 | 咖啡店 | 陶壺、簡冊、陶俑、卷軸… | `…(1).png` |
+| 13 | 第十三章・書香藏古 | 圖書館閱覽室 | 青銅鼎、木簡、玉雕瑞獸… | `…(2).png` |
+| 14 | 第十四章・白色大廳的古物 | 醫院大廳 | 竹簡、玉珮、木牘、青銅鈴… | `…(3).png` |
+| 15 | 第十五章・商場中庭的古物 | 商場中庭 | 青銅鼎、手卷、青瓷筆筒… | `…(4).png` |
+| 16 | 第十六章・教室裡的古物 | 學校教室 | 青銅香爐、線裝古籍、散竹簡… | `…(5).png` |
+| 17 | 第十七章・美術館裡的古物 | 美術館展廳 | 竹簡、毛筆、青銅鼎、陶罐… | `…(6).png` |
+| 18 | 第十八章・社區公園藏古物 | 社區公園 | 卷軸、簡冊、銅鏡、玉珮… | `…(7).png` |
+| 19 | 第十九章・地鐵月台覓古物 | 地鐵月台 | 簡牘、簡冊、線裝古籍、陶罐… | `…(8).png` |
+| 20 | 第二十章・健身房裡的古物 | 學校健身房 | 青銅香爐、筆筒、手抄經卷… | `…(9).png` |
+
+`tools/prepare_assets.py` 用 `PINNED` 把章號與檔名綁死，之後新增相片只會往後追加章號，不會動到既有標註。
 
 每一件物品在 JSON 裡的位置是**正規化命中框** `bbox = [x, y, w, h]`（0～1，原點在左上角），
 所以同一組數字在瀏覽器、手機、任何螢幕尺寸上都對得上。
@@ -138,6 +155,7 @@ tools/                         素材產生、驗證與標註工具
 | 錦囊用法 | `reveal` / `locate` | 自動尋物（算入十件）或提示位置（只圈出位置 5 秒） |
 | 錯誤點擊 | 不扣分、但影響排名 | 記錄在成績裡，並折算成排行榜的罰時 |
 | 排名成績 | 用時 + 誤點 × 3 秒 | 數字越小越前面（罰時可用 `WRONG_TAP_PENALTY_MS` 調整） |
+| 重置 | 可隨時清空自己的紀錄 | 每個玩家／裝置的資料互相獨立，重置只影響自己（見下） |
 
 ### 排行榜怎麼算
 
@@ -150,6 +168,20 @@ tools/                         素材產生、驗證與標註工具
 - 罰時是設定值（`web/.env` 的 `WRONG_TAP_PENALTY_MS`，預設 3000），Android 版用同一個數字，兩邊的成績可以直接比較。
 - Web 版的排名查詢用 MySQL 8 的 window function 取「每章最佳一次」，再彙總排序（見 `web/server/routes.js` 的 `/api/leaderboard`）。
 - Android 版沒有伺服器，所以是**本機成績榜**：用 SQLite 的 `sessions` 表以同一條公式排出每章最佳成績（規則寫在 `RankingCalculator`，有單元測試）。
+
+### 重置自己的進度
+
+每個玩家的環境是獨立的：Web 版用瀏覽器裡的 `playerKey`（UUID）對應 MySQL 的一列玩家資料，
+Android 版用裝置上的 SQLite。兩邊都有**重置按鈕**，而且**只會清掉自己的資料**：
+
+| | 位置 | 清掉的東西 | 保留 |
+|---|---|---|---|
+| Web | 首頁「↺ 重置進度」、選關右上角「↺」 | 章節進度、所有挑戰紀錄（排行榜上的成績會消失）、錦囊獲得與花費紀錄 | `playerKey` 與名號，錦囊回到 3 個 |
+| Android | 首頁「↺ 重置遊戲進度」 | `progress`、`sessions`（成績榜清空）、`hint_events`、`hint_grants` | 名號，錦囊回到 3 個 |
+
+Web 的 `POST /api/players/:key/reset` 是在一個 transaction 裡刪除 `play_sessions`、`level_progress`、
+`hint_events`、`hint_grants` 再把玩家列歸零，所以不會動到別人的資料；
+Android 只清自己裝置的資料表。兩邊都會先跳確認視窗，列清楚即將刪除的內容。
 
 **錦囊不會被刷**：重玩已過關的章節會重新開始這一關（相片重置成 0/10），但「已過關數」與錦囊獎勵只算**第一次**破關，
 所以沒辦法用重玩來量產錦囊。Web 版由伺服器決定這件事，Android 版由資料庫的 `completed` 欄位（單調遞增）決定。
@@ -206,6 +238,7 @@ npm start                      # API + 前端 http://127.0.0.1:4000/
 | POST | `/api/players` | 建立玩家（拿到 `playerKey`），發 3 個錦囊 |
 | GET | `/api/players/:key` | 玩家資料 + 各章進度 |
 | PATCH | `/api/players/:key` | 改名 |
+| POST | `/api/players/:key/reset` | **重置**：清空該玩家的進度、挑戰紀錄（含排行榜成績）與錦囊紀錄，錦囊回到 3 個，名號保留 |
 | GET | `/api/levels?player=` | 章節清單（含該玩家進度） |
 | GET | `/api/levels/:id?player=` | 單章完整資料（含 10 件物品與 bbox） |
 | POST | `/api/players/:key/levels/:id/start` | 開始（可帶 `restart:true` 重玩）→ 回 `sessionId` |
@@ -227,8 +260,8 @@ docker compose --profile full down
 
 ```powershell
 cd web
-npm run smoke        # 57 項 API / 資料庫 / 遊戲規則 / 排名端到端檢查（需要伺服器已啟動）
-npm run ui-check     # 32 項真實瀏覽器（headless Chrome）操作檢查，並輸出截圖
+npm run smoke        # 69 項 API / 資料庫 / 遊戲規則 / 排名 / 重置端到端檢查（需要伺服器已啟動）
+npm run ui-check     # 39 項真實瀏覽器（headless Chrome）操作檢查，並輸出截圖
 npm run probe:replay # 確認重玩不會重複計算進度
 ```
 
@@ -287,33 +320,32 @@ Release 版已用專案內的金鑰庫簽署（`android/app/photohunter-release.
 
 ---
 
-## 卷二上線步驟（等 `images2/` 收齊 10 張後執行）
+## 再加一卷的步驟（卷二就是這樣上線的）
 
 `tools/sync_levels.py` 有保護：只要有任何一關的相片還沒產生，它就會拒絕同步並列出缺哪幾張，
-所以卷二不可能在資料不齊的狀態下被推上線。收齊後照順序跑：
+所以一捲不可能在資料不齊的狀態下被推上線。資料齊了之後照順序跑：
 
 ```powershell
-# 1. 標註第 19、20 章（新增 shared/levels/level-19.json、level-20.json）
+# 1. 標註新章節（在 shared/levels/ 產生 level-XX.json）
 #    用 tools/annotate_helper.py 的 grid/crop/overlay/one 量測與複核
 py tools\validate_levels.py                     # 全部關卡都要 OK
 
-# 2. 產生相片素材（images2/ 的照片會自動接到第 11 章之後）
+# 2. 產生相片素材（新資料夾的照片會自動接到下一個章號）
 py tools\prepare_assets.py                      # 加 --strict 可在缺相片時直接失敗
 
 # 3. 同步關卡資料到 web 與 android
 py tools\sync_levels.py
 
-# 4. Web：重啟 API（開機會重新播種 MySQL 並長出新的章節）
+# 4. Web：重啟 API（開機會自動補上新欄位並重新播種 MySQL）
 cd web; npm start
-npm run check                                   # smoke 48+ 項 + 真實瀏覽器 UI 檢查
+npm run check                                   # API 端到端 + 真實瀏覽器 UI 檢查
 
-# 5. Android：重新建置並安裝
-cd ..\android; .\gradlew.bat assembleDebug installDebug
+# 5. Android：重新建置並安裝（Room 有 migration，舊進度不會不見）
+cd ..\android; .\gradlew.bat assembleDebug testDebugUnitTest
 ```
 
-App 端不需要改程式就能容納 20 章（選關格線、進度統計、每 5 關的錦囊里程碑都是資料驅動的），
-唯一建議一起做的是「卷別標題」：關卡 JSON 已經有 `collection` 欄位，
-可以在選關畫面依卷分組顯示（`卷一・古畫尋穿越` / `卷二・今世覓古物`）。
+App 端不用改程式就能容納更多章節（選關格線、進度統計、每 5 關的錦囊里程碑都是資料驅動的），
+選關畫面也會依 `collection` 欄位自動分卷顯示（`卷一・古畫尋穿越` / `卷二・今世覓古物`）。
 
 ---
 
@@ -354,16 +386,17 @@ App 端不需要改程式就能容納 20 章（選關格線、進度統計、每
 
 | 項目 | 結果 |
 |---|---|
-| 關卡資料驗證 | `validate_levels.py`：**18 個檔案全部 OK**（卷一 10 關已上線、卷二 8 關待上線） |
-| 標註品質 | 已上線 10 關 + 卷二 8 關，都做過人工複核 overlay：每個命中框都貼在目標物件上（見上方拼圖） |
-| Web API / DB 端到端 | `npm run smoke` → **57/57**（含排名：乾淨通關的名次贏過手滑通關） |
-| Web 真實瀏覽器操作 | `npm run ui-check` → **32/32**（含過 5 關拿 3 個錦囊、排行榜欄位與計分說明） |
+| 關卡資料驗證 | `validate_levels.py`：**20 個檔案全部 OK**（200 件物品，每關 10 件） |
+| 標註品質 | 20 關全部做過人工複核 overlay：每個命中框都貼在目標物件上（卷一、卷二兩張拼圖） |
+| Web API / DB 端到端 | `npm run smoke` → **69/69**（含排名：乾淨通關的名次贏過手滑通關；含重置：只清自己、別人的成績不受影響） |
+| Web 真實瀏覽器操作 | `npm run ui-check` → **39/39**（20 張卡、分卷標題、過 5 關拿錦囊、排行榜、重置後回到 0/20 與 ×3） |
 | 重玩不重複計算 | `npm run probe:replay` → OK |
 | Android 排名規則 | `gradlew testDebugUnitTest` → **7/7**（成績公式、每章取最佳、重玩刷新紀錄、同分比序） |
-| 全 Docker 堆疊 | `docker compose --profile full up -d --build` → api 容器 healthy，smoke **48/48**、ui-check **28/28** |
-| Android 建置 | `gradlew assembleDebug` → BUILD SUCCESSFUL，`app-debug.apk`（約 24 MB） |
-| Android Release | `gradlew assembleRelease` → BUILD SUCCESSFUL，`app-release.apk`（約 18 MB，已簽署，含成績榜） |
-| Android 實際執行 | 安裝到 Android 17（API 37）模擬器：首頁 → 選關 → 進關 → 點擊尋物 → 過關結算（顯示本章成績與最快紀錄）→ 成績榜，標記／提示／音效正常，無 crash |
+| Android 重置 | 模擬器實測：1/20 章、成績榜有紀錄 → 確認重置 → **0/20、錦囊 ×3、成績榜顯示「還沒有完成任何章節」**、名號保留 |
+| Android 資料庫升級 | Room v1 → v2（新增 `collection` 欄位）在模擬器上以「舊資料 + 新 APK」實測：**已破章節、最佳時間、成績榜紀錄全部保留** |
+| 全 Docker 堆疊 | `docker compose --profile full up -d --build` → api 容器 healthy，smoke **48/48**、ui-check **28/28**（10 章時期） |
+| Android 建置 | `gradlew assembleDebug` / `assembleRelease` → BUILD SUCCESSFUL（debug 約 28 MB、release 約 21 MB，已簽署） |
+| Android 實際執行 | 安裝到 Android 17（API 37）模擬器：首頁 → 選關（20 章、卷一分界）→ 進關 → 點擊尋物 → 過關結算 → 成績榜，標記／提示／音效正常，無 crash |
 
 開發過程中修掉的四個真實缺陷（都已被上表的測試涵蓋）：
 
