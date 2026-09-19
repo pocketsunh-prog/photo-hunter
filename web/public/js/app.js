@@ -41,8 +41,11 @@ function showScreen(name) {
   if (name === 'level' || name === 'levels') refreshMusicButtons();
   window.scrollTo(0, 0);
   if (name === 'game' && state.level) {
-    // layout must settle before the marker overlay can be aligned to the photo
-    requestAnimationFrame(() => requestAnimationFrame(syncOverlay));
+    // layout must settle before the zoom layer can be measured
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      layoutZoomLayer();
+      applyZoom();
+    }));
   }
 }
 
@@ -106,28 +109,17 @@ function renderHomeStats() {
   $('homeProgressChip').textContent = `已過 ${cleared} 章`;
 }
 
+/**
+ * Sign in by nickname. The name IS the account: the same name always resumes the
+ * same progress, 錦囊 and score records (on any browser or device), and a new
+ * name creates a fresh account.
+ */
 async function ensurePlayer(nickname) {
-  const key = storage.playerKey;
-  if (key) {
-    try {
-      const profile = await api.getPlayer(key);
-      state.player = profile.player;
-      if (nickname && nickname !== state.player.nickname) {
-        const renamed = await api.renamePlayer(key, nickname);
-        state.player = renamed.player;
-      }
-      storage.nickname = state.player.nickname;
-      return state.player;
-    } catch (error) {
-      if (error.status !== 404) throw error;
-      storage.playerKey = null;
-    }
-  }
-  const created = await api.createPlayer(nickname);
-  state.player = created.player;
-  storage.playerKey = created.player.playerKey;
-  storage.nickname = created.player.nickname;
-  return state.player;
+  const response = await api.createPlayer(nickname);
+  state.player = response.player;
+  storage.playerKey = response.player.playerKey;
+  storage.nickname = response.player.nickname;
+  return { player: response.player, isNew: response.existing === false };
 }
 
 // ─────────────────────────────────────────────────────────── level select
@@ -172,25 +164,30 @@ function renderLevels() {
     const foundCount = foundOf(level);
     const card = document.createElement('button');
     card.type = 'button';
-    card.className = `level-card${progress?.completed ? ' is-done' : ''}`;
+    const locked = level.locked === true;
+    card.className = `level-card${progress?.completed ? ' is-done' : ''}${locked ? ' is-locked' : ''}`;
+    card.disabled = locked;
     card.innerHTML = `
       <div class="level-thumb">
         <img src="${PHOTO_PATH}/${level.thumb}" alt="${level.title}" loading="lazy" draggable="false">
         <span class="level-index">第 ${level.id} 章</span>
         ${progress?.completed ? '<span class="level-badge">✓ 已破</span>' : ''}
+        ${locked ? `<span class="level-lock">🔒 先完成第 ${level.requiresLevel} 章</span>` : ''}
       </div>
       <div class="level-meta">
         <b>${level.title}</b>
-        <span class="era">${level.era}</span>
-        <div class="level-bar"><i style="width:${(foundCount / level.objectCount) * 100}%"></i></div>
-        <span class="level-progress-text">${foundCount}/${level.objectCount}${
+        <span class="era">${locked ? '尚未解鎖' : level.era}</span>
+        <div class="level-bar"><i style="width:${locked ? 0 : (foundCount / level.objectCount) * 100}%"></i></div>
+        <span class="level-progress-text">${locked ? `完成第 ${level.requiresLevel} 章即可進入` : `${foundCount}/${level.objectCount}${
           progress?.bestMs ? ` · 最佳 ${formatTime(progress.bestMs)}` : ''
-        }</span>
+        }`}</span>
       </div>`;
-    card.addEventListener('click', () => {
-      audio.play('click');
-      openLevel(level.id).catch(handleFatal);
-    });
+    if (!locked) {
+      card.addEventListener('click', () => {
+        audio.play('click');
+        openLevel(level.id).catch(handleFatal);
+      });
+    }
     grid.appendChild(card);
   }
 }
@@ -223,21 +220,21 @@ async function openLevel(levelId, { restart = false } = {}) {
 
     const img = $('photoImg');
     img.classList.add('is-hidden');
-    img.onload = () => {
+    resetZoom();
+    const prepareStage = () => {
       img.classList.remove('is-hidden');
       $('photoVeil').hidden = true;
-      syncOverlay();
-      renderMarkers();
+      layoutZoomLayer();
+      resetZoom();
     };
+    img.onload = prepareStage;
     img.onerror = () => {
       $('photoVeil').hidden = true;
       toast('相片載入失敗，請稍後再試。', 'bad');
     };
     img.src = `${PHOTO_PATH}/${start.level.image}`;
     if (img.complete && img.naturalWidth) {
-      img.classList.remove('is-hidden');
-      $('photoVeil').hidden = true;
-      requestAnimationFrame(syncOverlay);
+      requestAnimationFrame(prepareStage);
     }
 
     renderHud();
@@ -317,19 +314,46 @@ function renderFoundStrip() {
   }
 }
 
-/** Align the marker overlay exactly with the letterboxed <img>. */
-function syncOverlay() {
-  const img = $('photoImg');
+/**
+ * Zoomable photo.
+ *
+ * The photo, the found markers and the tap effects all live inside #zoomLayer,
+ * so one CSS transform zooms them together and the markers stay glued to their
+ * objects. The layer is sized to the letterboxed image box, which means taps can
+ * still be normalised with a plain getBoundingClientRect() even while zoomed.
+ */
+const zoom = {
+  scale: 1,
+  x: 0,
+  y: 0,
+  min: 1,
+  max: 4,
+  pointers: new Map(),
+  panning: false,
+  moved: 0,
+  downAt: 0,
+  pinched: false,
+};
+
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+/** Size #zoomLayer to the biggest 3:4-ish box that fits the stage. */
+function layoutZoomLayer() {
   const stage = $('photoStage');
-  if (!img || !stage || !img.naturalWidth) return;
-  const rect = img.getBoundingClientRect();
-  const stageRect = stage.getBoundingClientRect();
-  for (const layer of [$('markerLayer'), $('fxLayer')]) {
-    layer.style.left = `${rect.left - stageRect.left}px`;
-    layer.style.top = `${rect.top - stageRect.top}px`;
-    layer.style.width = `${rect.width}px`;
-    layer.style.height = `${rect.height}px`;
+  const level = state.level;
+  if (!stage || !level) return;
+  const aspect = (level.imageWidth || 1440) / (level.imageHeight || 1920);
+  const availW = Math.max(1, stage.clientWidth);
+  const availH = Math.max(1, stage.clientHeight);
+  let width = availW;
+  let height = availW / aspect;
+  if (height > availH) {
+    height = availH;
+    width = availH * aspect;
   }
+  const layer = $('zoomLayer');
+  layer.style.width = `${Math.round(width)}px`;
+  layer.style.height = `${Math.round(height)}px`;
 }
 
 function layerSize() {
@@ -337,18 +361,77 @@ function layerSize() {
   return { w: layer.clientWidth || 1, h: layer.clientHeight || 1 };
 }
 
+/** Keep the photo covering the stage: never allow empty space around it. */
+function clampZoomPan() {
+  const layer = $('zoomLayer');
+  const width = layer.clientWidth || 1;
+  const height = layer.clientHeight || 1;
+  zoom.x = clamp(zoom.x, -(zoom.scale - 1) * width, 0);
+  zoom.y = clamp(zoom.y, -(zoom.scale - 1) * height, 0);
+}
+
+function applyZoom() {
+  const layer = $('zoomLayer');
+  if (!layer) return;
+  zoom.scale = clamp(zoom.scale, zoom.min, zoom.max);
+  clampZoomPan();
+  layer.style.transform = `translate(${zoom.x}px, ${zoom.y}px) scale(${zoom.scale})`;
+  // Markers/labels use these so their text keeps a constant screen size.
+  layer.style.setProperty('--z', String(zoom.scale));
+  layer.style.setProperty('--inv', String(1 / zoom.scale));
+  $('btnZoomReset').textContent = `${Math.round(zoom.scale * 100)}%`;
+  $('btnZoomOut').disabled = zoom.scale <= zoom.min + 0.001;
+  $('btnZoomIn').disabled = zoom.scale >= zoom.max - 0.001;
+  $('photoStage').classList.toggle('is-zoomed', zoom.scale > 1.001);
+  renderMarkers();
+}
+
+/** Zoom by `factor`, keeping the photo point under (clientX, clientY) fixed. */
+function zoomAt(clientX, clientY, factor) {
+  const layer = $('zoomLayer');
+  if (!layer.clientWidth) return;
+  const rect = layer.getBoundingClientRect();
+  // The element is laid out centred in the stage; translate() moves it from there.
+  const baseLeft = rect.left - zoom.x;
+  const baseTop = rect.top - zoom.y;
+  const localX = (clientX - baseLeft - zoom.x) / zoom.scale;
+  const localY = (clientY - baseTop - zoom.y) / zoom.scale;
+  const next = clamp(zoom.scale * factor, zoom.min, zoom.max);
+  if (next === zoom.scale) return;
+  zoom.x = clientX - baseLeft - localX * next;
+  zoom.y = clientY - baseTop - localY * next;
+  zoom.scale = next;
+  applyZoom();
+}
+
+function resetZoom() {
+  zoom.scale = 1;
+  zoom.x = 0;
+  zoom.y = 0;
+  applyZoom();
+}
+
+function zoomStep(factor) {
+  const stage = $('photoStage');
+  const rect = stage.getBoundingClientRect();
+  zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
+}
+
 function renderMarkers() {
   const layer = $('markerLayer');
   layer.innerHTML = '';
   const { w: layerW, h: layerH } = layerSize();
   const objects = state.level?.objects ?? [];
+  // Marker rings keep at least this many *screen* pixels by shrinking the
+  // floor as the photo is zoomed in, so a ring never balloons over its object.
+  const minScreenPx = 42 / zoom.scale;
 
   objects.forEach((object, index) => {
     if (!state.found.has(object.id)) return;
     const [cx, cy] = boxCenter(object.bbox);
     const [bx, by, bw, bh] = object.bbox;
-    const width = Math.max(bw * layerW, 42);
-    const height = Math.max(bh * layerH, 42);
+    const width = Math.max(bw * layerW, minScreenPx);
+    const height = Math.max(bh * layerH, minScreenPx);
     const marker = document.createElement('div');
     marker.className = `marker${state.revealed.has(object.id) ? ' is-revealed' : ''}`;
     marker.dataset.index = String(index + 1);
@@ -362,7 +445,6 @@ function renderMarkers() {
     label.textContent = `${index + 1}. ${object.name}`;
     const belowRoom = cy * layerH + height / 2 + 34 < layerH;
     label.style.top = belowRoom ? `${height / 2}px` : `${-height / 2 - 26}px`;
-    label.style.transform = 'translate(-50%, 0)';
     marker.appendChild(label);
     layer.appendChild(marker);
   });
@@ -387,8 +469,8 @@ function showHintRing(object) {
   ring.className = 'hint-ring';
   ring.style.left = `${cx * layerW}px`;
   ring.style.top = `${cy * layerH}px`;
-  ring.style.width = `${Math.max(bw * layerW * 1.5, 84)}px`;
-  ring.style.height = `${Math.max(bh * layerH * 1.5, 84)}px`;
+  ring.style.width = `${Math.max(bw * layerW * 1.5, 84 / zoom.scale)}px`;
+  ring.style.height = `${Math.max(bh * layerH * 1.5, 84 / zoom.scale)}px`;
   $('fxLayer').appendChild(ring);
   state.hintRingTimer = window.setTimeout(() => {
     ring.remove();
@@ -404,16 +486,101 @@ function clearHintRing() {
   for (const ring of document.querySelectorAll('.hint-ring')) ring.remove();
 }
 
-// ─────────────────────────────────────────────────────────── tapping
+// ─────────────────────────────────────────────────────────── zoom gestures
 
 function onStagePointerDown(event) {
   if (state.currentScreen !== 'game' || !state.level) return;
+  // The zoom buttons live inside the stage; capturing the pointer there would
+  // swallow their click events (and later count as a tap on the photo).
+  if (event.target?.closest?.('.zoom-controls')) return;
+  const stage = $('photoStage');
+  try {
+    stage.setPointerCapture?.(event.pointerId);
+  } catch {
+    /* synthetic or already-released pointer - capture is only an optimisation */
+  }
+  zoom.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  if (zoom.pointers.size === 1) {
+    zoom.moved = 0;
+    zoom.downAt = Date.now();
+    zoom.pinched = false;
+    zoom.panning = zoom.scale > 1.001;
+    if (zoom.panning) stage.classList.add('is-panning');
+  } else {
+    // A second finger means this is a pinch, never a tap.
+    zoom.pinched = true;
+  }
+}
+
+function onStagePointerMove(event) {
+  const previous = zoom.pointers.get(event.pointerId);
+  if (!previous) return;
+  const current = { x: event.clientX, y: event.clientY };
+  zoom.pointers.set(event.pointerId, current);
+
+  if (zoom.pointers.size === 1) {
+    const dx = current.x - previous.x;
+    const dy = current.y - previous.y;
+    zoom.moved += Math.hypot(dx, dy);
+    if (zoom.scale > 1.001 && zoom.moved > 3) {
+      event.preventDefault();
+      zoom.x += dx;
+      zoom.y += dy;
+      applyZoom();
+    }
+    return;
+  }
+
+  if (zoom.pointers.size === 2) {
+    event.preventDefault();
+    const [a, b] = [...zoom.pointers.values()];
+    const distance = Math.hypot(a.x - b.x, a.y - b.y);
+    if (zoom.pinchDistance) {
+      const centreX = (a.x + b.x) / 2;
+      const centreY = (a.y + b.y) / 2;
+      zoomAt(centreX, centreY, distance / zoom.pinchDistance);
+    }
+    zoom.pinchDistance = distance;
+  }
+}
+
+function onStagePointerUp(event) {
+  const start = zoom.pointers.get(event.pointerId);
+  const wasSingle = zoom.pointers.size === 1;
+  zoom.pointers.delete(event.pointerId);
+  $('photoStage').classList.remove('is-panning');
+  if (zoom.pointers.size < 2) zoom.pinchDistance = null;
+
+  // A tap is a short, still press with one finger - everything else is a gesture.
+  if (!wasSingle || !start || zoom.pinched) return;
+  const still = Math.hypot(event.clientX - start.x, event.clientY - start.y) < 10 && zoom.moved < 12;
+  const quick = Date.now() - zoom.downAt < 700;
+  if (still && quick) handlePhotoTap(event.clientX, event.clientY);
+}
+
+function onStageWheel(event) {
+  if (state.currentScreen !== 'game' || !state.level) return;
   event.preventDefault();
+  zoomAt(event.clientX, event.clientY, Math.exp(-event.deltaY * 0.0016));
+}
+
+function onStageDoubleClick(event) {
+  if (state.currentScreen !== 'game' || !state.level) return;
+  event.preventDefault();
+  if (zoom.scale > 1.001) resetZoom();
+  else zoomAt(event.clientX, event.clientY, 2.5);
+}
+
+// ─────────────────────────────────────────────────────────── tapping
+
+/** Turn a screen position into normalised photo coordinates and test the boxes. */
+function handlePhotoTap(clientX, clientY) {
+  if (state.currentScreen !== 'game' || !state.level) return;
   const img = $('photoImg');
   if (!img.naturalWidth) return;
   const rect = img.getBoundingClientRect();
-  const nx = (event.clientX - rect.left) / rect.width;
-  const ny = (event.clientY - rect.top) / rect.height;
+  const nx = (clientX - rect.left) / rect.width;
+  const ny = (clientY - rect.top) / rect.height;
   if (nx < 0 || nx > 1 || ny < 0 || ny > 1) return; // letterbox area, not the photo
 
   const candidates = state.level.objects.filter((o) => !state.found.has(o.id) && !state.pending.has(o.id));
@@ -669,13 +836,24 @@ async function openLeaderboard() {
   $('boardBody').innerHTML = '<p class="modal-text">載入中…</p>';
   try {
     const { leaderboard, scoring } = await api.leaderboard(20);
+    let myLine = '';
+    if (storage.playerKey) {
+      try {
+        const mine = await api.myRank(storage.playerKey);
+        myLine = mine?.rank
+          ? `<p class="board-me">你的排名：第 ${mine.rank.rank} 名 · 成績 ${formatTime(mine.rank.scoreMs)}（${mine.rank.chapters} 章 · 誤點 ${mine.rank.wrongTaps}）</p>`
+          : '<p class="board-me">你還沒有完成任何章節，先破第 1 章就會上榜。</p>';
+      } catch {
+        /* the board itself is more important than the personal line */
+      }
+    }
     const rule = scoring
       ? `<p class="board-rule">成績 = 每章最快一次（用時 + 誤點 × ${Math.round(
           scoring.wrongTapPenaltyMs / 1000,
         )} 秒）加總，數字越小越好；同分先比誤點，再比用時。</p>`
       : '';
     if (!leaderboard.length) {
-      $('boardBody').innerHTML = `${rule}<p class="modal-text">還沒有人破關，你可以是第一個。</p>`;
+      $('boardBody').innerHTML = `${rule}${myLine}<p class="modal-text">還沒有人破關，你可以是第一個。</p>`;
       return;
     }
     const myNickname = state.player?.nickname;
@@ -744,12 +922,14 @@ function wireStaticHandlers() {
     $('btnStart').disabled = true;
     try {
       await audio.unlock();
-      await ensurePlayer(nickname);
+      const { player, isNew } = await ensurePlayer(nickname);
       await refreshLevels();
       renderLevels();
       renderHomeStats();
       audio.playBgm('menu');
       showScreen('levels');
+      if (isNew) toast(`新帳號「${player.nickname}」已建立，錦囊 ×${player.hints}。`, 'good', 3200);
+      else toast(`歡迎回來，${player.nickname}（已破 ${player.levelsCleared} 章 · 錦囊 ×${player.hints}）`, 'info', 3200);
     } catch (error) {
       toast(error.message || '無法開始遊戲。', 'bad', 4000);
     } finally {
@@ -779,8 +959,18 @@ function wireStaticHandlers() {
     $(id).addEventListener('click', toggleMusic);
   }
 
-  $('photoStage').addEventListener('pointerdown', onStagePointerDown);
-  $('photoStage').addEventListener('contextmenu', (event) => event.preventDefault());
+  const stage = $('photoStage');
+  stage.addEventListener('pointerdown', onStagePointerDown);
+  stage.addEventListener('pointermove', onStagePointerMove);
+  stage.addEventListener('pointerup', onStagePointerUp);
+  stage.addEventListener('pointercancel', onStagePointerUp);
+  stage.addEventListener('wheel', onStageWheel, { passive: false });
+  stage.addEventListener('dblclick', onStageDoubleClick);
+  stage.addEventListener('contextmenu', (event) => event.preventDefault());
+
+  $('btnZoomIn').addEventListener('click', () => zoomStep(1.35));
+  $('btnZoomOut').addEventListener('click', () => zoomStep(1 / 1.35));
+  $('btnZoomReset').addEventListener('click', () => resetZoom());
 
   $('btnHint').addEventListener('click', () => {
     if ((state.player?.hints ?? 0) < 1) {
@@ -825,19 +1015,16 @@ function wireStaticHandlers() {
     leaveLevel();
   });
 
-  window.addEventListener('resize', () => {
-    syncOverlay();
-    renderMarkers();
-  });
-  window.addEventListener('orientationchange', () => window.setTimeout(() => {
-    syncOverlay();
-    renderMarkers();
-  }, 250));
+  // Re-fit the photo box on any layout change; the zoom transform is kept, so a
+  // rotated phone stays where the player was looking.
+  const relayout = () => {
+    layoutZoomLayer();
+    applyZoom();
+  };
+  window.addEventListener('resize', relayout);
+  window.addEventListener('orientationchange', () => window.setTimeout(relayout, 250));
   if (window.ResizeObserver) {
-    const observer = new ResizeObserver(() => {
-      syncOverlay();
-      renderMarkers();
-    });
+    const observer = new ResizeObserver(relayout);
     observer.observe($('photoStage'));
   }
 

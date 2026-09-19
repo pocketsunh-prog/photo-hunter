@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -32,15 +33,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
+import kotlin.math.roundToInt
 import com.photohunter.game.UiState
 import com.photohunter.game.data.LevelObject
 import com.photohunter.game.game.GameRules
@@ -207,42 +216,144 @@ private fun PhotoStage(
         val heightDp = stageH.dp
         val objects = level.objects
 
+        val density = LocalDensity.current
+        val stagePxW = with(density) { widthDp.toPx() }
+        val stagePxH = with(density) { heightDp.toPx() }
+
+        // Zoom state, reset whenever a different chapter is opened.
+        var scale by remember(level.id) { mutableStateOf(1f) }
+        var offset by remember(level.id) { mutableStateOf(Offset.Zero) }
+
+        fun clampOffset(candidate: Offset, atScale: Float): Offset {
+            val minX = -(atScale - 1f) * stagePxW
+            val minY = -(atScale - 1f) * stagePxH
+            return Offset(candidate.x.coerceIn(minX, 0f), candidate.y.coerceIn(minY, 0f))
+        }
+
+        fun zoomAround(centre: Offset, nextScale: Float) {
+            val next = nextScale.coerceIn(MIN_ZOOM, MAX_ZOOM)
+            val factor = next / scale
+            val candidate = Offset(
+                centre.x - (centre.x - offset.x) * factor,
+                centre.y - (centre.y - offset.y) * factor,
+            )
+            scale = next
+            offset = clampOffset(candidate, next)
+        }
+
         Box(
             modifier = Modifier
                 .size(widthDp, heightDp)
                 .border(1.dp, Gold.copy(alpha = 0.16f), RoundedCornerShape(14.dp))
-                // One tap handler for the whole photo: coordinates are normalised
-                // against the drawn image, so the same numbers work on any screen.
+                // Both gesture handlers work in the *untransformed* stage space, so
+                // a tap is converted with the same scale/offset used for drawing
+                // instead of relying on layer hit testing.
                 .pointerInput(level.id) {
-                    detectTapGestures { offset ->
-                        val nx = offset.x / size.width.toFloat()
-                        val ny = offset.y / size.height.toFloat()
-                        onTap(nx, ny)
+                    detectTapGestures { position ->
+                        val localX = (position.x - offset.x) / scale
+                        val localY = (position.y - offset.y) / scale
+                        if (localX < 0f || localY < 0f || localX > stagePxW || localY > stagePxH) {
+                            return@detectTapGestures // tapped the letterbox, not the photo
+                        }
+                        onTap(localX / stagePxW, localY / stagePxH)
+                    }
+                }
+                .pointerInput(level.id) {
+                    detectTransformGestures { centroid, pan, zoom, _ ->
+                        val next = (scale * zoom).coerceIn(MIN_ZOOM, MAX_ZOOM)
+                        if (next == scale && pan == Offset.Zero) return@detectTransformGestures
+                        val factor = next / scale
+                        // Keep the photo point under the gesture centroid fixed.
+                        val candidate = Offset(
+                            centroid.x - (centroid.x - offset.x) * factor + pan.x,
+                            centroid.y - (centroid.y - offset.y) * factor + pan.y,
+                        )
+                        scale = next
+                        offset = clampOffset(candidate, next)
                     }
                 },
         ) {
-            AssetImage(
-                name = level.image,
-                contentDescription = level.title,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds,
-            )
-
-            objects.forEachIndexed { index, entry ->
-                if (entry.id !in state.found) return@forEachIndexed
-                FoundMarker(
-                    target = entry,
-                    index = index,
-                    revealed = entry.id in state.revealed,
-                    stageWidth = widthDp,
-                    stageHeight = heightDp,
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
+                        translationX = offset.x
+                        translationY = offset.y
+                        transformOrigin = TransformOrigin(0f, 0f)
+                    },
+            ) {
+                AssetImage(
+                    name = level.image,
+                    contentDescription = level.title,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.FillBounds,
                 )
+
+                objects.forEachIndexed { index, entry ->
+                    if (entry.id !in state.found) return@forEachIndexed
+                    FoundMarker(
+                        target = entry,
+                        index = index,
+                        revealed = entry.id in state.revealed,
+                        stageWidth = widthDp,
+                        stageHeight = heightDp,
+                        zoom = scale,
+                    )
+                }
+
+                state.hintTarget?.let { target ->
+                    HintRing(target = target, stageWidth = widthDp, stageHeight = heightDp, zoom = scale)
+                }
             }
 
-            state.hintTarget?.let { target ->
-                HintRing(target = target, stageWidth = widthDp, stageHeight = heightDp)
+            // Controls live outside the transformed box so they keep their size.
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Ink900.copy(alpha = 0.72f))
+                    .border(1.dp, Gold.copy(alpha = 0.28f), RoundedCornerShape(12.dp))
+                    .padding(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                ZoomButton(label = "−", enabled = scale > MIN_ZOOM + 0.001f) {
+                    zoomAround(Offset(stagePxW / 2f, stagePxH / 2f), scale / ZOOM_STEP)
+                }
+                ZoomButton(label = "${(scale * 100).roundToInt()}%", enabled = scale > MIN_ZOOM + 0.001f, wide = true) {
+                    scale = 1f
+                    offset = Offset.Zero
+                }
+                ZoomButton(label = "＋", enabled = scale < MAX_ZOOM - 0.001f) {
+                    zoomAround(Offset(stagePxW / 2f, stagePxH / 2f), scale * ZOOM_STEP)
+                }
             }
         }
+    }
+}
+
+private const val MIN_ZOOM = 1f
+private const val MAX_ZOOM = 4f
+private const val ZOOM_STEP = 1.35f
+
+@Composable
+private fun ZoomButton(label: String, enabled: Boolean, wide: Boolean = false, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(width = if (wide) 56.dp else 32.dp, height = 32.dp)
+            .clip(RoundedCornerShape(9.dp))
+            .background(Color.White.copy(alpha = if (enabled) 0.08f else 0.03f))
+            .then(if (enabled) Modifier.clickable { onClick() } else Modifier),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = label,
+            color = if (enabled) GoldSoft else TextDim.copy(alpha = 0.5f),
+            style = MaterialTheme.typography.labelMedium,
+        )
     }
 }
 
@@ -253,9 +364,13 @@ private fun FoundMarker(
     revealed: Boolean,
     stageWidth: androidx.compose.ui.unit.Dp,
     stageHeight: androidx.compose.ui.unit.Dp,
+    zoom: Float,
 ) {
-    val markerW = max(stageWidth * target.bbox[2], 44.dp)
-    val markerH = max(stageHeight * target.bbox[3], 44.dp)
+    // The ring hugs the object, but never drops below ~44 screen pixels: the
+    // floor shrinks as the photo is zoomed in so a ring cannot balloon.
+    val minScreen = 44.dp / zoom
+    val markerW = max(stageWidth * target.bbox[2], minScreen)
+    val markerH = max(stageHeight * target.bbox[3], minScreen)
     val centerX = stageWidth * target.centerX
     val centerY = stageHeight * target.centerY
     val accent = if (revealed) Jade else Gold
@@ -269,11 +384,11 @@ private fun FoundMarker(
         Box(
             Modifier
                 .fillMaxSize()
-                .border(2.dp, accent, CircleShape),
+                .border(2.dp / zoom, accent, CircleShape),
         )
         Box(
             modifier = Modifier
-                .size(18.dp)
+                .size(18.dp / zoom)
                 .clip(CircleShape)
                 .background(if (revealed) Color(0xFFB6E3CA) else GoldSoft),
             contentAlignment = Alignment.Center,
@@ -281,22 +396,22 @@ private fun FoundMarker(
             Text(
                 text = "${index + 1}",
                 color = Color(0xFF241A08),
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium.copy(fontSize = MaterialTheme.typography.labelMedium.fontSize / zoom),
                 fontWeight = FontWeight.Bold,
             )
         }
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .offset(y = 22.dp)
-                .clip(RoundedCornerShape(8.dp))
+                .offset(y = 22.dp / zoom)
+                .clip(RoundedCornerShape(8.dp / zoom))
                 .background(Paper.copy(alpha = 0.94f))
-                .padding(horizontal = 8.dp, vertical = 3.dp),
+                .padding(horizontal = 8.dp / zoom, vertical = 3.dp / zoom),
         ) {
             Text(
                 text = target.name,
                 color = Color(0xFF241A08),
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelMedium.copy(fontSize = MaterialTheme.typography.labelMedium.fontSize / zoom),
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
             )
@@ -309,6 +424,7 @@ private fun HintRing(
     target: LevelObject,
     stageWidth: androidx.compose.ui.unit.Dp,
     stageHeight: androidx.compose.ui.unit.Dp,
+    zoom: Float,
 ) {
     val transition = rememberInfiniteTransition(label = "hint-ring")
     val alpha by transition.animateFloat(
@@ -317,8 +433,8 @@ private fun HintRing(
         animationSpec = infiniteRepeatable(tween(700), RepeatMode.Reverse),
         label = "hint-alpha",
     )
-    val ringW = max(stageWidth * target.bbox[2] * 1.6f, 88.dp)
-    val ringH = max(stageHeight * target.bbox[3] * 1.6f, 88.dp)
+    val ringW = max(stageWidth * target.bbox[2] * 1.6f, 88.dp / zoom)
+    val ringH = max(stageHeight * target.bbox[3] * 1.6f, 88.dp / zoom)
     Box(
         modifier = Modifier
             .offset(
@@ -327,6 +443,6 @@ private fun HintRing(
             )
             .width(ringW)
             .height(ringH)
-            .border(3.dp, Vermilion.copy(alpha = alpha), CircleShape),
+            .border(3.dp / zoom, Vermilion.copy(alpha = alpha), CircleShape),
     )
 }

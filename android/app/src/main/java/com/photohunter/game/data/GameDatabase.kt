@@ -26,7 +26,7 @@ abstract class GameDatabase : RoomDatabase() {
     abstract fun dao(): GameDao
 
     companion object {
-        private const val NAME = "photo_hunter.db"
+        const val LEGACY_NAME = "photo_hunter.db"
 
         /**
          * v1 -> v2: chapters gained a `collection` column so the level map can be
@@ -39,22 +39,29 @@ abstract class GameDatabase : RoomDatabase() {
             }
         }
 
-        @Volatile
-        private var instance: GameDatabase? = null
+        /** One open database per account file (see AccountStore). */
+        private val instances = mutableMapOf<String, GameDatabase>()
 
-        fun get(context: Context): GameDatabase =
-            instance ?: synchronized(this) {
-                instance ?: Room.databaseBuilder(
+        fun get(context: Context, name: String = LEGACY_NAME): GameDatabase =
+            instances[name] ?: synchronized(this) {
+                instances[name] ?: Room.databaseBuilder(
                     context.applicationContext,
                     GameDatabase::class.java,
-                    NAME,
+                    name,
                 )
                     .addMigrations(MIGRATION_1_2)
                     // Last resort for a version with no migration path: chapters
                     // are re-seeded from the APK assets anyway.
                     .fallbackToDestructiveMigration()
                     .build()
-                    .also { instance = it }
+                    .also { instances[name] = it }
             }
+
+        /** Close a cached connection, e.g. after removing an account's file. */
+        fun close(name: String) {
+            synchronized(this) {
+                instances.remove(name)?.close()
+            }
+        }
     }
 }

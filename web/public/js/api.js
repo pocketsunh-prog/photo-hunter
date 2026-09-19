@@ -55,6 +55,7 @@ export const api = {
   miss: (key, id, body) => request('POST', `/players/${encodeURIComponent(key)}/levels/${id}/miss`, body),
   hint: (key, id, body) => request('POST', `/players/${encodeURIComponent(key)}/levels/${id}/hint`, body),
   leaderboard: (limit = 20) => request('GET', `/leaderboard?limit=${limit}`),
+  myRank: (key) => request('GET', `/players/${encodeURIComponent(key)}/rank`),
 };
 
 function read(key) {

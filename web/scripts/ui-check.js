@@ -51,18 +51,21 @@ async function findChrome() {
   throw new Error('no Chrome/Edge binary found');
 }
 
-/** Tap the photo at a normalised position, exactly like a finger would. */
+/**
+ * Tap the photo at a normalised position, exactly like a finger would.
+ * A tap is now a pointerdown + pointerup pair (a press that does not move),
+ * because dragging is reserved for panning a zoomed photo.
+ */
 async function tapPhoto(page, [nx, ny]) {
   await page.evaluate(
     (x, y) => {
       const rect = document.getElementById('photoImg').getBoundingClientRect();
-      document.getElementById('photoStage').dispatchEvent(
-        new PointerEvent('pointerdown', {
-          clientX: rect.left + rect.width * x,
-          clientY: rect.top + rect.height * y,
-          bubbles: true,
-        }),
-      );
+      const clientX = rect.left + rect.width * x;
+      const clientY = rect.top + rect.height * y;
+      const stage = document.getElementById('photoStage');
+      const options = { pointerId: 1, clientX, clientY, bubbles: true, isPrimary: true, pointerType: 'touch' };
+      stage.dispatchEvent(new PointerEvent('pointerdown', options));
+      stage.dispatchEvent(new PointerEvent('pointerup', options));
     },
     nx,
     ny,
@@ -115,7 +118,10 @@ async function main() {
     );
 
     await page.click('#nicknameInput');
-    await page.type('#nicknameInput', '煙測捕快');
+    // A nickname is an account, so each run uses a fresh one and always starts
+    // from a clean slate.
+    const testNickname = `煙測捕快${Date.now() % 100000}`;
+    await page.type('#nicknameInput', testNickname);
     await page.screenshot({ path: path.join(SHOTS, '01-home.png') });
 
     // ── level select ──────────────────────────────────────────────────────
@@ -156,6 +162,21 @@ async function main() {
     check('all chapter thumbnails load', thumbsOk === expectedChapters, `loaded=${thumbsOk}/${expectedChapters}`);
     const sections = await page.$$eval('.level-section b', (els) => els.map((el) => el.textContent.trim()));
     check('the map is grouped into volumes', sections.length >= 2, JSON.stringify(sections));
+
+    // Missions unlock in order: only chapter 1 may be open on a fresh account.
+    const lockState = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll('.level-card')];
+      return {
+        locked: cards.filter((card) => card.classList.contains('is-locked')).length,
+        lockedDisabled: cards.filter((card) => card.classList.contains('is-locked') && card.disabled).length,
+        firstLocked: cards[0]?.classList.contains('is-locked') ?? null,
+        lockLabel: cards[1]?.querySelector('.level-lock')?.textContent.trim() ?? '',
+      };
+    });
+    check('only the first mission is open', lockState.firstLocked === false && lockState.locked === expectedChapters - 1, JSON.stringify(lockState));
+    check('locked missions cannot be clicked', lockState.lockedDisabled === lockState.locked, JSON.stringify(lockState));
+    check('a locked mission explains what to clear first', /第 1 章/.test(lockState.lockLabel), lockState.lockLabel);
+
     await page.screenshot({ path: path.join(SHOTS, '02-chapters.png') });
     await page.evaluate(() => {
       const header = document.querySelectorAll('.level-section')[1];
@@ -357,14 +378,94 @@ async function main() {
     const mapAfter = await page.evaluate(() => ({
       cards: document.querySelectorAll('.level-card').length,
       done: document.querySelectorAll('.level-card.is-done').length,
+      locked: document.querySelectorAll('.level-card.is-locked').length,
       statRow: document.getElementById('statRow').textContent.replace(/\s+/g, ' ').trim(),
     }));
     check('no chapter stays marked as cleared', mapAfter.done === 0, `done=${mapAfter.done}`);
     check('the chapter list is intact after reset', mapAfter.cards === expectedChapters, `cards=${mapAfter.cards}`);
+    check('reset locks every mission except the first', mapAfter.locked === expectedChapters - 1, `locked=${mapAfter.locked}`);
     check('the map progress counter is back to zero', /0\/\d+/.test(mapAfter.statRow), mapAfter.statRow);
     await page.screenshot({ path: path.join(SHOTS, '10-after-reset.png') });
 
-    console.log('\n9. console hygiene');
+    console.log('\n9. zoom in/out keeps hit testing accurate');
+    // Right after the reset we are on the map with everything at 0/20, which is
+    // the cleanest place to open a photo and exercise the zoom controls.
+    await page.click('.level-card');
+    await page.waitForSelector('#screen-game.is-active', { timeout: 15000 });
+    await page.waitForFunction(
+      () => document.getElementById('photoImg').complete && document.getElementById('photoImg').naturalWidth > 0,
+      { timeout: 20000 },
+    );
+    const zoomObjects = (await (await fetch(`${BASE}/api/levels/1`)).json()).level.objects;
+    const zoomState = () =>
+      page.evaluate(() => {
+        const layer = document.getElementById('zoomLayer');
+        const rect = layer.getBoundingClientRect();
+        return {
+          label: document.getElementById('btnZoomReset').textContent.trim(),
+          w: rect.width,
+          outDisabled: document.getElementById('btnZoomOut').disabled,
+        };
+      });
+
+    const base = await zoomState();
+    check('zoom starts at 100%', base.label === '100%', base.label);
+    check('zoom-out is disabled at 100%', base.outDisabled === true);
+
+    await page.click('#btnZoomIn');
+    await page.click('#btnZoomIn');
+    const zoomed = await zoomState();
+    check('zoom-in enlarges the photo layer', zoomed.w > base.w * 1.6, `${base.w} -> ${zoomed.w}`);
+    check('the zoom readout follows the scale', /%$/.test(zoomed.label) && zoomed.label !== '100%', zoomed.label);
+
+    // The important part: a tap while zoomed must still credit the right object.
+    const target = zoomObjects[0];
+    await page.evaluate((box) => {
+      const img = document.getElementById('photoImg');
+      const rect = img.getBoundingClientRect(); // the *transformed* box
+      const nx = box[0] + box[2] / 2;
+      const ny = box[1] + box[3] / 2;
+      const x = rect.left + rect.width * nx;
+      const y = rect.top + rect.height * ny;
+      const stage = document.getElementById('photoStage');
+      stage.dispatchEvent(new PointerEvent('pointerdown', { pointerId: 1, clientX: x, clientY: y, bubbles: true }));
+      stage.dispatchEvent(new PointerEvent('pointerup', { pointerId: 1, clientX: x, clientY: y, bubbles: true }));
+    }, target.bbox);
+    await sleep(500);
+    const zoomedFound = await page.$eval('#foundCount', (el) => Number(el.textContent));
+    check('a tap while zoomed registers a find', zoomedFound === 1, `found=${zoomedFound}`);
+    const zoomedStrip = await page.evaluate(() => {
+      const slot = document.querySelector('.found-strip .slot.is-found');
+      return slot ? slot.textContent.trim() : '';
+    });
+    check('the zoomed tap credited the intended object', zoomedStrip === target.name, `${zoomedStrip} vs ${target.name}`);
+    await page.screenshot({ path: path.join(SHOTS, '11-zoomed.png') });
+
+    // Panning must not be mistaken for a tap.
+    const beforeDragFound = await page.$eval('#foundCount', (el) => Number(el.textContent));
+    await page.evaluate(() => {
+      const stage = document.getElementById('photoStage');
+      const rect = document.getElementById('photoImg').getBoundingClientRect();
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      stage.dispatchEvent(new PointerEvent('pointerdown', { pointerId: 2, clientX: x, clientY: y, bubbles: true }));
+      for (let step = 1; step <= 5; step += 1) {
+        stage.dispatchEvent(new PointerEvent('pointermove', { pointerId: 2, clientX: x - step * 12, clientY: y - step * 8, bubbles: true }));
+      }
+      stage.dispatchEvent(new PointerEvent('pointerup', { pointerId: 2, clientX: x - 60, clientY: y - 40, bubbles: true }));
+    });
+    await sleep(600);
+    const afterDragFound = await page.$eval('#foundCount', (el) => Number(el.textContent));
+    const movedAfterDrag = await page.evaluate(() => getComputedStyle(document.getElementById('zoomLayer')).transform);
+    check('dragging to pan does not register as a tap', afterDragFound === beforeDragFound, `found ${beforeDragFound} -> ${afterDragFound}`);
+    check('dragging actually pans the photo', movedAfterDrag !== 'none', movedAfterDrag);
+
+    await page.click('#btnZoomReset');
+    const zoomReset = await zoomState();
+    check('the reset button returns to 100%', zoomReset.label === '100%' && Math.abs(zoomReset.w - base.w) < 1.5, `${zoomReset.label} ${zoomReset.w} vs ${base.w}`);
+    check('the zoom hint explains the gestures', await page.$eval('.zoom-hint', (el) => /縮放/.test(el.textContent)));
+
+    console.log('\n10. console hygiene');
     check('no uncaught page errors', pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '));
     const realErrors = consoleErrors.filter((text) => !/favicon|autoplay|AudioContext|not allowed to start/i.test(text));
     check('no console errors', realErrors.length === 0, realErrors.slice(0, 3).join(' | '));

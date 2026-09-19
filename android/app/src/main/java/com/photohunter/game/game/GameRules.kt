@@ -13,6 +13,9 @@ object GameRules {
     const val MILESTONE_EVERY = 5
     const val HINTS_PER_MILESTONE = 3
 
+    /** The account used when a player never typed a name. */
+    const val DEFAULT_NICKNAME = "無名捕手"
+
     /**
      * Ranking weight, identical to the web build's WRONG_TAP_PENALTY_MS: one
      * wrong tap costs this many milliseconds of 成績, so the local 成績榜
@@ -80,6 +83,16 @@ object GameRules {
         val crossings = after - before
         return crossings * HINTS_PER_MILESTONE to after * MILESTONE_EVERY
     }
+
+    /**
+     * Chapters unlock in order: the next mission only opens once the current one
+     * has been cleared. Mirrors the web build's `isLevelUnlocked`.
+     */
+    fun isLevelUnlocked(levelId: Int, completedIds: Collection<Int>): Boolean =
+        levelId <= 1 || completedIds.contains(levelId - 1)
+
+    /** The chapter that must be cleared before [levelId] opens (null for chapter 1). */
+    fun requiredLevelFor(levelId: Int): Int? = if (levelId > 1) levelId - 1 else null
 
     /** 成績 of one attempt: elapsed time plus a penalty per wrong tap. */
     fun attemptScoreMs(durationMs: Long, wrongTaps: Int): Long =

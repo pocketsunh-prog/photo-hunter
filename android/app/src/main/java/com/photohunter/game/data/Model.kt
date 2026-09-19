@@ -48,9 +48,20 @@ data class ChapterSummary(
     val foundCount: Int,
     val completed: Boolean,
     val bestMs: Long?,
+    /** true while the previous chapter has not been cleared yet */
+    val locked: Boolean = false,
+    /** the chapter that must be cleared first (null for chapter 1) */
+    val requiresLevel: Int? = null,
 ) {
     val thumbName: String get() = image.replace(".jpg", "-thumb.jpg")
 }
+
+/** Result of signing in with a nickname. */
+data class SignInOutcome(
+    val profile: PlayerProfile,
+    val isNewAccount: Boolean,
+    val adoptedLegacyDatabase: Boolean,
+)
 
 data class PlayerProfile(
     val nickname: String = "無名捕手",

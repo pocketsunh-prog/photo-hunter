@@ -158,6 +158,9 @@ fun PhotoHunterApp(viewModel: GameViewModel = viewModel()) {
                 state = state,
                 onBack = viewModel::backHome,
                 onOpenChapter = { viewModel.openChapter(it) },
+                onLockedChapter = { chapter ->
+                    viewModel.showLockedChapter(chapter.id, chapter.requiresLevel)
+                },
                 onToggleMute = viewModel::toggleMute,
             )
 

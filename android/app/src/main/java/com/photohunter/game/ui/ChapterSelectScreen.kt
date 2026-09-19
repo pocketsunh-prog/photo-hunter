@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,6 +40,7 @@ fun ChapterSelectScreen(
     state: UiState,
     onBack: () -> Unit,
     onOpenChapter: (Int) -> Unit,
+    onLockedChapter: (ChapterSummary) -> Unit,
     onToggleMute: () -> Unit,
 ) {
     val cleared = state.chapters.count { it.completed }
@@ -89,7 +91,12 @@ fun ChapterSelectScreen(
                     }
                 }
                 item(key = "chapter-${chapter.id}") {
-                    ChapterCard(chapter = chapter, onClick = { onOpenChapter(chapter.id) })
+                    ChapterCard(
+                        chapter = chapter,
+                        onClick = {
+                            if (chapter.locked) onLockedChapter(chapter) else onOpenChapter(chapter.id)
+                        },
+                    )
                 }
             }
 
@@ -133,7 +140,11 @@ private fun ChapterCard(chapter: ChapterSummary, onClick: () -> Unit) {
             .background(Ink700)
             .border(
                 width = 1.dp,
-                color = if (chapter.completed) Jade.copy(alpha = 0.6f) else Color.White.copy(alpha = 0.1f),
+                color = when {
+                    chapter.completed -> Jade.copy(alpha = 0.6f)
+                    chapter.locked -> Color.White.copy(alpha = 0.06f)
+                    else -> Color.White.copy(alpha = 0.1f)
+                },
                 shape = shape,
             )
             .clickable { onClick() },
@@ -147,7 +158,9 @@ private fun ChapterCard(chapter: ChapterSummary, onClick: () -> Unit) {
             AssetImage(
                 name = chapter.thumbName,
                 contentDescription = chapter.title,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { alpha = if (chapter.locked) 0.45f else 1f },
                 contentScale = ContentScale.Crop,
             )
             Chip(
@@ -155,8 +168,25 @@ private fun ChapterCard(chapter: ChapterSummary, onClick: () -> Unit) {
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(8.dp),
-                accent = GoldSoft,
+                accent = if (chapter.locked) TextDim else GoldSoft,
             )
+            if (chapter.locked) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(8.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Ink900.copy(alpha = 0.85f))
+                        .border(1.dp, Vermilion.copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                        .padding(horizontal = 8.dp, vertical = 5.dp),
+                ) {
+                    Text(
+                        text = "🔒 先完成第 ${chapter.requiresLevel} 章",
+                        color = Color(0xFFFFE9D6),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+            }
             if (chapter.completed) {
                 Box(
                     modifier = Modifier
@@ -187,25 +217,31 @@ private fun ChapterCard(chapter: ChapterSummary, onClick: () -> Unit) {
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                text = chapter.era,
-                color = Gold,
+                text = if (chapter.locked) "尚未解鎖" else chapter.era,
+                color = if (chapter.locked) TextDim else Gold,
                 style = MaterialTheme.typography.labelMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            ProgressBar(fraction = chapter.foundCount.toFloat() / chapter.objectCount.coerceAtLeast(1))
+            ProgressBar(fraction = if (chapter.locked) 0f else chapter.foundCount.toFloat() / chapter.objectCount.coerceAtLeast(1))
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
-                    text = "${chapter.foundCount}/${chapter.objectCount}",
+                    text = if (chapter.locked) {
+                        "完成第 ${chapter.requiresLevel} 章即可進入"
+                    } else {
+                        "${chapter.foundCount}/${chapter.objectCount}"
+                    },
                     color = TextDim,
                     style = MaterialTheme.typography.labelMedium,
                 )
-                chapter.bestMs?.let {
-                    Text(
-                        text = "· 最佳 ${GameRules.formatTime(it)}",
-                        color = TextDim,
-                        style = MaterialTheme.typography.labelMedium,
-                    )
+                if (!chapter.locked) {
+                    chapter.bestMs?.let {
+                        Text(
+                            text = "· 最佳 ${GameRules.formatTime(it)}",
+                            color = TextDim,
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
                 }
             }
             Spacer(Modifier.height(0.dp))

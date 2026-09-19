@@ -81,11 +81,19 @@
     </div>
 
     <div class="photo-stage" id="photoStage">
-      <img id="photoImg" alt="古畫相片" draggable="false">
-      <div class="marker-layer" id="markerLayer"></div>
-      <div class="fx-layer" id="fxLayer"></div>
+      <div class="zoom-layer" id="zoomLayer">
+        <img id="photoImg" alt="古畫相片" draggable="false">
+        <div class="marker-layer" id="markerLayer"></div>
+        <div class="fx-layer" id="fxLayer"></div>
+      </div>
+      <div class="zoom-controls">
+        <button class="zoom-btn" id="btnZoomOut" title="縮小" aria-label="縮小">−</button>
+        <button class="zoom-btn zoom-level" id="btnZoomReset" title="重設縮放">100%</button>
+        <button class="zoom-btn" id="btnZoomIn" title="放大" aria-label="放大">＋</button>
+      </div>
       <div class="photo-veil" id="photoVeil"><span class="spinner"></span>載入相片中…</div>
     </div>
+    <p class="zoom-hint">滾輪或雙指縮放；放大後可拖曳移動，雙擊可快速放大</p>
 
     <div class="found-strip" id="foundStrip"></div>
   </section>

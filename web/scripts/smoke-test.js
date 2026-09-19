@@ -57,12 +57,19 @@ async function main() {
   check('every chapter contributed its 10 objects', objectTotal === chapterTotal * 10, `objects=${objectTotal} chapters=${chapterTotal}`);
   check('rules expose 3 starter 錦囊', health.json?.rules?.startHints === 3, JSON.stringify(health.json?.rules));
 
-  console.log('\n2. player');
-  const created = await api('POST', '/api/players', { nickname: `煙測小捕快${Date.now() % 100000}` });
-  check('POST /api/players is 201', created.status === 201, `status ${created.status}`);
+  console.log('\n2. player (the nickname is the account)');
+  const accountNick = `煙測小捕快${Date.now() % 100000}`;
+  const created = await api('POST', '/api/players', { nickname: accountNick });
+  check('POST /api/players is 201 for a brand new name', created.status === 201, `status ${created.status}`);
   const playerKey = created.json?.player?.playerKey;
   check('new player has 3 錦囊', created.json?.player?.hints === 3, `hints=${created.json?.player?.hints}`);
   check('player key looks like a uuid', /^[0-9a-f-]{36}$/i.test(playerKey || ''), playerKey);
+  check('a new name is reported as a new account', created.json?.existing === false, JSON.stringify(created.json?.existing));
+
+  // Signing in with the same name must land on the same account (any browser).
+  const again = await api('POST', '/api/players', { nickname: accountNick });
+  check('the same nickname resumes the same account', again.json?.player?.playerKey === playerKey, `${again.json?.player?.playerKey} vs ${playerKey}`);
+  check('an existing account is flagged as existing', again.json?.existing === true, JSON.stringify(again.json?.existing));
 
   console.log('\n3. chapters');
   const list = await api('GET', `/api/levels?player=${playerKey}`);
@@ -80,6 +87,18 @@ async function main() {
   );
   const firstLevel = list.json?.levels?.[0];
   check('chapter titles are populated', Boolean(firstLevel?.title), JSON.stringify(firstLevel?.title));
+
+  console.log('\n3b. missions unlock in order');
+  check('the first mission is open', firstLevel?.locked === false, JSON.stringify(firstLevel?.locked));
+  check(
+    'every later mission starts locked',
+    (list.json?.levels ?? []).slice(1).every((l) => l.locked === true),
+    JSON.stringify((list.json?.levels ?? []).filter((l) => !l.locked).map((l) => l.id)),
+  );
+  check('a locked mission names its requirement', list.json?.levels?.[1]?.requiresLevel === 1, JSON.stringify(list.json?.levels?.[1]?.requiresLevel));
+  const blocked = await api('POST', `/api/players/${playerKey}/levels/2/start`, {});
+  check('starting a locked mission is refused', blocked.status === 403 && blocked.json?.error === 'LEVEL_LOCKED', `${blocked.status} ${blocked.json?.error}`);
+  check('the refusal says which chapter to clear', /第 1 章/.test(blocked.json?.message ?? ''), blocked.json?.message);
 
   const detail = await api('GET', `/api/levels/1?player=${playerKey}`);
   const objects = detail.json?.level?.objects ?? [];
@@ -137,6 +156,12 @@ async function main() {
   check('chapter 1 is completed after the tenth object', completion?.completed === true, JSON.stringify(completion?.completed));
   check('chapter 1 duration was timed by the server', Number.isFinite(completion?.durationMs), JSON.stringify(completion?.durationMs));
   check('no milestone reward before 5 chapters', completion?.reward?.awarded === 0, JSON.stringify(completion?.reward));
+
+  const afterClear = (await api('GET', `/api/levels?player=${playerKey}`)).json.levels;
+  check('clearing chapter 1 unlocks chapter 2', afterClear[1]?.locked === false, JSON.stringify(afterClear[1]?.locked));
+  check('chapter 3 is still locked after only chapter 1', afterClear[2]?.locked === true, JSON.stringify(afterClear[2]?.locked));
+  const stillBlocked = await api('POST', `/api/players/${playerKey}/levels/3/start`, {});
+  check('skipping ahead is still refused', stillBlocked.status === 403, `status ${stillBlocked.status}`);
 
   const dup = await api('POST', `/api/players/${playerKey}/levels/1/found`, { objectId: objects[0].id, sessionId });
   check('finding the same object twice is idempotent', dup.json?.alreadyFound === true && dup.json?.foundCount === 10, JSON.stringify(dup.json?.foundCount));
@@ -222,13 +247,20 @@ async function main() {
 
   const board2 = await api('GET', '/api/leaderboard?limit=50');
   const rows = board2.json?.leaderboard ?? [];
-  const cleanRow = rows.find((r) => r.nickname === cleanNick);
-  const sloppyRow = rows.find((r) => r.nickname === sloppyNick);
-  check('both new players are on the board with one chapter', cleanRow?.chapters === 1 && sloppyRow?.chapters === 1, JSON.stringify([cleanRow?.chapters, sloppyRow?.chapters]));
-  check('the sloppy run counted three wrong clicks', sloppyRow?.wrongTaps === 3, `wrongTaps=${sloppyRow?.wrongTaps}`);
-  check('the sloppy run carries a 9 second penalty', sloppyRow?.scoreMs >= 9000, `scoreMs=${sloppyRow?.scoreMs}`);
-  check('the clean run keeps a zero-wrong-click record', cleanRow?.wrongTaps === 0, `wrongTaps=${cleanRow?.wrongTaps}`);
-  check('fewer wrong clicks earns the better rank', cleanRow !== undefined && sloppyRow !== undefined && cleanRow.rank < sloppyRow.rank, `clean #${cleanRow?.rank} vs sloppy #${sloppyRow?.rank}`);
+  // The top-N page cannot prove a mid-board player's rank once the game has many
+  // players, so each player is asked for their own position instead.
+  const cleanRow = (await api('GET', `/api/players/${cleanPlayer.json.player.playerKey}/rank`)).json;
+  const sloppyRow = (await api('GET', `/api/players/${sloppyPlayer.json.player.playerKey}/rank`)).json;
+  check('both new players can report their own rank', Boolean(cleanRow?.rank && sloppyRow?.rank), JSON.stringify([cleanRow?.rank, sloppyRow?.rank]));
+  check('the sloppy run counted three wrong clicks', sloppyRow?.rank?.wrongTaps === 3, `wrongTaps=${sloppyRow?.rank?.wrongTaps}`);
+  check('the sloppy run carries a 9 second penalty', sloppyRow?.rank?.scoreMs >= 9000, `scoreMs=${sloppyRow?.rank?.scoreMs}`);
+  check('the clean run keeps a zero-wrong-click record', cleanRow?.rank?.wrongTaps === 0, `wrongTaps=${cleanRow?.rank?.wrongTaps}`);
+  check('fewer wrong clicks earns the better rank', cleanRow?.rank?.rank < sloppyRow?.rank?.rank, `clean #${cleanRow?.rank?.rank} vs sloppy #${sloppyRow?.rank?.rank}`);
+  check(
+    'the board page agrees with the stored ranking',
+    rows.length === 0 || rows[0].rank === 1,
+    JSON.stringify(rows[0]?.rank),
+  );
 
   console.log('\n6c. reset wipes that player only');
   const resetNick = `重置測試${stamp}`;

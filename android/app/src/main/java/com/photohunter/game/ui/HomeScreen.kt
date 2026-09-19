@@ -2,6 +2,7 @@ package com.photohunter.game.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -99,7 +101,7 @@ fun HomeScreen(
             onValueChange = onNicknameChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            label = { Text("你的名號") },
+            label = { Text("你的名號（帳號）") },
             shape = RoundedCornerShape(12.dp),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { onStart() }),
@@ -113,6 +115,31 @@ fun HomeScreen(
                 unfocusedTextColor = Paper,
             ),
         )
+
+        Spacer(Modifier.height(18.dp))
+        Text(
+            text = "同一個名號＝同一個帳號：打同樣的名字就會回到自己的進度與錦囊。",
+            color = TextDim,
+            style = MaterialTheme.typography.labelMedium.copy(fontSize = 11.sp),
+            textAlign = TextAlign.Center,
+        )
+        if (state.knownAccounts.isNotEmpty()) {
+            Spacer(Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                state.knownAccounts.forEach { account ->
+                    Chip(
+                        text = account,
+                        accent = if (account == state.nickname) GoldSoft else TextDim,
+                        onClick = { onNicknameChange(account) },
+                    )
+                }
+            }
+        }
 
         Spacer(Modifier.height(18.dp))
         Button(

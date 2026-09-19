@@ -7,14 +7,50 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Everything the game needs from SQLite. Chapters are seeded from the bundled
- * JSON on first launch (and re-seeded when the bundled level set changes), while
- * the player row, per-chapter progress and the 錦囊 audit trail are owned by the
- * database from then on.
+ * Everything the game needs from SQLite, for the account that is signed in.
+ *
+ * A nickname is an account (see [AccountStore]): signing in switches to that
+ * account's own database file, so progress, 錦囊, score records and settings are
+ * completely independent per name. Chapters are seeded from the bundled JSON on
+ * first use of an account (and re-seeded when the bundled level set changes).
  */
 class GameRepository(private val context: Context) {
 
-    private val dao = GameDatabase.get(context).dao()
+    private val accounts = AccountStore(context)
+    private var database: GameDatabase? = null
+
+    private val dao: GameDao
+        get() = requireNotNull(database) { "sign in before using the repository" }.dao()
+
+    /** Nicknames with an account on this device. */
+    fun knownAccounts(): List<String> = accounts.accounts()
+
+    /** The nickname used last time, if any. */
+    fun lastNickname(): String? = accounts.lastNickname
+
+    /**
+     * Sign in as [nickname]: switch to that account's database (creating it, or
+     * adopting the pre-accounts database the first time) and make sure its
+     * chapter catalogue is seeded.
+     */
+    suspend fun signIn(nickname: String): SignInOutcome = withContext(Dispatchers.IO) {
+        val cleaned = nickname.trim().ifEmpty { GameRules.DEFAULT_NICKNAME }.take(32)
+        val isNew = accounts.accounts().none { it == cleaned }
+        val fileName = accounts.databaseFor(cleaned)
+        val adopted = accounts.adoptedLegacy(cleaned)
+        database = GameDatabase.get(context, fileName)
+        ensureSeeded()
+
+        val existing = dao.player()
+        val profile = if (existing == null) {
+            val fresh = PlayerEntity(id = 1, nickname = cleaned, hints = GameRules.START_HINTS)
+            dao.upsertPlayer(fresh)
+            fresh.toProfile()
+        } else {
+            existing.toProfile()
+        }
+        SignInOutcome(profile = profile, isNewAccount = isNew, adoptedLegacyDatabase = adopted)
+    }
 
     suspend fun ensureSeeded(): Int = withContext(Dispatchers.IO) {
         val definition = LevelCatalog.load(context)
@@ -78,14 +114,6 @@ class GameRepository(private val context: Context) {
         existing.toProfile()
     }
 
-    suspend fun saveNickname(nickname: String): PlayerProfile = withContext(Dispatchers.IO) {
-        val current = dao.player() ?: PlayerEntity(hints = com.photohunter.game.game.GameRules.START_HINTS)
-        val cleaned = nickname.trim().ifEmpty { "無名捕手" }.take(32)
-        val updated = current.copy(nickname = cleaned, updatedAt = System.currentTimeMillis())
-        dao.upsertPlayer(updated)
-        updated.toProfile()
-    }
-
     suspend fun addHints(delta: Int, spentDelta: Int = 0, grantedDelta: Int = 0, totalMsDelta: Long = 0, levelsClearedDelta: Int = 0): PlayerProfile =
         withContext(Dispatchers.IO) {
             val current = dao.player() ?: PlayerEntity(hints = com.photohunter.game.game.GameRules.START_HINTS)
@@ -103,6 +131,7 @@ class GameRepository(private val context: Context) {
 
     suspend fun chapters(): List<ChapterSummary> = withContext(Dispatchers.IO) {
         val progress = dao.allProgress().associateBy { it.levelId }
+        val completedIds = progress.values.filter { it.completed }.map { it.levelId }
         dao.levels().map { level ->
             val row = progress[level.id]
             ChapterSummary(
@@ -118,6 +147,9 @@ class GameRepository(private val context: Context) {
                 foundCount = if (row?.completed == true) level.objectCount else row?.foundIds?.size ?: 0,
                 completed = row?.completed == true,
                 bestMs = row?.bestMs,
+                // Missions unlock in order: the previous chapter must be cleared.
+                locked = !GameRules.isLevelUnlocked(level.id, completedIds),
+                requiresLevel = GameRules.requiredLevelFor(level.id),
             )
         }
     }

@@ -72,6 +72,8 @@ data class UiState(
     val dialog: DialogState? = null,
     val message: String? = null,
     val ranking: Ranking? = null,
+    /** nicknames with an account on this device */
+    val knownAccounts: List<String> = emptyList(),
 ) {
     val elapsedMs: Long get() = if (startedAt == 0L) 0L else (now - startedAt).coerceAtLeast(0L)
     val hintTarget: LevelObject? get() = level?.objects?.firstOrNull { it.id == hintTargetId }
@@ -89,18 +91,15 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch {
-            repository.ensureSeeded()
-            val profile = repository.loadProfile()
+            // A nickname is an account: resume the one used last time.
+            val outcome = repository.signIn(repository.lastNickname() ?: GameRules.DEFAULT_NICKNAME)
             val chapters = repository.chapters()
+            applyProfile(outcome.profile)
             _state.update {
                 it.copy(
                     ready = true,
-                    nickname = profile.nickname,
-                    hints = profile.hints,
-                    hintsSpent = profile.hintsSpent,
-                    levelsCleared = profile.levelsCleared,
-                    totalMs = profile.totalMs,
                     chapters = chapters,
+                    knownAccounts = repository.knownAccounts(),
                 )
             }
         }
@@ -112,13 +111,30 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         _state.update { it.copy(nickname = value.take(32)) }
     }
 
+    /**
+     * Sign in with the typed nickname. The name IS the account: an existing name
+     * resumes that account's progress and 錦囊, a new name starts a fresh one.
+     */
     fun startGame() {
         viewModelScope.launch {
             emitSfx(Sfx.Click)
-            val profile = repository.saveNickname(_state.value.nickname)
-            applyProfile(profile)
-            refreshChapters()
-            _state.update { it.copy(screen = Screen.Chapters) }
+            val outcome = repository.signIn(_state.value.nickname)
+            applyProfile(outcome.profile)
+            val chapters = repository.chapters()
+            val ranking = repository.ranking()
+            _state.update {
+                it.copy(
+                    screen = Screen.Chapters,
+                    chapters = chapters,
+                    ranking = ranking,
+                    knownAccounts = repository.knownAccounts(),
+                    message = when {
+                        outcome.adoptedLegacyDatabase -> "已沿用這台裝置先前的進度（帳號：${outcome.profile.nickname}）。"
+                        outcome.isNewAccount -> "新帳號「${outcome.profile.nickname}」已建立，錦囊 ×${outcome.profile.hints}。"
+                        else -> "歡迎回來，${outcome.profile.nickname}（已破 ${outcome.profile.levelsCleared} 章 · 錦囊 ×${outcome.profile.hints}）"
+                    },
+                )
+            }
         }
     }
 
@@ -156,7 +172,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                     hintTargetId = null,
                     dialog = null,
                     screen = Screen.Home,
-                    message = "已重置：進度、成績與錦囊紀錄都清空了，錦囊回到 ${GameRules.START_HINTS} 個。",
+                    message = "已重置這個帳號：進度、成績與錦囊紀錄都清空了，錦囊回到 ${GameRules.START_HINTS} 個。",
                 )
             }
             emitSfx(Sfx.Bonus)
@@ -190,6 +206,15 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun openChapter(levelId: Int, restart: Boolean = false) {
+        // Missions unlock in order: refuse to open a chapter whose predecessor is
+        // still unfinished (the level map shows the same rule).
+        val chapter = _state.value.chapters.firstOrNull { it.id == levelId }
+        if (chapter?.locked == true) {
+            _state.update {
+                it.copy(message = "請先完成第 ${chapter.requiresLevel} 章，才能進入第 $levelId 章。")
+            }
+            return
+        }
         viewModelScope.launch {
             val level = repository.level(levelId) ?: return@launch
             var progress = repository.progress(levelId)
@@ -219,6 +244,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
                     message = if (progress.foundIds.isEmpty()) null else "已找回 ${progress.foundIds.size} 件，繼續找剩下的。",
                 )
             }
+        }
+    }
+
+    /** Tell the player why a locked mission cannot be opened yet. */
+    fun showLockedChapter(levelId: Int, requiresLevel: Int?) {
+        emitSfx(Sfx.Wrong)
+        _state.update {
+            it.copy(message = "第 $levelId 章尚未解鎖：請先完成第 ${requiresLevel ?: levelId - 1} 章。")
         }
     }
 

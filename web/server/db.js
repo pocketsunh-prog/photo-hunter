@@ -70,7 +70,28 @@ export async function ensureSchema(log = console.log) {
       await conn.query("ALTER TABLE levels ADD COLUMN collection VARCHAR(32) NOT NULL DEFAULT '' AFTER slug");
       added.push('levels.collection');
     }
-    if (added.length) log(`[db] added column(s): ${added.join(', ')}`);
+    // A nickname is an account, so it must be unique. Rows created before that
+    // rule can hold duplicates: suffix the extras first so the index can be
+    // created on an existing database.
+    if (!(await hasIndex(conn, 'players', 'uq_players_nickname'))) {
+      const [duplicates] = await conn.query(
+        `SELECT COUNT(*) AS extra FROM players p
+          WHERE p.id <> (SELECT MIN(q.id) FROM players q WHERE q.nickname = p.nickname)`,
+      );
+      const extras = Number(duplicates[0]?.extra) || 0;
+      if (extras > 0) {
+        await conn.query(
+          `UPDATE players p
+             JOIN (SELECT nickname, MIN(id) AS keep_id FROM players GROUP BY nickname HAVING COUNT(*) > 1) d
+               ON d.nickname = p.nickname AND p.id <> d.keep_id
+              SET p.nickname = CONCAT(LEFT(p.nickname, 26), ' #', p.id)`,
+        );
+        log(`[db] renamed ${extras} duplicate nickname(s) so nicknames can be unique accounts`);
+      }
+      await conn.query('ALTER TABLE players ADD UNIQUE KEY uq_players_nickname (nickname)');
+      added.push('players.uq_players_nickname');
+    }
+    if (added.length) log(`[db] added: ${added.join(', ')}`);
   } finally {
     conn.release();
   }
@@ -81,6 +102,14 @@ async function hasColumn(conn, table, column) {
   const [rows] = await conn.query(
     'SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ?',
     [table, column],
+  );
+  return rows.length > 0;
+}
+
+async function hasIndex(conn, table, index) {
+  const [rows] = await conn.query(
+    'SELECT INDEX_NAME FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND INDEX_NAME = ?',
+    [table, index],
   );
   return rows.length > 0;
 }

@@ -8,7 +8,7 @@
 import crypto from 'node:crypto';
 import express from 'express';
 import { pool, query, queryOne, transaction } from './db.js';
-import { RULES, attemptScoreMs, milestoneReward, parseFoundObjects, pickHintTarget } from './game.js';
+import { RULES, attemptScoreMs, isLevelUnlocked, milestoneReward, parseFoundObjects, pickHintTarget, requiredLevelFor } from './game.js';
 import { objectRowToJson } from './levels.js';
 
 export const router = express.Router();
@@ -303,13 +303,20 @@ router.get('/config', asyncRoute(async (_req, res) => {
 
 router.post('/players', asyncRoute(async (req, res) => {
   const nickname = cleanNickname(req.body?.nickname);
+  // The nickname IS the account: typing the same name always resumes the same
+  // player (progress, 錦囊 and score records), on any browser or device.
+  const existing = await queryOne('SELECT * FROM players WHERE nickname = ? ORDER BY id LIMIT 1', [nickname]);
+  if (existing) {
+    await pool.execute('UPDATE players SET last_seen_at = NOW() WHERE id = ?', [existing.id]);
+    return res.json({ player: playerPayload(existing), existing: true, rules: RULES });
+  }
   const playerKey = crypto.randomUUID();
   await pool.execute(
     'INSERT INTO players (player_key, nickname, hints) VALUES (?, ?, ?)',
     [playerKey, nickname, RULES.startHints],
   );
   const row = await queryOne('SELECT * FROM players WHERE player_key = ?', [playerKey]);
-  res.status(201).json({ player: playerPayload(row), rules: RULES });
+  res.status(201).json({ player: playerPayload(row), existing: false, rules: RULES });
 }));
 
 router.get('/players/:key', asyncRoute(async (req, res) => {
@@ -370,10 +377,12 @@ router.get('/levels', asyncRoute(async (req, res) => {
        FROM levels l ORDER BY l.sort_order, l.id`,
   );
   let progressByLevel = new Map();
+  let completedIds = [];
   if (req.query.player) {
     const player = await getPlayer(String(req.query.player));
     const rows = await query('SELECT * FROM level_progress WHERE player_id = ?', [player.id]);
     progressByLevel = new Map(rows.map((row) => [Number(row.level_id), progressPayload(row)]));
+    completedIds = rows.filter((row) => row.completed).map((row) => Number(row.level_id));
   }
   res.json({
     levels: levels.map((level) => ({
@@ -390,6 +399,9 @@ router.get('/levels', asyncRoute(async (req, res) => {
       seededObjects: Number(level.seeded_objects),
       thumb: level.image.replace(/\.jpg$/, '-thumb.jpg'),
       progress: progressByLevel.get(Number(level.id)) ?? null,
+      // Missions unlock in order: the previous chapter must be cleared first.
+      locked: req.query.player ? !isLevelUnlocked(level.id, completedIds) : false,
+      requiresLevel: requiredLevelFor(level.id),
     })),
   });
 }));
@@ -425,6 +437,19 @@ router.get('/levels/:id', asyncRoute(async (req, res) => {
 router.post('/players/:key/levels/:id/start', asyncRoute(async (req, res) => {
   const player = await getPlayer(req.params.key);
   const level = await getLevelMeta(req.params.id);
+
+  // Missions unlock in order - the server enforces it, so a client cannot skip
+  // ahead by calling the API directly.
+  const completedRows = await query(
+    'SELECT level_id FROM level_progress WHERE player_id = ? AND completed = 1',
+    [player.id],
+  );
+  const completedIds = completedRows.map((row) => Number(row.level_id));
+  if (!isLevelUnlocked(level.id, completedIds)) {
+    const required = requiredLevelFor(level.id);
+    throw new ApiError(403, 'LEVEL_LOCKED', `請先完成第 ${required} 章，才能進入第 ${level.id} 章。`);
+  }
+
   const previous = await ensureProgress(player.id, level.id);
 
   let found = parseFoundObjects(previous.found_objects);
@@ -563,6 +588,66 @@ router.post('/players/:key/levels/:id/hint', asyncRoute(async (req, res) => {
     completed: findResult ? findResult.completed : false,
     reward: findResult ? findResult.reward : { awarded: 0, milestone: null },
     progress: findResult ? findResult.progress : progressPayload(previous),
+  });
+}));
+
+/**
+ * One player's own position on that board.
+ *
+ * The top-N broadcast cannot answer "where am I?" once a game has more players
+ * than the page size, so the player's row is looked up with the same ranking.
+ */
+router.get('/players/:key/rank', asyncRoute(async (req, res) => {
+  const player = await getPlayer(req.params.key);
+  const penalty = RULES.wrongTapPenaltyMs;
+  const row = await queryOne(
+    `WITH best_attempt AS (
+       SELECT ps.player_id,
+              ps.level_id,
+              ps.duration_ms,
+              ps.wrong_taps,
+              ps.hints_used,
+              ROW_NUMBER() OVER (
+                PARTITION BY ps.player_id, ps.level_id
+                ORDER BY (ps.duration_ms + ps.wrong_taps * ?) ASC, ps.wrong_taps ASC, ps.duration_ms ASC
+              ) AS rn
+         FROM play_sessions ps
+        WHERE ps.completed = 1 AND ps.duration_ms IS NOT NULL AND ps.duration_ms > 0
+     ),
+     totals AS (
+       SELECT player_id,
+              COUNT(*)                          AS chapters,
+              SUM(duration_ms)                  AS time_ms,
+              SUM(wrong_taps)                   AS wrong_taps,
+              SUM(hints_used)                   AS hints_used,
+              SUM(duration_ms + wrong_taps * ?) AS score_ms
+         FROM best_attempt
+        WHERE rn = 1
+        GROUP BY player_id
+     ),
+     ranked AS (
+       SELECT t.*,
+              ROW_NUMBER() OVER (
+                ORDER BY t.chapters DESC, t.score_ms ASC, t.wrong_taps ASC, t.time_ms ASC, t.hints_used ASC
+              ) AS position
+         FROM totals t
+     )
+     SELECT * FROM ranked WHERE player_id = ?`,
+    [penalty, penalty, player.id],
+  );
+  res.json({
+    scoring: { wrongTapPenaltyMs: penalty, basis: RULES.ranking.basis },
+    rank: row
+      ? {
+          rank: Number(row.position),
+          chapters: Number(row.chapters),
+          timeMs: Number(row.time_ms),
+          wrongTaps: Number(row.wrong_taps),
+          hintsUsed: Number(row.hints_used),
+          scoreMs: Number(row.score_ms),
+        }
+      : null,
+    nickname: player.nickname,
   });
 }));
 

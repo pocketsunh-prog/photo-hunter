@@ -308,6 +308,25 @@ body {
 .level-card:hover { transform: translateY(-3px); border-color: rgba(217, 164, 65, 0.5); box-shadow: var(--shadow); }
 .level-card.is-done { border-color: rgba(93, 156, 126, 0.55); }
 
+/* Locked missions: the previous chapter must be cleared first. */
+.level-card.is-locked {
+  cursor: not-allowed;
+  opacity: 0.62;
+  filter: saturate(0.35);
+}
+.level-card.is-locked:hover { transform: none; border-color: rgba(244, 233, 214, 0.1); box-shadow: none; }
+.level-lock {
+  position: absolute;
+  left: 8px; right: 8px; bottom: 8px;
+  padding: 5px 8px;
+  font-size: 11px;
+  text-align: center;
+  color: #ffe9d6;
+  background: rgba(16, 13, 10, 0.82);
+  border: 1px solid rgba(192, 68, 47, 0.5);
+  border-radius: 8px;
+}
+
 .level-thumb { position: relative; aspect-ratio: 3 / 4; background: var(--ink-600); overflow: hidden; }
 .level-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.92); }
 .level-card:hover .level-thumb img { filter: saturate(1.05) brightness(1.05); }
@@ -379,12 +398,28 @@ body {
     repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0 12px, transparent 12px 24px),
     var(--ink-800);
   border: 1px solid rgba(217, 164, 65, 0.14);
-  touch-action: manipulation;
-  cursor: crosshair;
+  /* none (not manipulation) so pinch-zoom and panning never scroll the page */
+  touch-action: none;
+  cursor: zoom-in;
+  user-select: none;
 }
+.photo-stage.is-zoomed { cursor: grab; }
+.photo-stage.is-panning { cursor: grabbing; }
+
+/* The photo, the hit markers and the effects all live inside this layer, so one
+   transform zooms everything together and the markers stay glued to the photo.
+   Its size is set by JS to the letterboxed image box. */
+.zoom-layer {
+  position: relative;
+  flex: 0 0 auto;
+  transform-origin: 0 0;
+  will-change: transform;
+  --z: 1;
+}
+
 #photoImg {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   display: block;
   user-select: none;
   -webkit-user-drag: none;
@@ -394,12 +429,55 @@ body {
 .marker-layer, .fx-layer {
   position: absolute;
   pointer-events: none;
-  top: 0; left: 0; width: 0; height: 0;
+  inset: 0;
+}
+
+.zoom-controls {
+  position: absolute;
+  right: 10px; top: 10px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px;
+  border-radius: 12px;
+  background: rgba(16, 13, 10, 0.72);
+  border: 1px solid rgba(217, 164, 65, 0.28);
+  backdrop-filter: blur(3px);
+  z-index: 3;
+}
+.zoom-btn {
+  min-width: 34px; height: 34px;
+  display: grid; place-items: center;
+  padding: 0 8px;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  color: var(--paper);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(244, 233, 214, 0.16);
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+.zoom-btn:hover { background: rgba(244, 233, 214, 0.16); }
+.zoom-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
+.zoom-level {
+  min-width: 58px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold-soft);
+}
+
+.zoom-hint {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 6px 14px 0;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  text-align: center;
 }
 
 .marker {
   position: absolute;
-  border: 2px solid var(--gold);
+  border: calc(2.5px / var(--z, 1)) solid var(--gold);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 0 9999px rgba(16, 13, 10, 0.0), 0 0 18px rgba(217, 164, 65, 0.5);
@@ -409,10 +487,13 @@ body {
 .marker::after {
   content: attr(data-index);
   font-family: var(--font-serif);
-  font-size: 11px;
+  /* /var(--z) counter-scales the badge so it keeps a constant screen size
+     while the layer itself is zoomed by the transform. */
+  font-size: calc(11px / var(--z, 1));
   color: #241a08;
   background: var(--gold-soft);
-  width: 18px; height: 18px;
+  width: calc(18px / var(--z, 1));
+  height: calc(18px / var(--z, 1));
   display: grid; place-items: center;
   border-radius: 50%;
   transform: translateY(-50%) translateY(-44%);
@@ -423,12 +504,12 @@ body {
 .marker-label {
   position: absolute;
   white-space: nowrap;
-  font-size: 11.5px;
-  padding: 3px 8px;
-  border-radius: 8px;
+  font-size: calc(11.5px / var(--z, 1));
+  padding: calc(3px / var(--z, 1)) calc(8px / var(--z, 1));
+  border-radius: calc(8px / var(--z, 1));
   color: #241a08;
   background: rgba(244, 233, 214, 0.94);
-  transform: translate(-50%, 120%);
+  transform: translate(-50%, 0);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
 }
 
@@ -440,7 +521,7 @@ body {
 
 .hint-ring {
   position: absolute;
-  border: 3px dashed var(--vermilion);
+  border: calc(3px / var(--z, 1)) dashed var(--vermilion);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   animation: ring-pulse 1.1s ease-in-out infinite;
@@ -648,6 +729,16 @@ body {
   color: var(--gold-soft);
   background: rgba(217, 164, 65, 0.10);
   border: 1px solid rgba(217, 164, 65, 0.28);
+  border-radius: 10px;
+}
+.board-me {
+  margin: 0 0 12px;
+  padding: 9px 11px;
+  font-size: 12.5px;
+  text-align: left;
+  color: var(--paper);
+  background: rgba(93, 156, 126, 0.14);
+  border: 1px solid rgba(93, 156, 126, 0.4);
   border-radius: 10px;
 }
 .board table { width: 100%; border-collapse: collapse; font-size: 13px; }

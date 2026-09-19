@@ -54,6 +54,22 @@ export function parseFoundObjects(raw) {
   }
 }
 
+/**
+ * Chapters unlock in order: the next mission only opens once the current one has
+ * been cleared. `completedIds` are the chapters this player already finished.
+ */
+export function isLevelUnlocked(levelId, completedIds) {
+  const id = Number(levelId);
+  if (!Number.isFinite(id) || id <= 1) return true;
+  return completedIds.map(Number).includes(id - 1);
+}
+
+/** The chapter that must be cleared before `levelId` opens (null for chapter 1). */
+export function requiredLevelFor(levelId) {
+  const id = Number(levelId);
+  return Number.isFinite(id) && id > 1 ? id - 1 : null;
+}
+
 /** Pick which anachronism a 錦囊 should point at: a random one still missing. */
 export function pickHintTarget(objects, foundIds) {
   const remaining = objects.filter((object) => !foundIds.includes(object.object_id ?? object.id));

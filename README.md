@@ -45,6 +45,14 @@
 |---|---|
 | ![web 重置](docs/screenshots/web-08-reset.png) | ![android 重置](docs/screenshots/android-06-reset.png) |
 
+| Web 版放大 182% | Android 放大 182% |
+|---|---|
+| ![web 縮放](docs/screenshots/web-09-zoomed.png) | ![android 縮放](docs/screenshots/android-07-zoomed.png) |
+
+| Web 版未解鎖的關卡 | Android 未解鎖的關卡 | Android 帳號切換 |
+|---|---|---|
+| ![web 鎖定](docs/screenshots/web-10-locked.png) | ![android 鎖定](docs/screenshots/android-08-locked.png) | ![android 帳號](docs/screenshots/android-09-accounts.png) |
+
 十關的命中框人工複核（每一格是該關相片加上十個框）：
 
 ![標註複核](docs/screenshots/annotation-check-all-chapters.jpg)
@@ -150,12 +158,30 @@ tools/                         素材產生、驗證與標註工具
 | 規則 | 值 | 說明 |
 |---|---|---|
 | 每關物件數 | 10 | 找齊 10 件即過關 |
+| 關卡解鎖 | **依序** | 第 1 章一開始就能玩；第 N 章要**先破第 N−1 章**才會解鎖（Web 由伺服器擋，Android 由本機擋） |
+| 帳號 | **名號就是帳號** | 打同樣的名字就會回到自己的進度、錦囊與成績（見下） |
 | 起始錦囊 | 3 | 新玩家一開始就有 |
 | 里程碑 | 每 5 關 | 完成 5 關 +3 個錦囊，完成 10 關再 +3 |
 | 錦囊用法 | `reveal` / `locate` | 自動尋物（算入十件）或提示位置（只圈出位置 5 秒） |
 | 錯誤點擊 | 不扣分、但影響排名 | 記錄在成績裡，並折算成排行榜的罰時 |
 | 排名成績 | 用時 + 誤點 × 3 秒 | 數字越小越前面（罰時可用 `WRONG_TAP_PENALTY_MS` 調整） |
 | 重置 | 可隨時清空自己的紀錄 | 每個玩家／裝置的資料互相獨立，重置只影響自己（見下） |
+| 縮放 | 100%–400% | 放大看清楚小物件，放大後仍可正常點擊（見下） |
+
+### 帳號與進度
+
+**名號就是帳號**：在首頁輸入同一個名字，就會回到同一個帳號的進度、錦囊與成績；輸入新的名字則建立新帳號。
+兩個版本都一樣，而且互不干擾。
+
+| | 帳號怎麼存 | 別名／切換 |
+|---|---|---|
+| Web | MySQL `players` 資料表，`nickname` 有唯一索引；同名＝同一個 `playerKey` | 在任何瀏覽器／裝置打同一個名字都會回到同一個帳號 |
+| Android | 每個名號一個獨立的 SQLite 檔案（`photo_hunter_<hash>.db`） | 首頁會列出這台裝置上的帳號，點一下就能切換 |
+
+- 需要**依序破關**：第 1 章一開始就能玩，第 N 章要先把第 N−1 章破完才會解鎖；
+  未解鎖的卡片會變灰並標示「🔒 先完成第 N 章」，Web 的 `/start` 也會回 `403 LEVEL_LOCKED`，改網址也跳不過去。
+- 重置**只會清掉目前這個帳號**，其他名字的進度與成績不受影響。
+- Android 升級時：改版前那份 `photo_hunter.db` 會被**第一個登入的名號沿用**，所以既有進度不會不見。
 
 ### 排行榜怎麼算
 
@@ -168,6 +194,21 @@ tools/                         素材產生、驗證與標註工具
 - 罰時是設定值（`web/.env` 的 `WRONG_TAP_PENALTY_MS`，預設 3000），Android 版用同一個數字，兩邊的成績可以直接比較。
 - Web 版的排名查詢用 MySQL 8 的 window function 取「每章最佳一次」，再彙總排序（見 `web/server/routes.js` 的 `/api/leaderboard`）。
 - Android 版沒有伺服器，所以是**本機成績榜**：用 SQLite 的 `sessions` 表以同一條公式排出每章最佳成績（規則寫在 `RankingCalculator`，有單元測試）。
+
+### 縮放相片
+
+小物件在手機上很難點，所以相片可以放大到 **400%**：
+
+| | 操作方式 |
+|---|---|
+| Web | 滾輪縮放、雙指捏合、放大後拖曳平移、雙擊快速放大／還原；右上角有 `−` ／百分比（按一下還原）／ `＋` |
+| Android | 雙指捏合、放大後拖曳平移；右上角有 `−` ／百分比（按一下還原）／ `＋` |
+
+實作重點（兩個版本一致）：**相片、命中標記與特效都放在同一個會被縮放的圖層裡**，
+所以標記永遠黏在物件上；點擊座標則用**同一組縮放／位移**換算回相片的正規化座標
+（Web 用 `getBoundingClientRect()` 取得縮放後的實際方框，Android 以 `(position - offset) / scale` 反算），
+因此在任何縮放比例下點擊都對得上——這一點有測試把關（見下方驗證表）。
+標記文字的螢幕尺寸會隨縮放反向補償，放大後標籤不會跟著變成巨大字。
 
 ### 重置自己的進度
 
@@ -235,7 +276,7 @@ npm start                      # API + 前端 http://127.0.0.1:4000/
 |---|---|---|
 | GET | `/api/health` | 服務與 MySQL 狀態（章節數、物件數、玩家數） |
 | GET | `/api/config` | 遊戲規則 |
-| POST | `/api/players` | 建立玩家（拿到 `playerKey`），發 3 個錦囊 |
+| POST | `/api/players` | **登入／註冊**：名字已存在就回傳該帳號（`existing: true`），否則建立新帳號並發 3 個錦囊 |
 | GET | `/api/players/:key` | 玩家資料 + 各章進度 |
 | PATCH | `/api/players/:key` | 改名 |
 | POST | `/api/players/:key/reset` | **重置**：清空該玩家的進度、挑戰紀錄（含排行榜成績）與錦囊紀錄，錦囊回到 3 個，名號保留 |
@@ -245,6 +286,7 @@ npm start                      # API + 前端 http://127.0.0.1:4000/
 | POST | `/api/players/:key/levels/:id/found` | 回報找到一件（`objectId`），第十件自動結算 |
 | POST | `/api/players/:key/levels/:id/miss` | 回報一次誤點 |
 | POST | `/api/players/:key/levels/:id/hint` | 使用錦囊（`mode: reveal \| locate`），**伺服器**挑目標並扣錦囊 |
+| GET | `/api/players/:key/rank` | 這名玩家自己的排名與成績（排行榜只看得到前 50 名，這支用來顯示「你的排名」） |
 | GET | `/api/leaderboard` | 排行榜：依「完成章節數 ↓、成績 ↑（用時 + 誤點 × 罰時）、誤點 ↑」排序，另回 `scoring` 說明計分方式 |
 
 伺服器是權威來源：錦囊數量、過關判定、里程碑獎勵都由伺服器算，前端只負責畫面與回報點擊。
@@ -260,8 +302,8 @@ docker compose --profile full down
 
 ```powershell
 cd web
-npm run smoke        # 69 項 API / 資料庫 / 遊戲規則 / 排名 / 重置端到端檢查（需要伺服器已啟動）
-npm run ui-check     # 39 項真實瀏覽器（headless Chrome）操作檢查，並輸出截圖
+npm run smoke        # 81 項 API / 資料庫 / 遊戲規則 / 帳號 / 解鎖 / 排名 / 重置端到端檢查（需要伺服器已啟動）
+npm run ui-check     # 53 項真實瀏覽器（headless Chrome）操作檢查，並輸出截圖
 npm run probe:replay # 確認重玩不會重複計算進度
 ```
 
@@ -388,11 +430,14 @@ App 端不用改程式就能容納更多章節（選關格線、進度統計、�
 |---|---|
 | 關卡資料驗證 | `validate_levels.py`：**20 個檔案全部 OK**（200 件物品，每關 10 件） |
 | 標註品質 | 20 關全部做過人工複核 overlay：每個命中框都貼在目標物件上（卷一、卷二兩張拼圖） |
-| Web API / DB 端到端 | `npm run smoke` → **69/69**（含排名：乾淨通關的名次贏過手滑通關；含重置：只清自己、別人的成績不受影響） |
-| Web 真實瀏覽器操作 | `npm run ui-check` → **39/39**（20 張卡、分卷標題、過 5 關拿錦囊、排行榜、重置後回到 0/20 與 ×3） |
+| Web API / DB 端到端 | `npm run smoke` → **81/81**（含帳號：同名＝同帳號；含解鎖：跳關會被 403 擋下；含排名與重置） |
+| Web 真實瀏覽器操作 | `npm run ui-check` → **53/53**（新帳號只有第 1 章能點、鎖定卡片不可點、放大後點擊仍命中正確物件、重置後全部重新上鎖） |
 | 重玩不重複計算 | `npm run probe:replay` → OK |
-| Android 排名規則 | `gradlew testDebugUnitTest` → **7/7**（成績公式、每章取最佳、重玩刷新紀錄、同分比序） |
+| Android 規則 | `gradlew testDebugUnitTest` → **9/9**（成績公式、每章取最佳、重玩刷新、同分比序、**依序解鎖**） |
+| Android 帳號 | 模擬器實測：`無名捕手`（沿用舊資料，1/200）與 `Mei無名捕手`（0/200）各自獨立；切回 `無名捕手` 進度回來 |
+| Android 解鎖 | 模擬器實測：新帳號只有第 1 章可玩，點第 2 章顯示「第 2 章尚未解鎖：請先完成第 1 章。」且不會進關 |
 | Android 重置 | 模擬器實測：1/20 章、成績榜有紀錄 → 確認重置 → **0/20、錦囊 ×3、成績榜顯示「還沒有完成任何章節」**、名號保留 |
+| Android 縮放 | 模擬器實測：按 `＋` 兩次到 **182%** → 點擊畫面中的板夾 → 正確記為 **1/10 板夾** → 按百分比還原回 100%（`−` 在 100% 時變灰） |
 | Android 資料庫升級 | Room v1 → v2（新增 `collection` 欄位）在模擬器上以「舊資料 + 新 APK」實測：**已破章節、最佳時間、成績榜紀錄全部保留** |
 | 全 Docker 堆疊 | `docker compose --profile full up -d --build` → api 容器 healthy，smoke **48/48**、ui-check **28/28**（10 章時期） |
 | Android 建置 | `gradlew assembleDebug` / `assembleRelease` → BUILD SUCCESSFUL（debug 約 28 MB、release 約 21 MB，已簽署） |

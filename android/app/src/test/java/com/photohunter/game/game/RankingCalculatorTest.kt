@@ -30,6 +30,30 @@ class RankingCalculatorTest {
     )
 
     @Test
+    fun `chapters unlock in order`() {
+        // Nothing cleared: only the first mission is open.
+        assertTrue(GameRules.isLevelUnlocked(1, emptySet()))
+        assertTrue(!GameRules.isLevelUnlocked(2, emptySet()))
+        assertTrue(!GameRules.isLevelUnlocked(5, emptySet()))
+        // Clearing chapter 1 opens exactly chapter 2 - not chapter 3.
+        assertTrue(GameRules.isLevelUnlocked(2, setOf(1)))
+        assertTrue(!GameRules.isLevelUnlocked(3, setOf(1)))
+        // The previous chapter is what matters.
+        assertTrue(GameRules.isLevelUnlocked(4, setOf(1, 2, 3)))
+        assertTrue(!GameRules.isLevelUnlocked(4, setOf(1, 2)))
+        // Volume 2 is gated behind the last chapter of volume 1.
+        assertTrue(GameRules.isLevelUnlocked(11, (1..10).toSet()))
+        assertTrue(!GameRules.isLevelUnlocked(11, (1..9).toSet()))
+    }
+
+    @Test
+    fun `required level points at the previous chapter`() {
+        assertEquals(null, GameRules.requiredLevelFor(1))
+        assertEquals(1, GameRules.requiredLevelFor(2))
+        assertEquals(19, GameRules.requiredLevelFor(20))
+    }
+
+    @Test
     fun `score is time plus a penalty per wrong tap`() {
         assertEquals(10_000L, GameRules.attemptScoreMs(10_000L, 0))
         assertEquals(13_000L, GameRules.attemptScoreMs(10_000L, 1))
