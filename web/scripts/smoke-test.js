@@ -1,4 +1,4 @@
-﻿/**
+/**
  * End-to-end smoke test for the web stack.
  *
  *   node scripts/smoke-test.js            (server must be running on :8080)
@@ -282,8 +282,10 @@ async function main() {
   }
   const beforeReset = (await api('GET', `/api/players/${resetKey}`)).json;
   check('the test player has progress and a spent 錦囊 before reset', beforeReset.player.levelsCleared === 1 && beforeReset.player.hints === 2, `cleared=${beforeReset.player.levelsCleared} hints=${beforeReset.player.hints}`);
-  const boardBefore = (await api('GET', '/api/leaderboard?limit=50')).json.leaderboard;
-  check('the player is on the leaderboard before reset', boardBefore.some((r) => r.nickname === resetNick));
+  // Ask the player for their own rank: the top-N page cannot show a mid-board
+  // player once the game has more players than the page size.
+  const rankBefore = (await api('GET', `/api/players/${resetKey}/rank`)).json;
+  check('the player has a rank before reset', Number.isFinite(rankBefore?.rank?.rank), JSON.stringify(rankBefore?.rank));
 
   const resetResponse = await api('POST', `/api/players/${resetKey}/reset`, {});
   check('POST /players/:key/reset is 200', resetResponse.status === 200, `status ${resetResponse.status}`);
@@ -294,9 +296,10 @@ async function main() {
   const afterReset = (await api('GET', `/api/players/${resetKey}`)).json;
   check('no chapter progress is left', afterReset.progress.every((p) => !p.completed && p.foundCount === 0), JSON.stringify(afterReset.progress));
   check('the nickname survives the reset', afterReset.player.nickname === resetNick, afterReset.player.nickname);
-  const boardAfter = (await api('GET', '/api/leaderboard?limit=50')).json.leaderboard;
-  check('the reset player disappears from the leaderboard', !boardAfter.some((r) => r.nickname === resetNick));
-  check('other players are untouched by the reset', boardAfter.some((r) => r.nickname === keeperNick));
+  const rankAfter = (await api('GET', `/api/players/${resetKey}/rank`)).json;
+  check('the reset player loses their rank', rankAfter?.rank === null, JSON.stringify(rankAfter?.rank));
+  const keeperRank = (await api('GET', `/api/players/${keeperKey}/rank`)).json;
+  check('other players keep their rank after the reset', Number.isFinite(keeperRank?.rank?.rank), JSON.stringify(keeperRank?.rank));
 
   const resetAgain = await api('POST', `/api/players/${resetKey}/reset`, {});
   check('resetting twice is harmless', resetAgain.status === 200 && resetAgain.json?.player?.hints === 3, `status ${resetAgain.status}`);
