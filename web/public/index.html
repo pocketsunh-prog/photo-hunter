@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
@@ -106,12 +106,12 @@
     <p class="modal-text">每個錦囊只能用一次，選一種用法：</p>
     <div class="hint-options">
       <button class="hint-option" data-hint-mode="reveal">
-        <b>自動尋物</b>
+        <b>自動找出</b>
         <span>直接替你找出 1 件，立即算入十件</span>
       </button>
       <button class="hint-option" data-hint-mode="locate">
         <b>提示位置</b>
-        <span>在相片上圈出 1 件的位置 5 秒</span>
+        <span>在相片上圈出 1 個目標的位置 5 秒</span>
       </button>
     </div>
     <p class="modal-foot" id="hintFoot">剩餘錦囊：3</p>
@@ -120,7 +120,7 @@
 
   <div class="modal" id="modalClear" hidden role="dialog" aria-modal="true" aria-labelledby="clearTitle">
     <p class="modal-eyebrow" id="clearEyebrow">第 1 章 完成</p>
-    <h2 id="clearTitle">十件全數尋獲</h2>
+    <h2 id="clearTitle">十個目標全數尋獲</h2>
     <div class="result-grid" id="clearStats"></div>
     <p class="best-note" id="clearBestNote" hidden></p>
     <div class="reward-box" id="clearReward" hidden></div>
@@ -170,7 +170,7 @@
     <ol class="help-list">
       <li>每一關是一張古代相片，裡面藏了 <b>10 件不屬於那個年代</b> 的東西。</li>
       <li>點一下你覺得可疑的地方，找對會亮起來並記錄下來；找錯只會出現一個叉，不會扣分。</li>
-      <li>開局有 <b>3 個錦囊</b>。用一個錦囊可以：<b>自動尋物</b>（直接找出 1 件）或 <b>提示位置</b>（圈出 1 件的位置 5 秒）。</li>
+      <li>開局有 <b>3 個錦囊</b>。用一個錦囊可以：<b>自動找出</b>（直接替你找出 1 個目標）或 <b>提示位置</b>（圈出 1 個目標的位置 5 秒）。</li>
       <li>成功過 <b>5 關</b> 會再獲得 <b>3 個錦囊</b>，過 10 關再獲得 3 個。</li>
       <li>找齊十件就能過關，成績與錦囊都會存在伺服器的 MySQL 資料庫裡。</li>
       <li>排行榜的成績 = <b>用時 + 誤點 × 3 秒</b>：每一章取最快的一次加總，數字越小排名越前，

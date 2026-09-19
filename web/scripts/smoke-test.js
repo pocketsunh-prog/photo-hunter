@@ -1,15 +1,15 @@
-/**
+﻿/**
  * End-to-end smoke test for the web stack.
  *
- *   node scripts/smoke-test.js            (server must be running on :4000)
- *   node scripts/smoke-test.js http://127.0.0.1:4000
+ *   node scripts/smoke-test.js            (server must be running on :8080)
+ *   node scripts/smoke-test.js http://127.0.0.1:8080
  *
  * Exercises the real HTTP API against the real MySQL instance: creates a
  * player, plays chapter 1 with a 錦囊, clears chapters 1-5 and checks that the
  * 5-chapter milestone really did hand out extra 錦囊, then reads the
  * leaderboard. Exits non-zero on the first failed expectation.
  */
-const BASE = process.argv[2] || process.env.PHOTO_HUNTER_API || 'http://127.0.0.1:4000';
+const BASE = process.argv[2] || process.env.PHOTO_HUNTER_API || 'http://127.0.0.1:8080';
 
 let checks = 0;
 const failures = [];
@@ -52,8 +52,8 @@ async function main() {
   const chapterTotal = health.json?.database?.chapters;
   const objectTotal = health.json?.database?.objects;
   // Chapter/object counts are data-driven: adding a volume must not require
-  // editing this test, but a full three-volume game is expected here.
-  check('at least 30 chapters are seeded', chapterTotal >= 30, `chapters=${chapterTotal}`);
+  // editing this test, but a full four-volume game is expected here.
+  check('at least 40 chapters are seeded', chapterTotal >= 40, `chapters=${chapterTotal}`);
   check('every chapter contributed its 10 objects', objectTotal === chapterTotal * 10, `objects=${objectTotal} chapters=${chapterTotal}`);
   check('rules expose 3 starter 錦囊', health.json?.rules?.startHints === 3, JSON.stringify(health.json?.rules));
 
@@ -82,7 +82,7 @@ async function main() {
   );
   check(
     'chapters are grouped into volumes',
-    new Set((list.json?.levels ?? []).map((l) => l.collection)).size >= 3,
+    new Set((list.json?.levels ?? []).map((l) => l.collection)).size >= 4,
     JSON.stringify([...new Set((list.json?.levels ?? []).map((l) => l.collection))]),
   );
   const firstLevel = list.json?.levels?.[0];

@@ -1,8 +1,8 @@
-/**
+﻿/**
  * Focused probe: does replaying a cleared chapter double-count progress?
  *   node scripts/probe-replay.js
  */
-const BASE = process.argv[2] || 'http://127.0.0.1:4000';
+const BASE = process.argv[2] || 'http://127.0.0.1:8080';
 
 async function api(method, path, body) {
   const res = await fetch(`${BASE}/api${path}`, {

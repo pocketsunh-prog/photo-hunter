@@ -35,7 +35,7 @@ const int = (name, fallback) => {
 };
 
 export const config = {
-  port: int('PORT', 4000),
+  port: int('PORT', 8080),
   db: {
     host: process.env.DB_HOST || '127.0.0.1',
     port: int('DB_PORT', 3306),

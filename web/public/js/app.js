@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 尋物獵人 Photo Hunter - web client controller.
  *
  * Screens: home -> level select -> photo. One level = one Ghibli-style photo with
@@ -143,7 +143,7 @@ function renderLevels() {
   $('statRow').innerHTML = `
     <div class="stat"><b>${state.player?.hints ?? 0}</b><span>錦囊</span></div>
     <div class="stat"><b>${clearedChapters}/${state.levels.length}</b><span>已破章節</span></div>
-    <div class="stat"><b>${foundObjects}/${totalObjects}</b><span>已找到物件</span></div>
+    <div class="stat"><b>${foundObjects}/${totalObjects}</b><span>已找到目標</span></div>
   `;
   $('levelsSubtitle').textContent = `共 ${state.levels.length} 章 · 每章 10 件`;
   $('levelsHintsChip').textContent = `錦囊 ×${state.player?.hints ?? 0}`;
@@ -725,7 +725,7 @@ async function onLevelComplete(response) {
 
 function showClearModal(stats) {
   $('clearEyebrow').textContent = `第 ${stats.levelId} 章 完成`;
-  $('clearTitle').textContent = `${stats.title} · 十件全數尋獲`;
+  $('clearTitle').textContent = `${stats.title} · 十個目標全數尋獲`;
   const score = stats.record?.chapterScoreMs;
   $('clearStats').innerHTML = `
     <div class="stat"><b>${formatTime(stats.durationMs)}</b><span>用時</span></div>

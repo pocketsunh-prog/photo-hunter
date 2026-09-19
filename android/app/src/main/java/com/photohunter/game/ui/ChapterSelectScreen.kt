@@ -1,4 +1,4 @@
-package com.photohunter.game.ui
+﻿package com.photohunter.game.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -68,7 +68,7 @@ fun ChapterSelectScreen(
                     items = listOf(
                         state.hints.toString() to "錦囊",
                         "$cleared/${state.chapters.size}" to "已破章節",
-                        "$foundTotal/${state.chapters.size * GameRules.OBJECTS_PER_LEVEL}" to "已找到物件",
+                        "$foundTotal/${state.chapters.size * GameRules.OBJECTS_PER_LEVEL}" to "已找到目標",
                     ),
                 )
             }
@@ -102,7 +102,7 @@ fun ChapterSelectScreen(
 
             item(span = { androidx.compose.foundation.lazy.grid.GridItemSpan(maxLineSpan) }) {
                 Text(
-                    text = "提示：卡關時用錦囊，可以自動找出 1 件或圈出 1 件的位置。完成 5 章再獲得 3 個錦囊。",
+                    text = "提示：卡關時用錦囊，可以自動找出 1 個目標或圈出 1 個目標的位置。完成 5 章再獲得 3 個錦囊。",
                     color = TextDim,
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier.padding(top = 6.dp),

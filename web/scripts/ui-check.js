@@ -1,8 +1,8 @@
-/**
+﻿/**
  * Real-browser UI test for the web app.
  *
- *   node scripts/ui-check.js                 (server must be running on :4000)
- *   node scripts/ui-check.js http://127.0.0.1:4000
+ *   node scripts/ui-check.js                 (server must be running on :8080)
+ *   node scripts/ui-check.js http://127.0.0.1:8080
  *
  * Drives the actual SPA in headless Chrome: starts a game, opens chapter 1,
  * taps the ten anachronisms using the same bboxes the API serves, spends a 錦囊
@@ -16,7 +16,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import puppeteer from 'puppeteer-core';
 
-const BASE = process.argv[2] || process.env.PHOTO_HUNTER_API || 'http://127.0.0.1:4000';
+const BASE = process.argv[2] || process.env.PHOTO_HUNTER_API || 'http://127.0.0.1:8080';
 const SHOTS = path.join(import.meta.dirname, 'screenshots');
 
 const CHROME_CANDIDATES = [

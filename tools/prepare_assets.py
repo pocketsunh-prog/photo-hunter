@@ -53,6 +53,7 @@ VOLUMES = [
     ("images", 1),
     ("images2", 11),
     ("images3", 21),
+    ("images4", 31),
 ]
 
 # Pinned chapter -> photo mapping. The annotations in shared/levels/*.json are
@@ -91,6 +92,17 @@ PINNED: dict[int, tuple[str, str]] = {
     28: ("images3", "生成吉卜力风格古代照片 (8).png"),
     29: ("images3", "生成吉卜力风格古代照片 (9).png"),
     30: ("images3", "生成吉卜力风格古代照片 (10).png"),
+    # 卷四・遠古尋獸 - prehistoric creatures hidden among present-day wildlife
+    31: ("images4", "生成吉卜力风格古代照片.png"),
+    32: ("images4", "生成吉卜力风格古代照片 (1).png"),
+    33: ("images4", "生成吉卜力风格古代照片 (2).png"),
+    34: ("images4", "生成吉卜力风格古代照片 (3).png"),
+    35: ("images4", "生成吉卜力风格古代照片 (4).png"),
+    36: ("images4", "生成吉卜力风格古代照片 (5).png"),
+    37: ("images4", "生成吉卜力风格古代照片 (6).png"),
+    38: ("images4", "生成吉卜力风格古代照片 (7).png"),
+    39: ("images4", "生成吉卜力风格古代照片 (8).png"),
+    40: ("images4", "生成吉卜力风格古代照片 (9).png"),
 }
 
 FULL_SIZE = (1440, 1920)

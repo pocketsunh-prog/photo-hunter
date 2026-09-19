@@ -1,4 +1,4 @@
-package com.photohunter.game.ui
+﻿package com.photohunter.game.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -70,7 +70,7 @@ fun HintChooserDialog(hints: Int, onChoose: (String) -> Unit, onDismiss: () -> U
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 HintOption(
-                    title = "自動尋物",
+                    title = "自動找出",
                     body = "直接替你找出 1 件，立即算入十件",
                     onClick = { onChoose("reveal") },
                 )
@@ -116,7 +116,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 HelpItem("1", "每一關是一張古代相片，裡面藏了 10 件不屬於那個年代的東西。")
                 HelpItem("2", "點一下可疑的地方，找對會亮起來；找錯只會出現提示，不會扣分。")
-                HelpItem("3", "開局有 3 個錦囊：可以「自動尋物」或「提示位置」。")
+                HelpItem("3", "開局有 3 個錦囊：可以「自動找出」或「提示位置」。")
                 HelpItem("4", "成功過 5 關會再獲得 3 個錦囊，過 10 關再獲得 3 個。")
                 HelpItem("5", "進度與錦囊都存在手機的 SQLite 資料庫，關掉遊戲也不會不見。")
                 HelpItem("6", "成績榜的成績 = 用時 + 誤點 × 3 秒：每一章取最好的一次，數字越小排名越前，所以既要快、也要少點錯。")
@@ -166,7 +166,7 @@ fun ChapterClearDialog(
         content = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    "${state.levelTitle} · 十件全數尋獲",
+                    "${state.levelTitle} · 十個目標全數尋獲",
                     style = MaterialTheme.typography.bodyLarge,
                     color = Paper,
                 )

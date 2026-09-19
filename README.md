@@ -1,4 +1,4 @@
-# 尋物獵人 Photo Hunter
+﻿# 尋物獵人 Photo Hunter
 
 在相片裡找出不屬於那個年代的東西。
 
@@ -13,8 +13,9 @@
 | **卷一・古畫尋穿越** | 第 1–10 章 | 古代場景（吉卜力風） | **現代物件**跑進了古代 |
 | **卷二・今世覓古物** | 第 11–20 章 | 現代真人風格照片 | **古代中國文物**被現代人穿戴、攜帶、擺放 |
 | **卷三・非洲尋古** | 第 21–30 章 | 現代歐洲街景／咖啡館 | **古代非洲文物**（貝南青銅、非洲面具、埃及護符…） |
+| **卷四・遠古尋獸** | 第 31–40 章 | 現代自然場景（草原、冰原、雨林、珊瑚礁） | **遠古生物**（恐龍、長毛象、三葉蟲、菊石、巨脈蜻蜓…） |
 
-> **目前狀態**：三卷共 **30 章** 全部完成並在兩個 App 上運作（卷一 100 件現代物件、卷二 100 件古代中國文物、卷三 100 件古代非洲文物，共 300 件）。
+> **目前狀態**：四卷共 **40 章** 全部完成並在兩個 App 上運作（卷一 100 件現代物件、卷二 100 件古代中國文物、卷三 100 件古代非洲文物、卷四 100 隻遠古生物，共 400 個目標）。
 
 同一個遊戲做了兩個版本：
 
@@ -54,11 +55,11 @@
 |---|---|---|
 | ![web 鎖定](docs/screenshots/web-10-locked.png) | ![android 鎖定](docs/screenshots/android-08-locked.png) | ![android 帳號](docs/screenshots/android-09-accounts.png) |
 
-卷三（第 21–30 章）的關卡地圖與標註複核：
+卷三（第 21–30 章）與卷四（第 31–40 章）的關卡地圖與標註複核：
 
-| Web 版卷三 | 卷三標註複核 |
-|---|---|
-| ![web 卷三](docs/screenshots/web-11-maps-30.png) | ![卷三複核](docs/screenshots/annotation-check-volume-3.jpg) |
+| Web 版 40 章地圖 | 卷三標註複核 | 卷四標註複核 |
+|---|---|---|
+| ![web 40 章](docs/screenshots/web-12-maps-40.png) | ![卷三複核](docs/screenshots/annotation-check-volume-3.jpg) | ![卷四複核](docs/screenshots/annotation-check-volume-4.jpg) |
 
 十關的命中框人工複核（每一格是該關相片加上十個框）：
 
@@ -71,6 +72,10 @@
 卷三已標註完成的 10 關（第 21–30 章，現代歐洲街景裡找古代非洲文物）：
 
 ![卷三標註複核](docs/screenshots/annotation-check-volume-3.jpg)
+
+卷四已標註完成的 10 關（第 31–40 章，現代自然場景裡找遠古生物）：
+
+![卷四標註複核](docs/screenshots/annotation-check-volume-4.jpg)
 
 ---
 
@@ -99,7 +104,7 @@
 cd web
 docker compose up -d db        # MySQL 8，host port 3307
 npm install
-npm start                      # http://127.0.0.1:4000/
+npm start                      # http://127.0.0.1:8080/
 
 # Android 版（需要 Android SDK；JDK 17+）
 cd android
@@ -118,10 +123,11 @@ cd android
 images/                        卷一 10 張原始相片（1728×2304，未經修改）
 images2/                       卷二 10 張（現代場景，古代中國文物）
 images3/                       卷三 10 張（現代歐洲場景，古代非洲文物）
+images4/                       卷四 10 張（現代自然場景，遠古生物）
 shared/
-  levels/level-XX.json         關卡資料：卷別、標題、年代、10 件物品、命中框（唯一真相來源）
+  levels/level-XX.json         關卡資料：卷別、標題、年代、10 個目標、命中框（唯一真相來源）
   levels/SCHEMA.md             資料格式說明
-  assets/images/*.jpg          出貨用相片 1440×1920 + 360×480 縮圖（60 張）
+  assets/images/*.jpg          出貨用相片 1440×1920 + 360×480 縮圖（80 張）
   assets/audio/*.wav           程式產生的背景音樂與音效
 web/                           Web 版（Express API + MySQL + SPA）
 android/                       Android 版（Compose + Room）
@@ -176,6 +182,25 @@ tools/                         素材產生、驗證與標註工具
 > 註：第 30 章的照片本身是單純的英式酒館，畫面裡沒有明確的非洲古物，
 > 該關的十件是「手工器物對應到非洲古物身分」的結果，說服力比其他九關弱；
 > 若之後有更合適的照片，把它放進 `images3/` 並換掉 `level-30.json` 的對應即可。
+
+**卷四・遠古尋獸**（現代自然場景裡找遠古生物，第 31–40 章）：
+
+| 章 | 標題 | 照片場景 | 找到的遠古生物（例） | 相片 |
+|---|---|---|---|---|
+| 31 | 第三十一章・暮色沼澤藏古獸 | 黃昏沼澤（紅鶴、大象、老虎） | 蜥腳恐龍×3、獸腳恐龍×4、巨脈蜻蜓、三葉蟲×2 | `images4/生成吉卜力风格古代照片.png` |
+| 32 | 第三十二章・冰原上的遠古巨獸 | 冰原企鵝海岸 | 三角龍、翼龍×2、長毛象、節胸蜈蚣、長頸恐龍×3… | `…(1).png` |
+| 33 | 第三十三章・水塘邊的遠古獸 | 非洲水塘 | 三角龍、翼龍×3、獸腳恐龍、原角龍、雕齒獸×3… | `…(2).png` |
+| 34 | 第三十四章・礁岩下的遠古巨獸 | 海底珊瑚礁 | 翼龍、蛇頸龍、披毛犀、長毛象、蜥腳恐龍、三葉蟲×2… | `…(3).png` |
+| 35 | 第三十五章・霧林溪畔藏古獸 | 霧氣熱帶雨林 | 翼龍×2、劍龍、三角龍、獸腳恐龍×2、鴨嘴龍… | `…(4).png` |
+| 36 | 第三十六章・雪原藏古獸 | 雪地松林 | 長毛象、三角龍×2、劍齒虎、鴨嘴龍、翼龍×2… | `…(5).png` |
+| 37 | 第三十七章・怒海藏古獸 | 風暴海岸 | 蜥腳恐龍、翼龍、棘冠獸腳恐龍、長毛象、披毛犀… | `…(6).png` |
+| 38 | 第三十八章・霧林溪畔 | 霧氣森林與溪流 | 巨脈蜻蜓、翼龍、長毛象×2、三角龍、始祖鳥… | `…(7).png` |
+| 39 | 第三十九章・雨林溪谷藏巨獸 | 熱帶雨林溪谷 | 翼龍×2、巨脈蜻蜓、三角龍×2、蜥腳恐龍、二齒獸… | `…(8).png` |
+| 40 | 第四十章・金合歡樹影藏獸 | 非洲草原 | 翼龍、巨脈蜻蜓、恐鳥、蜥腳恐龍、獸腳恐龍、三角龍、甲龍… | `…(9).png` |
+
+> 註：卷四的目標是「生物」不是「物件」，所以遊戲內統計文字用中性的「已找到目標」。
+> 第 40 章的照片裡明確的遠古生物約 8 隻，其中 3 隻（恐鳥、始祖鳥、巨型樹懶）是
+> 「medium」信心的判讀，`reason` 有寫明判斷依據。
 
 `tools/prepare_assets.py` 用 `PINNED` 把章號與檔名綁死，之後新增相片只會往後追加章號，不會動到既有標註。
 
@@ -273,10 +298,10 @@ cd web
 copy .env.example .env         # 第一次才需要
 docker compose up -d db        # 只跑資料庫
 npm install
-npm start                      # API + 前端 http://127.0.0.1:4000/
+npm start                      # API + 前端 http://127.0.0.1:8080/
 ```
 
-打開 <http://127.0.0.1:4000/> 就會看到遊戲。伺服器啟動時會：
+打開 <http://127.0.0.1:8080/> 就會看到遊戲。伺服器啟動時會：
 
 1. 讀 `web/data/levels/level-*.json`（由 `tools/sync_levels.py` 從 `shared/levels/` 同步過來）
 2. 冪等地建立／升級資料表（`web/db/schema.sql`）
@@ -325,7 +350,7 @@ npm start                      # API + 前端 http://127.0.0.1:4000/
 ### 全部用 Docker 跑
 
 ```powershell
-docker compose --profile full up -d --build   # MySQL + API 容器，http://127.0.0.1:4000/
+docker compose --profile full up -d --build   # MySQL + API 容器，http://127.0.0.1:8080/
 docker compose --profile full down
 ```
 
@@ -428,7 +453,7 @@ App 端不用改程式就能容納更多章節（選關格線、進度統計、�
 
 | 指令 | 用途 |
 |---|---|
-| `py tools/prepare_assets.py` | 把 `images/`（卷一）、`images2/`（卷二）、`images3/`（卷三）的原始相片轉成 1440×1920 主圖 + 360×480 縮圖，並同步到 web 與 android；缺相片會警告並跳過（`--strict` 則直接失敗） |
+| `py tools/prepare_assets.py` | 把 `images/`（卷一）、`images2/`（卷二）、`images3/`（卷三）、`images4/`（卷四）的原始相片轉成 1440×1920 主圖 + 360×480 縮圖，並同步到 web 與 android；缺相片會警告並跳過（`--strict` 則直接失敗） |
 | `py tools/generate_audio.py` | 用程式合成背景音樂（32 秒無接縫循環）與 7 個音效，輸出 WAV |
 | `py tools/generate_android_icons.py` | 產生 Android 各密度啟動圖示 PNG |
 | `py tools/sync_levels.py` | 把 `shared/levels/*.json` 同步到 `web/data/levels` 與 Android assets |
@@ -459,10 +484,10 @@ App 端不用改程式就能容納更多章節（選關格線、進度統計、�
 
 | 項目 | 結果 |
 |---|---|
-| 關卡資料驗證 | `validate_levels.py`：**30 個檔案全部 OK**（300 件物品，每關 10 件） |
-| 標註品質 | 30 關全部做過人工複核 overlay：每個命中框都貼在目標物件上（卷一／卷二／卷三三張拼圖） |
+| 關卡資料驗證 | `validate_levels.py`：**40 個檔案全部 OK**（400 個目標，每關 10 個） |
+| 標註品質 | 40 關全部做過人工複核 overlay：每個命中框都貼在目標上（卷一～卷四四張拼圖） |
 | Web API / DB 端到端 | `npm run smoke` → **81/81**（含帳號：同名＝同帳號；含解鎖：跳關會被 403 擋下；含排名與重置） |
-| Web 真實瀏覽器操作 | `npm run ui-check` → **53/53**（30 張卡分三卷、新帳號只有第 1 章能點、放大後點擊仍命中正確物件、重置後重新上鎖） |
+| Web 真實瀏覽器操作 | `npm run ui-check` → **53/53**（40 張卡分四卷、新帳號只有第 1 章能點、放大後點擊仍命中正確目標、重置後重新上鎖） |
 | 重玩不重複計算 | `npm run probe:replay` → OK |
 | Android 規則 | `gradlew testDebugUnitTest` → **9/9**（成績公式、每章取最佳、重玩刷新、同分比序、**依序解鎖**） |
 | Android 帳號 | 模擬器實測：`無名捕手`（沿用舊資料，1/200）與 `Mei無名捕手`（0/200）各自獨立；切回 `無名捕手` 進度回來 |
@@ -471,7 +496,7 @@ App 端不用改程式就能容納更多章節（選關格線、進度統計、�
 | Android 縮放 | 模擬器實測：按 `＋` 兩次到 **182%** → 點擊畫面中的板夾 → 正確記為 **1/10 板夾** → 按百分比還原回 100%（`−` 在 100% 時變灰） |
 | Android 資料庫升級 | Room v1 → v2（新增 `collection` 欄位）在模擬器上以「舊資料 + 新 APK」實測：**已破章節、最佳時間、成績榜紀錄全部保留** |
 | 全 Docker 堆疊 | `docker compose --profile full up -d --build` → api 容器 healthy，smoke **48/48**、ui-check **28/28**（10 章時期） |
-| Android 建置 | `gradlew assembleDebug` / `assembleRelease` → BUILD SUCCESSFUL（debug 約 33 MB、release 約 27 MB，已簽署；含 60 張相片素材） |
+| Android 建置 | `gradlew assembleDebug` / `assembleRelease` → BUILD SUCCESSFUL（debug 約 38 MB、release 約 33 MB，已簽署；含 80 張相片素材） |
 | Android 實際執行 | 安裝到 Android 17（API 37）模擬器：首頁 → 選關（20 章、卷一分界）→ 進關 → 點擊尋物 → 過關結算 → 成績榜，標記／提示／音效正常，無 crash |
 
 開發過程中修掉的四個真實缺陷（都已被上表的測試涵蓋）：
