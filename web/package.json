@@ -1,0 +1,32 @@
+{
+  "name": "photo-hunter-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "尋物獵人 Photo Hunter - web app (Express API + MySQL on Docker + static SPA)",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down",
+    "db:reset": "docker compose down -v && docker compose up -d db",
+    "db:logs": "docker compose logs -f db",
+    "stack:up": "docker compose --profile full up -d --build",
+    "stack:down": "docker compose --profile full down",
+    "seed": "node server/seed-cli.js",
+    "smoke": "node scripts/smoke-test.js",
+    "ui-check": "node scripts/ui-check.js",
+    "probe:replay": "node scripts/probe-replay.js",
+    "check": "node scripts/smoke-test.js && node scripts/ui-check.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mysql2": "^3.11.5"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.11.0"
+  }
+}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#14100c">
+<meta name="description" content="尋物獵人 Photo Hunter - 在十張古畫裡找出不屬於那個年代的一百件穿越之物。">
+<title>尋物獵人 Photo Hunter</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ───────────── 首頁 ───────────── -->
+  <section class="screen screen-home" id="screen-home">
+    <div class="home-inner">
+      <div class="seal">尋</div>
+      <p class="eyebrow">十張古畫 · 一百件穿越之物</p>
+      <h1 class="game-title">尋物獵人</h1>
+      <p class="game-sub">每一張相片裡，藏著十件不屬於那個年代的東西。<br>把十件都找出來，才能翻到下一張。</p>
+
+      <label class="field">
+        <span>你的名號</span>
+        <input id="nicknameInput" maxlength="32" placeholder="無名捕手" autocomplete="off" enterkeyhint="done">
+      </label>
+
+      <div class="home-actions">
+        <button class="btn btn-primary btn-lg" id="btnStart">開始尋物</button>
+        <div class="home-actions-row">
+          <button class="btn" id="btnLeaderboard">排行榜</button>
+          <button class="btn btn-ghost" id="btnHelp">玩法說明</button>
+        </div>
+      </div>
+
+      <div class="home-foot">
+        <button class="chip chip-btn" id="btnMusicHome" aria-pressed="true">♪ 背景音樂</button>
+        <span class="chip" id="homeHintsChip">錦囊 ×3</span>
+        <span class="chip chip-muted" id="homeProgressChip">已過 0 章</span>
+      </div>
+      <p class="home-note" id="homeServerNote">連線中…</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 選關 ───────────── -->
+  <section class="screen screen-levels" id="screen-levels">
+    <header class="topbar">
+      <button class="icon-btn" id="btnLevelsBack" title="回到首頁">←</button>
+      <div class="topbar-title"><b>選關</b><span id="levelsSubtitle">共 10 章</span></div>
+      <div class="topbar-right">
+        <span class="chip" id="levelsHintsChip">錦囊 ×3</span>
+        <button class="icon-btn" id="btnMusicLevels" title="背景音樂">♪</button>
+      </div>
+    </header>
+    <div class="levels-wrap">
+      <div class="stat-row" id="statRow"></div>
+      <div class="level-grid" id="levelGrid"></div>
+      <p class="levels-note">提示：右上角的錦囊可以在卡關時幫你找出或指出一件物品。</p>
+    </div>
+  </section>
+
+  <!-- ───────────── 遊戲 ───────────── -->
+  <section class="screen screen-game" id="screen-game">
+    <header class="topbar">
+      <button class="icon-btn" id="btnLeaveLevel" title="回到選關">←</button>
+      <div class="topbar-title"><b id="gameTitle">第一章</b><span id="gameEra">—</span></div>
+      <div class="topbar-right">
+        <span class="timer" id="gameTimer">00:00</span>
+        <button class="icon-btn" id="btnMusicGame" title="背景音樂">♪</button>
+      </div>
+    </header>
+
+    <div class="hud">
+      <div class="hud-count"><span id="foundCount">0</span><i>/10</i></div>
+      <div class="pips" id="pips"></div>
+      <button class="btn btn-hint" id="btnHint" title="使用錦囊">
+        <span class="pouch">錦囊</span><b id="hintCount">3</b>
+      </button>
+    </div>
+
+    <div class="photo-stage" id="photoStage">
+      <img id="photoImg" alt="古畫相片" draggable="false">
+      <div class="marker-layer" id="markerLayer"></div>
+      <div class="fx-layer" id="fxLayer"></div>
+      <div class="photo-veil" id="photoVeil"><span class="spinner"></span>載入相片中…</div>
+    </div>
+
+    <div class="found-strip" id="foundStrip"></div>
+  </section>
+
+  <!-- ───────────── 過場／結算 ───────────── -->
+  <div class="modal-backdrop" id="modalBackdrop" hidden></div>
+
+  <div class="modal" id="modalHint" hidden role="dialog" aria-modal="true" aria-labelledby="hintTitle">
+    <h2 id="hintTitle">使用錦囊</h2>
+    <p class="modal-text">每個錦囊只能用一次，選一種用法：</p>
+    <div class="hint-options">
+      <button class="hint-option" data-hint-mode="reveal">
+        <b>自動尋物</b>
+        <span>直接替你找出 1 件，立即算入十件</span>
+      </button>
+      <button class="hint-option" data-hint-mode="locate">
+        <b>提示位置</b>
+        <span>在相片上圈出 1 件的位置 5 秒</span>
+      </button>
+    </div>
+    <p class="modal-foot" id="hintFoot">剩餘錦囊：3</p>
+    <button class="btn btn-ghost" data-close-modal>先不用</button>
+  </div>
+
+  <div class="modal" id="modalClear" hidden role="dialog" aria-modal="true" aria-labelledby="clearTitle">
+    <p class="modal-eyebrow" id="clearEyebrow">第 1 章 完成</p>
+    <h2 id="clearTitle">十件全數尋獲</h2>
+    <div class="result-grid" id="clearStats"></div>
+    <p class="best-note" id="clearBestNote" hidden></p>
+    <div class="reward-box" id="clearReward" hidden></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="btnNextLevel">繼續下一章</button>
+      <button class="btn" id="btnReplayLevel">重玩本章</button>
+      <button class="btn btn-ghost" id="btnClearToMap">回選關</button>
+    </div>
+  </div>
+
+  <div class="modal" id="modalGameClear" hidden role="dialog" aria-modal="true" aria-labelledby="gcTitle">
+    <div class="trophy">🏆</div>
+    <h2 id="gcTitle">十張相片，全部破解</h2>
+    <p class="modal-text">你把一百件不屬於那個年代的東西全都揪出來了。</p>
+    <div class="result-grid" id="gameClearStats"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="btnGameClearBoard">看排行榜</button>
+      <button class="btn btn-ghost" id="btnGameClearMap">回選關</button>
+    </div>
+  </div>
+
+  <div class="modal modal-wide" id="modalLeaderboard" hidden role="dialog" aria-modal="true" aria-labelledby="lbTitle">
+    <h2 id="lbTitle">排行榜</h2>
+    <div class="board" id="boardBody"><p class="modal-text">載入中…</p></div>
+    <button class="btn btn-ghost" data-close-modal>關閉</button>
+  </div>
+
+  <div class="modal" id="modalHelp" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <h2 id="helpTitle">玩法說明</h2>
+    <ol class="help-list">
+      <li>每一關是一張古代相片，裡面藏了 <b>10 件不屬於那個年代</b> 的東西。</li>
+      <li>點一下你覺得可疑的地方，找對會亮起來並記錄下來；找錯只會出現一個叉，不會扣分。</li>
+      <li>開局有 <b>3 個錦囊</b>。用一個錦囊可以：<b>自動尋物</b>（直接找出 1 件）或 <b>提示位置</b>（圈出 1 件的位置 5 秒）。</li>
+      <li>成功過 <b>5 關</b> 會再獲得 <b>3 個錦囊</b>，過 10 關再獲得 3 個。</li>
+      <li>找齊十件就能過關，成績與錦囊都會存在伺服器的 MySQL 資料庫裡。</li>
+      <li>排行榜的成績 = <b>用時 + 誤點 × 3 秒</b>：每一章取最快的一次加總，數字越小排名越前，
+          所以既要快、也要少點錯。</li>
+    </ol>
+    <button class="btn btn-ghost" data-close-modal>知道了</button>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+</div>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>

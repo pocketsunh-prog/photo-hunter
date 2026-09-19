@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The game is always dark (ink + rice paper), so a single dark theme is used
+         instead of DayNight, and no AppCompat/Material-Components dependency is needed. -->
+    <style name="Theme.PhotoHunter" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/ink_900</item>
+        <item name="android:statusBarColor">@color/ink_900</item>
+        <item name="android:navigationBarColor">@color/ink_900</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+</resources>

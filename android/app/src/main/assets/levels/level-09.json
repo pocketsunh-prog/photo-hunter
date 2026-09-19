@@ -1,0 +1,102 @@
+{
+  "id": 9,
+  "slug": "chapter-09-courtyard-office",
+  "title": "第九章・官衙議事庭院",
+  "subtitle": "古庭深處，公案桌上卻混進了不屬於這個朝代的物件。",
+  "era": "明代（約 15–16 世紀）",
+  "image": "chapter-09.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "平板電腦",
+      "nameEn": "Tablet computer",
+      "reason": "平板電腦是現代電子產品，明代不可能出現。",
+      "hint": "畫面左側，靠在一塊草編席子上斜立的黑色薄板，表面平滑反光。",
+      "bbox": [0.0793, 0.7005, 0.0978, 0.1233],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "訂書機",
+      "nameEn": "Stapler",
+      "reason": "金屬訂書機是近代辦公文具，古代沒有這種裝訂工具。",
+      "hint": "畫面下方偏左，竹籃裡斜躺的銀灰色金屬器具，帶黑色握把。",
+      "bbox": [0.3414, 0.8247, 0.0637, 0.0326],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "壓克力板夾",
+      "nameEn": "Acrylic clipboard",
+      "reason": "透明壓克力板夾與金屬夾具是現代文具，古代只用木牘或卷軸。",
+      "hint": "桌面左側立著一塊透明板子，上緣有黑色金屬夾，夾著一張白紙。",
+      "bbox": [0.3356, 0.5577, 0.0747, 0.0747],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "藍色活頁夾",
+      "nameEn": "Blue ring binder",
+      "reason": "塑膠封面與金屬活頁環是現代檔案夾，明代不會有。",
+      "hint": "桌面正中央，一本亮藍色厚殼本子平放，側邊露出金屬環扣。",
+      "bbox": [0.4099, 0.6118, 0.1424, 0.0517],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "現代列印文件",
+      "nameEn": "Modern printed documents",
+      "reason": "整齊裁切、橫排排版的列印紙與裝訂邊，是現代影印裝訂的產物。",
+      "hint": "桌子前沿，一疊方正的白紙疊在一起，紙上是一行行的橫排小字。",
+      "bbox": [0.3791, 0.6450, 0.1186, 0.0494],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "藍色檔案盒",
+      "nameEn": "Blue file box",
+      "reason": "貼著印刷標籤的硬質檔案收納盒是現代辦公用品，非古代箱匣形制。",
+      "hint": "桌子下層橫板上，一個藍色方形盒子，正面貼著米白色標籤紙。",
+      "bbox": [0.4792, 0.6927, 0.1348, 0.1029],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "牛皮紙文件夾",
+      "nameEn": "Kraft paper folders",
+      "reason": "機制牛皮紙文件夾是現代辦公文具，明代公文用折疊紙或木匣。",
+      "hint": "桌子下層的藍盒右後方，一疊淺褐色方形硬紙，邊緣整齊分層。",
+      "bbox": [0.5133, 0.6623, 0.0804, 0.0634],
+      "confidence": "medium"
+    },
+    {
+      "id": 8,
+      "name": "現代印刷紙張",
+      "nameEn": "Modern printed sheet",
+      "reason": "平整裁切的白色紙張是現代印刷用紙，非古代公文用紙。",
+      "hint": "畫面右側木箱的箱口裡，平放著一張亮白色的方形薄片。",
+      "bbox": [0.7002, 0.2799, 0.0637, 0.0161],
+      "confidence": "medium"
+    },
+    {
+      "id": 9,
+      "name": "現代印刷書",
+      "nameEn": "Modern printed book",
+      "reason": "整齊裁切、機器裝訂的印刷書冊，不同於古代線裝書。",
+      "hint": "畫面左側木桌上的一疊書，最上面一本有淡色封面與白色書口。",
+      "bbox": [0.1806, 0.3594, 0.0637, 0.0260],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "現代印刷書頁",
+      "nameEn": "Modern printed book page",
+      "reason": "紙上密排的印刷字跡與平整書頁，是現代印刷品而非手抄或雕版。",
+      "hint": "左側木桌上攤開的書，雙頁上佈滿細密均勻的整齊小字。",
+      "bbox": [0.1088, 0.3594, 0.0880, 0.0282],
+      "confidence": "medium"
+    }
+  ]
+}

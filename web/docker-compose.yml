@@ -1,0 +1,59 @@
+# MySQL for the photo-hunter web app.
+#   docker compose up -d db          -> database only (run `npm start` on the host)
+#   docker compose --profile full up -> database + API container
+name: photo-hunter
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: photo-hunter-db
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-hunter_root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-photo_hunter}
+      MYSQL_USER: ${MYSQL_USER:-hunter}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-hunter_pass}
+      TZ: Asia/Taipei
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 25s
+
+  api:
+    profiles: ["full"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: photo-hunter-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${MYSQL_USER:-hunter}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-hunter_pass}
+      DB_NAME: ${MYSQL_DATABASE:-photo_hunter}
+      LEVELS_DIR: /app/data/levels
+      START_HINTS: ${START_HINTS:-3}
+      MILESTONE_EVERY: ${MILESTONE_EVERY:-5}
+      HINTS_PER_MILESTONE: ${HINTS_PER_MILESTONE:-3}
+    ports:
+      - "4000:4000"
+
+volumes:
+  mysql-data:
+    name: photo-hunter_mysql-data

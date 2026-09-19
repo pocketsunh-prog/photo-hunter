@@ -1,0 +1,33 @@
+# Build output
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/app/release/
+android/.idea/
+android/*.iml
+android/app/schemas/
+android/app/*.jks
+android/app/*.keystore
+
+# Gradle/AGP "modernize" scaffolding generated during builds
+.github/modernize/
+
+# Node
+web/node_modules/
+web/.env
+npm-debug.log*
+
+# Test artefacts
+web/scripts/screenshots/
+tools/_work/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+*.log
+/images
+/images2
+/android/gradle
+/docs
