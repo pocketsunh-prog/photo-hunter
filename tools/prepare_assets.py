@@ -52,6 +52,7 @@ MIRRORS = [
 VOLUMES = [
     ("images", 1),
     ("images2", 11),
+    ("images3", 21),
 ]
 
 # Pinned chapter -> photo mapping. The annotations in shared/levels/*.json are
@@ -77,8 +78,19 @@ PINNED: dict[int, tuple[str, str]] = {
     16: ("images2", "生成吉卜力风格古代照片 (5).png"),
     17: ("images2", "生成吉卜力风格古代照片 (6).png"),
     18: ("images2", "生成吉卜力风格古代照片 (7).png"),
-    # 19 and 20 are filled automatically once the last two photos of volume 2
-    # land in images/ ... whatever they are called.
+    19: ("images2", "生成吉卜力风格古代照片 (8).png"),
+    20: ("images2", "生成吉卜力风格古代照片 (9).png"),
+    # 卷三・非洲尋古 - modern scenes holding ancient African artefacts
+    21: ("images3", "生成吉卜力风格古代照片 (1).png"),
+    22: ("images3", "生成吉卜力风格古代照片 (2).png"),
+    23: ("images3", "生成吉卜力风格古代照片 (3).png"),
+    24: ("images3", "生成吉卜力风格古代照片 (4).png"),
+    25: ("images3", "生成吉卜力风格古代照片 (5).png"),
+    26: ("images3", "生成吉卜力风格古代照片 (6).png"),
+    27: ("images3", "生成吉卜力风格古代照片 (7).png"),
+    28: ("images3", "生成吉卜力风格古代照片 (8).png"),
+    29: ("images3", "生成吉卜力风格古代照片 (9).png"),
+    30: ("images3", "生成吉卜力风格古代照片 (10).png"),
 }
 
 FULL_SIZE = (1440, 1920)

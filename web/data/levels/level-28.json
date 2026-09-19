@@ -1,0 +1,103 @@
+{
+  "id": 28,
+  "slug": "chapter-28-prague-african-relics",
+  "collection": "卷三・非洲尋古",
+  "title": "第二十八章・橋畔的非洲古物",
+  "subtitle": "歐洲石橋旁的觀光老街上，四個年輕人身邊的木箱竟擺著非洲古王國的金器、木雕與聖甲蟲護符。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-28.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "石製搗臼",
+      "nameEn": "African stone mortar",
+      "reason": "以整塊花崗岩鑿成的搗臼是非洲村落搗碎穀物的日常器具，卻被擺在歐洲老街的木箱上充當裝飾，時空完全錯亂。",
+      "hint": "畫面右下方木箱上，灰白花崗岩的厚重缽形石器",
+      "bbox": [0.7668, 0.7439, 0.0787, 0.0499],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "木製杵",
+      "nameEn": "Wooden pestle",
+      "reason": "木杵是與石臼成套的非洲傳統搗糧工具，如今斜插在現代街頭的花崗岩缽裡，顯得格外突兀。",
+      "hint": "灰色石缽中央斜插著一根淺褐色圓木棍，頂端圓鈍",
+      "bbox": [0.7917, 0.7122, 0.0243, 0.0317],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "古埃及聖甲蟲護符",
+      "nameEn": "Ancient Egyptian scarab amulet",
+      "reason": "聖甲蟲象徵古埃及太陽神與重生，是陪葬用的護符，屬於尼羅河文明；它被隨手擱在現代木箱上，與歐洲街景毫不相干。",
+      "hint": "木箱左上角的深色橢圓小物件，表面帶淺色紋路",
+      "bbox": [0.7529, 0.7813, 0.0231, 0.0182],
+      "confidence": "medium"
+    },
+    {
+      "id": 4,
+      "name": "阿坎族金勺",
+      "nameEn": "Asante gold ladle",
+      "reason": "阿坎族（阿散蒂）以金粉交易，金勺是量取金砂的貴重禮器，來自西非加納的黃金王國，不該出現在現代歐洲的石板街上。",
+      "hint": "木箱中央偏左，串珠紋金邊的圓形金器，接著一條細長金柄",
+      "bbox": [0.7679, 0.7904, 0.0278, 0.0174],
+      "confidence": "medium"
+    },
+    {
+      "id": 5,
+      "name": "阿坎族金刮匙",
+      "nameEn": "Asante flat gold scraper-spoon",
+      "reason": "扁平的金刮匙是阿坎族金匠整理金箔與金砂的工具，這件西非金器與身旁的現代木箱完全搭不上。",
+      "hint": "木箱前緣，扁平橢圓金片連著細長金柄，橫放在箱面上",
+      "bbox": [0.7841, 0.8077, 0.0521, 0.0122],
+      "confidence": "medium"
+    },
+    {
+      "id": 6,
+      "name": "阿坎族金碗",
+      "nameEn": "Asante gold bowl with gold nuggets",
+      "reason": "盛滿金粒的金碗是阿坎族王國財富與儀式的象徵，被大剌剌擺在現代街邊木箱上曬著，荒謬至極。",
+      "hint": "木箱右側，深褐色小缽裡堆滿金色顆粒",
+      "bbox": [0.8316, 0.7969, 0.0405, 0.0217],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "非洲串珠項鍊",
+      "nameEn": "African beadwork necklace",
+      "reason": "以玻璃珠與陶珠串成的珠鍊是東非與南部非洲部落的身分裝飾，掛在現代皮袋側面顯得不合時宜。",
+      "hint": "右下角皮袋側面，米白與橙褐相間的大顆珠子串成數圈",
+      "bbox": [0.7014, 0.8043, 0.0318, 0.0369],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "非洲木雕杯",
+      "nameEn": "African carved wooden cups",
+      "reason": "帶直條刻紋的木雕小杯是非洲木雕工藝的日常器物，出現在歐洲石欄杆上十分突兀。",
+      "hint": "畫面中右側石欄上，兩只並排的棕色直紋小容器",
+      "bbox": [0.7130, 0.5130, 0.0278, 0.0165],
+      "confidence": "medium"
+    },
+    {
+      "id": 9,
+      "name": "非洲木雕匙",
+      "nameEn": "African carved wooden spoons",
+      "reason": "整支手工削成的木匙是非洲部落共用的餐具，竟插在現代石欄上的小容器裡，像穿越時空掉出來。",
+      "hint": "石欄上那兩只小容器中斜插著三根淺色木條，其中一根頂端捲曲",
+      "bbox": [0.7130, 0.4983, 0.0347, 0.0139],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "串珠護符吊飾",
+      "nameEn": "African beaded amulet pendant",
+      "reason": "珠串配上圓形雕花片的護符帶有非洲串珠工藝特徵，被掛在現代背包側面，成了不該存在的裝飾。",
+      "hint": "左側橘衣男子背包側面，一串橙色珠子下懸著圓形雕花小墜",
+      "bbox": [0.1256, 0.6246, 0.0231, 0.0326],
+      "confidence": "medium"
+    }
+  ]
+}
