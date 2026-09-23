@@ -52,8 +52,8 @@ async function main() {
   const chapterTotal = health.json?.database?.chapters;
   const objectTotal = health.json?.database?.objects;
   // Chapter/object counts are data-driven: adding a volume must not require
-  // editing this test, but a full five-volume game is expected here.
-  check('at least 50 chapters are seeded', chapterTotal >= 50, `chapters=${chapterTotal}`);
+  // editing this test, but a full eight-volume game is expected here.
+  check('at least 80 chapters are seeded', chapterTotal >= 80, `chapters=${chapterTotal}`);
   check('every chapter contributed its 10 objects', objectTotal === chapterTotal * 10, `objects=${objectTotal} chapters=${chapterTotal}`);
   check('rules expose 3 starter 錦囊', health.json?.rules?.startHints === 3, JSON.stringify(health.json?.rules));
 
@@ -82,7 +82,7 @@ async function main() {
   );
   check(
     'chapters are grouped into volumes',
-    new Set((list.json?.levels ?? []).map((l) => l.collection)).size >= 5,
+    new Set((list.json?.levels ?? []).map((l) => l.collection)).size >= 8,
     JSON.stringify([...new Set((list.json?.levels ?? []).map((l) => l.collection))]),
   );
   const firstLevel = list.json?.levels?.[0];

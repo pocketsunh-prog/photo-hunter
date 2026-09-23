@@ -1,0 +1,103 @@
+{
+  "id": 58,
+  "slug": "chapter-58-zombie-pub-alley",
+  "collection": "卷六・活屍尋蹤",
+  "title": "第五十八章・酒吧巷弄活屍夜",
+  "subtitle": "熱鬧的英式酒館巷裡，下班人潮舉杯暢飲，卻混進了一整群腐爛的活屍與駭人殘骸。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-58.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "巷中央的染血病袍活屍",
+      "nameEn": "Blood-soaked hospital-gown zombie in the alley",
+      "reason": "這人穿著染滿大片血跡的破爛病袍，臉部灰白潰爛、眼窩深陷，是走在人群中央的活屍，不是普通酒客。",
+      "hint": "巷子正中央、比周圍人高出半個頭，一身灰白長袍上淋著大片暗紅色污漬。",
+      "bbox": [0.4525, 0.4275, 0.0712, 0.1723],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "人堆裡的爛臉活屍",
+      "nameEn": "Rotting-faced zombie in the middle of the crowd",
+      "reason": "混在人群正中央，整張臉腐爛發黑、嘴角與下巴都是血，是擠在人堆裡的活屍。",
+      "hint": "巷子中央人群裡，就在白袍身影左邊，一張黑爛帶血的臉正低著頭。",
+      "bbox": [0.4253, 0.4318, 0.0231, 0.0239],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "右桌旁的青臉活屍",
+      "nameEn": "Green-faced zombie seated at the right-hand table",
+      "reason": "坐在小桌邊，皮膚呈青綠屍斑色、雙眼漆黑空洞，穿深色連帽外套，是偽裝成酒客的活屍。",
+      "hint": "畫面右前方的小桌旁，一張青綠色、眼睛發黑的年輕臉孔正望向這邊。",
+      "bbox": [0.6962, 0.5313, 0.0359, 0.0525],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "金髮活屍女酒客",
+      "nameEn": "Blonde-haired zombie woman at the table",
+      "reason": "坐在桌邊的顧客臉部灰綠潰爛、眼窩凹陷，臉頰與嘴角帶傷，是女性活屍。",
+      "hint": "畫面右前方，一頭淡金色長髮下露出一張灰綠腐爛、眼眶深黑的臉。",
+      "bbox": [0.6632, 0.5143, 0.0255, 0.0317],
+      "confidence": "medium"
+    },
+    {
+      "id": 5,
+      "name": "椅背上的腐爛骨手",
+      "nameEn": "Rotting bony hand clawing the chair back",
+      "reason": "一隻腐爛見骨、皮膚灰綠的爪子攀在椅背與桌面邊緣，是活屍伸過來的手，正常酒館裡不該出現。",
+      "hint": "右側座位區、綠色椅背與桌緣之間，搭著一隻灰白帶骨的細長手掌。",
+      "bbox": [0.8131, 0.5881, 0.0492, 0.0421],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "吧檯邊的灰臉活屍",
+      "nameEn": "Grey-faced zombie at the bar counter",
+      "reason": "靠著吧檯與人擠在一起，側臉灰白如屍、臉頰淌著血跡，眼神呆滯，是站在吧檯邊的活屍。",
+      "hint": "畫面最左側、木柱旁的啤酒龍頭前，一個側臉死白、臉頰帶血的顧客。",
+      "bbox": [0.0972, 0.5317, 0.0313, 0.0477],
+      "confidence": "medium"
+    },
+    {
+      "id": 7,
+      "name": "蹲在巷道中間的青屍",
+      "nameEn": "Crouching green zombie in the middle of the lane",
+      "reason": "全身皮膚發綠腐爛趴在石板上，衣褲破爛、指甲發黑，是蹲伏在路中央的活屍。",
+      "hint": "石板路中段偏右，有一團蜷伏在地、通體青綠色、伸手抓向地面的身影。",
+      "bbox": [0.5197, 0.5664, 0.0810, 0.0955],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "窗玻璃後的鬼臉活屍",
+      "nameEn": "Grinning zombie behind the pub window",
+      "reason": "綠色腐爛的頭臉貼在酒館玻璃窗後齜牙咧嘴，獨眼發亮，是隔著窗戶窺視街上人群的活屍。",
+      "hint": "右側酒館的大片玻璃窗內，一張青綠色、咧嘴露齒的禿頭臉正貼著玻璃。",
+      "bbox": [0.9022, 0.4284, 0.0422, 0.0516],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "椅邊的血斑後背包",
+      "nameEn": "Blood-stained backpack by the stool",
+      "reason": "普通帆布背包上卻沾滿大片暗紅血漬，還綁著撕破的白布條，是活屍留下血跡的證物。",
+      "hint": "畫面中下方，一張圓凳旁的黃褐色帆布包上濺著暗紅污痕，布條已被扯破。",
+      "bbox": [0.4167, 0.6163, 0.1042, 0.1128],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "木格裡的染血骷髏頭",
+      "nameEn": "Bloody skull in the wooden cubby",
+      "reason": "左下方木格中擺著一顆額頭染血的人類骷髏頭，是活屍相關的駭人骨骸，不該出現在酒館木櫃裡。",
+      "hint": "左下角深色木櫃的凹格中，一顆帶血的白骨頭顱正對著外面。",
+      "bbox": [0.2014, 0.7830, 0.0567, 0.0434],
+      "confidence": "high"
+    }
+  ]
+}

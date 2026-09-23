@@ -1,0 +1,103 @@
+{
+  "id": 78,
+  "slug": "chapter-78-paradise-grave-relics",
+  "collection": "卷八・地底尋物",
+  "title": "第七十八章・雲上書閣的墓物",
+  "subtitle": "雲端書閣裡天使捧書讀經，拱頂、雲隙與池畔卻混進了墳墓、掘土與地底的舊物。",
+  "era": "奇幻場景（天堂花園）",
+  "image": "chapter-78.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "拱頂正中的骷髏浮雕",
+      "nameEn": "Skull relief at the centre of the vaulted arch",
+      "reason": "骷髏是墳墓與死亡的記號，這張慘白面孔被刻在天堂拱頂的葉飾圓框中，正是墓穴該有的標誌。",
+      "hint": "畫面最上方、拱門正中的石雕圓框裡，有一張眼窩深陷、露出牙齒的慘白面孔朝外張望。",
+      "bbox": [0.4832, 0.1228, 0.0388, 0.0421],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "拱門下懸垂的鐵鎖鏈",
+      "nameEn": "Iron chain hanging beneath the archway",
+      "reason": "這種粗鐵環用來鎖棺木、封墓門，是墓道裡的東西，不該從天堂彩繪玻璃窗前垂到雲裡。",
+      "hint": "畫面中央偏上、彩繪玻璃窗前，一串黑色鐵圓環自拱頂斜斜垂落，下端沒入雲霧之中。",
+      "bbox": [0.3981, 0.2708, 0.0938, 0.1597],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "雲端吊掛的黑鐵鳥籠",
+      "nameEn": "Black iron birdcage hanging above the clouds",
+      "reason": "這種圓頂鐵籠在舊時墓園裡用來懸掛葬鳥與祭品，是墳園的舊俗器物，卻吊在天堂的雲朵上。",
+      "hint": "畫面中央偏右的窗邊，一座黑鐵條編成的圓頂罩子掛在雲團上方，罩內透出暖黃的燈火。",
+      "bbox": [0.5926, 0.4019, 0.0521, 0.0777],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "左下角雲上的掘土鐵鏟",
+      "nameEn": "Iron spade on the clouds at the lower left",
+      "reason": "鐵鏟是掘墓挖土的器具，天堂雲上不該斜插著一片磨亮又生鏽的鏟頭。",
+      "hint": "畫面左下角，一根長木柄斜插進雲裡，末端接著一片寬大發亮的鐵板，邊緣鏽成紅褐色。",
+      "bbox": [0.0723, 0.8694, 0.0995, 0.0972],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "雲上紮口的褐色麻布袋",
+      "nameEn": "Tied burlap sack on the cloud",
+      "reason": "粗麻布袋過去用來裝運骨灰與陪葬雜物，是墓穴邊才會出現的袋子，卻鼓鼓地壓在雲上。",
+      "hint": "左下角那根長柄斜穿而過的地方，一團粗糙的褐色布袋被繩子紮住了口，鼓鼓地靠在白袍旁邊。",
+      "bbox": [0.0324, 0.7769, 0.1088, 0.0911],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "雲上的古銅鑰匙",
+      "nameEn": "Bronze key lying on the cloud",
+      "reason": "這把鑰匙是開啟墓室與棺槨鐵鎖的，屬於地下的門戶，出現在天堂十分刺眼。",
+      "hint": "畫面中下方偏右，一件生滿綠鏽的鐵製品躺在雲上，一端是圓環，另一端是細長的金屬桿。",
+      "bbox": [0.6238, 0.9193, 0.0463, 0.0234],
+      "confidence": "medium"
+    },
+    {
+      "id": 7,
+      "name": "鑰匙旁的木柄鐵鎚",
+      "nameEn": "Wooden-handled mallet beside the key",
+      "reason": "木柄鐵鎚是敲釘封棺的工具，木頭上還留著環狀刻紋，在雲端書閣裡顯得格格不入。",
+      "hint": "那把生鏽小鐵件的左邊，一顆帶環狀刻紋的圓木頭接在短柄上，像被隨手擱在雲面。",
+      "bbox": [0.5932, 0.9006, 0.0411, 0.0299],
+      "confidence": "medium"
+    },
+    {
+      "id": 8,
+      "name": "右下角垂落的粗鐵鍊",
+      "nameEn": "Thick iron chain dropping at the lower right",
+      "reason": "粗鐵鍊用來封鎖墓穴、吊放棺木，是墓道與地底深處的器具，卻從畫面右緣一路垂到右下角。",
+      "hint": "畫面右下角，一串又粗又黑的鐵環自畫面右緣斜垂而下，環節比手指還粗。",
+      "bbox": [0.8796, 0.8312, 0.1204, 0.0977],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "鐵鍊末端的刻字木板",
+      "nameEn": "Carved wooden board at the chain's end",
+      "reason": "這塊風化木板刻著兩行名字，是釘在墳頭記名的墓牌，記的是地下的姓名，卻吊在雲端。",
+      "hint": "右下角那串粗鐵環的下端吊著一塊風化的舊木板，板面刻著兩行外文名字，斜斜躺在雲上。",
+      "bbox": [0.7951, 0.9089, 0.1516, 0.0451],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "大理石檯上的黃銅油燈",
+      "nameEn": "Brass oil lantern on the marble ledge",
+      "reason": "這種黃銅油燈是墳前長明的墓燈，本該在墓穴旁長燃，如今卻亮在天堂大理石檯的花瓶邊。",
+      "hint": "畫面右側大理石檯面上，一件帶玻璃罩的黃銅製燈具亮著暖光，就立在捧書天使的手邊。",
+      "bbox": [0.7922, 0.5595, 0.0324, 0.0898],
+      "confidence": "medium"
+    }
+  ]
+}

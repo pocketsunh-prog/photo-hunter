@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Image helpers for annotating photo-hunter levels.
 
@@ -13,8 +13,10 @@ grid   <image> <out.png> [--step 0.1] [--labels]
 
 crop   <image> <out.png> <x> <y> <w> <h> [--zoom 2] [--grid]
        Crop a pixel region (x,y,w,h in FULL-resolution pixels) and optionally
-       upscale it, so small objects become readable. --grid adds a fine grid
-       whose labels are full-resolution pixel coordinates.
+       upscale it, so small objects become readable. --grid draws lines every 10%
+       OF THE CROP and labels each one with its full-image pixel coordinate (the
+       printed header repeats the step in pixels) - the label spacing is NOT 10%
+       of the whole image, so read the numbers rather than assuming a spacing.
 
 overlay <image> <level.json> <out.png> [--numbers]
        Draw every bbox from a level JSON onto the image with an index label and
@@ -110,7 +112,10 @@ def cmd_crop(args: argparse.Namespace) -> int:
     if args.grid:
         d = ImageDraw.Draw(tile, "RGBA")
         font = get_font(max(13, tile.width // 40))
-        # grid every 10% of the crop, labelled with FULL-image pixel coordinates
+        # Grid lines every 10% OF THIS CROP (not of the whole image), each labelled
+        # with its full-image pixel coordinate. The header states the step in pixels
+        # so the spacing can never be mistaken for 10% of the full image.
+        step_px = round((x1 - x0) / 10)
         for i in range(1, 10):
             fx = x0 + (x1 - x0) * i / 10
             fy = y0 + (y1 - y0) * i / 10
@@ -122,8 +127,8 @@ def cmd_crop(args: argparse.Namespace) -> int:
                    stroke_width=2, stroke_fill=(0, 0, 0, 255))
             d.text((3, py + 3), str(round(fy)), fill=(0, 255, 255, 255), font=font,
                    stroke_width=2, stroke_fill=(0, 0, 0, 255))
-        d.text((3, 3), f"crop x{x0} y{y0} w{x1-x0} h{y1-y0}", fill=(255, 255, 255, 255),
-               font=font, stroke_width=2, stroke_fill=(0, 0, 0, 255))
+        d.text((3, 3), f"crop x{x0} y{y0} w{x1-x0} h{y1-y0} | grid every {step_px}px (labels = full-image px)",
+               fill=(255, 255, 255, 255), font=font, stroke_width=2, stroke_fill=(0, 0, 0, 255))
     save(tile, args.out)
     print(f"wrote {args.out} ({tile.width}x{tile.height}) from ({x0},{y0})-({x1},{y1})")
     return 0

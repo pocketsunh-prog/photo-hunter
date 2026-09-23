@@ -1,0 +1,103 @@
+{
+  "id": 79,
+  "slug": "chapter-79-grave-relics-in-paradise",
+  "collection": "卷八・地底尋物",
+  "title": "第七十九章・聖殿雲階埋幽物",
+  "subtitle": "天使詠唱的雲上聖殿裡，石骷髏、鎖鏈與棺板竟混在花雨與白鴿之間",
+  "era": "奇幻場景（天堂花園）",
+  "image": "chapter-79.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "大廳左上方懸掛的鳥籠",
+      "nameEn": "Birdcage hanging in the upper left of the hall",
+      "reason": "鳥籠常懸掛於墓園與靈園的樹下，是墳場的日用品，出現在天使聖殿的穹頂下極不尋常",
+      "hint": "畫面左上方、拱頂與彩繪窗之間，由一根細鐵鍊吊下的深色網狀圓筒",
+      "bbox": [0.249, 0.006, 0.045, 0.083],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "左側石柱上懸掛的墓園提燈",
+      "nameEn": "Grave lantern hanging by the left column",
+      "reason": "這種帶提環的油燈是墓地守夜與墓穴入口照明用的提燈，不是天堂花園的裝飾燈",
+      "hint": "畫面左側三分之一的白色石柱旁，金色六角形燈籠靠著長鐵鍊垂下，內部透出暖黃光",
+      "bbox": [0.094, 0.244, 0.052, 0.057],
+      "confidence": "medium"
+    },
+    {
+      "id": 3,
+      "name": "左側雲中石堆上的骷髏",
+      "nameEn": "Stone skull on the rock amid clouds at the left",
+      "reason": "骷髏是墳墓與死亡的標記，這顆石雕頭骨連著下頜嵌在雲中岩石上，正是不該出現在天堂的地底徵兆",
+      "hint": "畫面偏左、金色管風琴左方的雲堆裡，一顆灰白圓頭石塊，兩個深黑眼窩與一排牙齒清晰可見",
+      "bbox": [0.713, 0.388, 0.043, 0.048],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "右側雲中垂下的木十字架",
+      "nameEn": "Wooden cross hanging in the clouds on the right",
+      "reason": "十字架是墳墓與墓園的標記物，飄浮在天使的雲海上就像一座立起的墓碑",
+      "hint": "畫面右側、彩窗下方的白雲裡，一個深褐色木質十字，末端鑲著金色裝飾，微微向左傾斜",
+      "bbox": [0.862, 0.414, 0.031, 0.047],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "階梯上斜放的挖掘鐵鍬",
+      "nameEn": "Spade lying on the marble steps",
+      "reason": "鐵鍬是掘墓與挖坑的工具，斜擱在通往聖壇的大理石階上，正是地底挖掘留下的痕跡",
+      "hint": "畫面中央偏右的中段階梯上，一根長木柄斜靠台階，下端接著一塊寬而深色的鏽鐵刃板",
+      "bbox": [0.530, 0.640, 0.054, 0.060],
+      "confidence": "medium"
+    },
+    {
+      "id": 6,
+      "name": "階梯上的鎖鏈與腳鐐",
+      "nameEn": "Chain and shackle on the marble steps",
+      "reason": "鎖鏈與腳鐐是墓穴與地牢用來鎖住棺木或囚徒的刑具，散落在聖殿階梯上與天堂格格不入",
+      "hint": "畫面左下方，石階上盤著一圈圈深黑粗鐵環，其中一段接著一只厚重的鐵箍環扣",
+      "bbox": [0.181, 0.840, 0.145, 0.100],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "前廊地面的長串鐵鏈",
+      "nameEn": "Long iron chain on the foreground floor",
+      "reason": "沉重的鐵鏈屬於墓穴、地窖與埋葬用的墜重物，不該鋪在天堂花園的潔白地板上",
+      "hint": "畫面最下方橫貫大理石地板的深色粗鐵環串，由階梯腳一直延伸到畫面下緣",
+      "bbox": [0.104, 0.906, 0.340, 0.088],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "階梯上的深色麻布小袋",
+      "nameEn": "Small dark burlap sack on the steps",
+      "reason": "粗麻布袋是盜墓者裝土、裝骸骨與裝陪葬品的袋子，隨手擱在聖殿階上十分突兀",
+      "hint": "畫面中央偏右的階梯台面上，一個深褐色鼓脹的小布袋，袋側扣著黑色金屬環",
+      "bbox": [0.553, 0.721, 0.058, 0.028],
+      "confidence": "medium"
+    },
+    {
+      "id": 9,
+      "name": "左下角階前的麻布大袋",
+      "nameEn": "Large burlap sack on the floor at the lower left",
+      "reason": "粗麻布袋是盜墓者與掘墓人裝土、裝骸骨與裝陪葬品的袋子，出現在聖殿地板非常突兀",
+      "hint": "畫面左下角，大理石階旁一只鼓脹的褐色粗麻布袋，袋口以麻繩束起並垂著鬚線",
+      "bbox": [0.020, 0.840, 0.119, 0.100],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "右下角的石頭木槌與棺木板",
+      "nameEn": "Stone mallet and coffin board at the lower right",
+      "reason": "石槌用來敲碎棺蓋與夯實墓穴，斜靠在旁的厚重舊棺板則是棺槨殘件，兩者並排放在天使腳邊的地板上",
+      "hint": "畫面右下角，一顆灰白斑駁的圓柱石塊接著細長木柄，右方一塊棕色舊木板斜靠白色石柱，板面有斑駁刻字",
+      "bbox": [0.778, 0.862, 0.207, 0.090],
+      "confidence": "high"
+    }
+  ]
+}

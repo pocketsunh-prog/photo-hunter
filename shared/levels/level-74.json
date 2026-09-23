@@ -1,0 +1,103 @@
+{
+  "id": 74,
+  "slug": "chapter-74-paradise-burial-tools",
+  "collection": "卷八・地底尋物",
+  "title": "第七十四章・天堂花園的墓痕",
+  "subtitle": "天使列隊、金旗與雲海簇擁的樂土上，竟垂掛著鎖鏈、散落著掘墓的器具與亡者的記號，天堂與地底在此悄悄錯疊。",
+  "era": "奇幻場景（天堂花園）",
+  "image": "chapter-74.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "城堡拱門上方的骷髏頭雕飾",
+      "nameEn": "Skull emblem above the castle's arched gate",
+      "reason": "骷髏是墳塚與亂葬崗裡的亡者遺骨，代表死亡與地底，竟被嵌在天堂城堡的門楣上。",
+      "hint": "畫面右上方白色城堡的大門正上方，一顆灰白的圓顱嵌在金框徽飾裡，兩個空洞的眼窩正對著畫面。",
+      "bbox": [0.647, 0.2609, 0.0208, 0.023],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "石柱高台上的鐵鳥籠",
+      "nameEn": "Iron birdcage on the stone pillar",
+      "reason": "這種細鐵條編成的圓頂籠子常見於墓園與靈骨塔，是墳前掛籠陪葬的器物，卻大剌剌立在雲端石柱上。",
+      "hint": "畫面右側高聳的石柱頂端，一只細鐵條編成的圓頂籠子，籠頂有個提環，籠裡透出昏黃的光。",
+      "bbox": [0.87616, 0.26345, 0.043403, 0.049045],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "雲霧間飄浮的大鑰匙",
+      "nameEn": "Large key floating in the clouds",
+      "reason": "鑰匙是開啟墓室、地窖與棺槨的器物，屬於地底封閉之所，卻孤零零浮在天堂的雲海上。",
+      "hint": "畫面中央略偏左的雲層上方，一枚金色小物斜斜浮著，上端是鏤空的環形握把，下端伸出短短的齒。",
+      "bbox": [0.58044, 0.566406, 0.027199, 0.030382],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "燈桿上懸掛的提燈",
+      "nameEn": "Lantern hanging from the lamp post",
+      "reason": "這種鐵框玻璃的提燈是舊時墳前與墓道口的長明燈，屬於亡者所在的地底世界，卻亮在天堂的洞口。",
+      "hint": "畫面右側、岩壁洞口前的高桿上，一只鐵框小燈掛在橫臂的鉤子上，裡頭的火苗把玻璃照得通亮。",
+      "bbox": [0.822917, 0.444444, 0.021412, 0.029514],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "白袍人物腳邊的粗麻布袋",
+      "nameEn": "Burlap sack beside the white-robed figure",
+      "reason": "粗麻袋是裝土、裝骨殖與陪葬品的袋子，屬於掘墓與埋葬的營生，卻擱在天堂人物的腳邊。",
+      "hint": "畫面左下角，一位白袍人物腰腿旁靠著一只鼓脹的褐色粗布囊，囊口捲成一圈，表面帶著粗糙織紋。",
+      "bbox": [0.096065, 0.77908, 0.107639, 0.099826],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "白袍人物手中的長柄鐵鍬",
+      "nameEn": "Long-handled spade in the white-robed figure's hand",
+      "reason": "鐵鍬是掘墓破土最基本的工具，木柄配尖頭鐵刃，專門挖開地底，實在不該出現在天堂。",
+      "hint": "畫面左下方，一位白袍人物握著一根斜向下的長木柄，柄的末端接著一片生鏽的尖頭鐵片，正壓在岩石上。",
+      "bbox": [0.303819, 0.717014, 0.101273, 0.199653],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "右下人物手中的大鐵鎚",
+      "nameEn": "Heavy maul held by the figure at the lower right",
+      "reason": "沉重的鐵鎚用來擊碎石塊與硬土，是開挖墓穴的器具，卻被天堂的戰士提在雲端。",
+      "hint": "畫面右下方，一位白衣人物斜握著長柄，柄端接著一塊厚重的深色方鐵，木柄與鐵塊交接處纏著一圈圈繩箍。",
+      "bbox": [0.565394, 0.718316, 0.168403, 0.147569],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "左側雲邊垂落的鎖鏈",
+      "nameEn": "Iron chain draped over the cloud at the left edge",
+      "reason": "鎖鏈用來綑綁棺木、鎖住墓門，是地底的禁錮之物，卻鬆鬆掛在天堂的雲邊。",
+      "hint": "畫面左側邊緣的中段，一長串深色金屬環從畫外斜斜垂進雲裡，環環相扣地一路往下沉。",
+      "bbox": [0.0, 0.673611, 0.146991, 0.057292],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "岩石上爬過的粗鎖鏈",
+      "nameEn": "Heavy chain crawling over the rock",
+      "reason": "粗大的鐵環鏈條用於壓棺、縛棺與地底刑具，屬於墳墓與地牢，卻隨意攤在天堂的石台上。",
+      "hint": "畫面左下方岩石台的邊緣，一串粗大的深色金屬環由左下往右上爬，末端收在人物腳邊的石縫旁。",
+      "bbox": [0.243634, 0.852865, 0.079282, 0.060764],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "腰甲下垂掛的鐵環鎖鏈",
+      "nameEn": "Iron ring and chain hanging from the armour belt",
+      "reason": "鐵環與鏈條是鐐銬、鎖棺與封閉墓門的器具，屬於地底囚禁亡者之物，竟掛在天堂鎧甲的腰帶上。",
+      "hint": "畫面右側一位披甲人物的腰間，一只粗黑圓環扣在腰帶上，環下垂著一串金屬圈，繞成半圓的弧。",
+      "bbox": [0.779514, 0.679253, 0.067708, 0.049913],
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": 61,
+  "slug": "chapter-61-wings-over-the-cafe",
+  "collection": "卷七・妖精尋蹤",
+  "title": "第六十一章・街角咖啡館的翅影",
+  "subtitle": "午後的露天座上滿是尋常笑語，半空中卻亮著不該存在的細翅微光。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-61.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "玫瑰花箱上的金翼妖精",
+      "nameEn": "Golden winged fairy on the rose planter",
+      "reason": "花箱枝葉間有一具發亮的小小人身，展開四片透明薄翅，四周沒有任何燈具卻自行發光，這種東西不該出現在講究衛生的都市花台上。",
+      "hint": "畫面左上角那排盛開的粉紅花叢上方，有一點比花瓣還亮的光，四片薄翼像玻璃一樣攤開。",
+      "bbox": [0.2101, 0.2344, 0.0683, 0.0577],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "花箱上的虹彩翅妖精",
+      "nameEn": "Iridescent-winged fairy at the flower box",
+      "reason": "靠窗的白色花箱上停著一個巴掌大的小人，雙翅泛著虹彩光澤、脈紋清楚可見，卻又完全不是蝴蝶。",
+      "hint": "第一座花箱的右側、木牌旁邊，有一對泛著虹彩的薄翅上下張開，中間透出微弱光暈。",
+      "bbox": [0.3270, 0.2300, 0.0498, 0.0499],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "櫥窗玻璃上的發光妖精",
+      "nameEn": "Glowing fairy on the shop window",
+      "reason": "深色玻璃前方浮著一具發光的小人身與四片細翅，光暈中央有清楚的軀幹輪廓，不可能只是窗上的反光。",
+      "hint": "綠色店面那扇暗色玻璃的中央，有一團帶翅的黃光浮在半空，比旁邊的燈泡更亮更集中。",
+      "bbox": [0.2008, 0.4657, 0.0451, 0.0356],
+      "confidence": "medium"
+    },
+    {
+      "id": 4,
+      "name": "遮雨棚下的透翅妖精",
+      "nameEn": "Translucent-winged fairy under the awning",
+      "reason": "米白色遮雨棚邊緣懸著一個發亮的小人，兩對薄翅透光見脈，棚下沒有任何東西能發出這樣的光。",
+      "hint": "店門上方那排米白布棚的左端下緣，一團綠金色光芒長著大片透明翅膀。",
+      "bbox": [0.3912, 0.4674, 0.0694, 0.0543],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "綠門邊的蝶翼妖精",
+      "nameEn": "Butterfly-winged fairy by the green door",
+      "reason": "綠色門框旁浮著一個金黃發光的小人，四片蝶形翅膀清楚可辨，與店內一般的燈飾完全不同。",
+      "hint": "左側深綠色門扇旁邊、客人頭頂再高一點的位置，有一隻發亮的蝶形小影停在半空中。",
+      "bbox": [0.0990, 0.5109, 0.0613, 0.0438],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "陽傘左緣的妖精",
+      "nameEn": "Fairy at the left rim of the parasol",
+      "reason": "大白陽傘左側懸著一個發光小人，翅膀薄得透出背後的樹影，這種生物不屬於一間普通咖啡館。",
+      "hint": "大陽傘左邊傘骨外側，一團粉白光暈展開四片透明翅膀，正對著深色樹叢。",
+      "bbox": [0.5955, 0.4905, 0.0538, 0.0334],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "陽傘右緣的妖精",
+      "nameEn": "Fairy at the right rim of the parasol",
+      "reason": "陽傘右側也浮著一個發亮的小人，翅膀上看得見細密脈紋，四周只有傘布與矮灌木，找不到光源。",
+      "hint": "同一把陽傘的右側傘緣外，一團偏白的光點張著對稱的薄翅，下方是矮灌木。",
+      "bbox": [0.7402, 0.4926, 0.0544, 0.0326],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "街燈旁的巨翅妖精",
+      "nameEn": "Large-winged fairy beside the street lamp",
+      "reason": "鑄鐵街燈左側懸著一個巴掌大的發光小人，兩對大翅半透明如玻璃，都市街頭不該有這種生物。",
+      "hint": "右上角那盞黑色鑄鐵路燈的燈柱左方，一團強光張開四片巨大的半透明翅膀。",
+      "bbox": [0.8438, 0.3511, 0.0752, 0.0495],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "咖啡館招牌前的妖精",
+      "nameEn": "Fairy in front of the cafe sign",
+      "reason": "深綠牆面前浮著一個金黃發光的小人，翅膀張得像星芒，完全不受地心引力，並非招牌上的裝飾燈。",
+      "hint": "畫面右側綠色牆面上方，一團金黃強光拖著長長的翅尖停在半空，下方是走動的路人。",
+      "bbox": [0.8987, 0.4731, 0.0602, 0.0382],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "帆布袋上的妖精",
+      "nameEn": "Fairy on the canvas tote bag",
+      "reason": "椅子旁的米白帆布袋上停著一個發光的金色小人，兩片薄翅向上張開，袋子本身不會這樣發光。",
+      "hint": "畫面中下方那只看起來很普通的米白色提袋上，一團金色光暈長著朝上的透明翅膀。",
+      "bbox": [0.3426, 0.6949, 0.0475, 0.0456],
+      "confidence": "high"
+    }
+  ]
+}

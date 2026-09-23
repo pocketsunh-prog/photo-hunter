@@ -1,0 +1,103 @@
+{
+  "id": 73,
+  "slug": "chapter-73-heavenly-garden-grave",
+  "collection": "卷八・地底尋物",
+  "title": "第七十三章・天堂花園的墓影",
+  "subtitle": "天使詠唱、雲海與花雨簇擁的樂土上，竟散落著墳前與地底才有的器物，天堂與墓園在此悄悄錯疊。",
+  "era": "奇幻場景（天堂花園）",
+  "image": "chapter-73.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "拱窗間懸吊的鐵鳥籠",
+      "nameEn": "Iron birdcage hanging before the arched window",
+      "reason": "這種細鐵條編的圓頂籠子常見於墓園與靈骨塔，是懸在墳前陪葬的籠鳥器物，屬於埋葬之所。",
+      "hint": "畫面上方拱窗的正中央，一只細鐵條編成的圓頂籠子用鏈子吊在半空，底部還鋪著一圈草編籃。",
+      "bbox": [0.475694, 0.033854, 0.059028, 0.08941],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "左側石柱上的骷髏頭",
+      "nameEn": "Stone skull carved on the left column",
+      "reason": "骷髏是墓穴與亂葬崗裡的遺骨，天堂的石柱上竟嵌著一顆人頭骨，正是地底死亡的記號。",
+      "hint": "畫面左側高大的石柱上，一顆灰白色的圓形頭骨嵌在石雕裡，兩個空洞的眼窩正朝向畫面中央。",
+      "bbox": [0.053241, 0.361545, 0.048032, 0.0421],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "中央石階旁斜擱的鐵鍬",
+      "nameEn": "Spade leaning on the central stairway",
+      "reason": "鏟子是掘墓破土最基本的工具，卻斜靠在天堂的石階上，是地底營生的器具。",
+      "hint": "中央白色石階的左下方，一根深色長柄斜靠著階面，末端的方頭鐵片壓在雲霧上。",
+      "bbox": [0.33044, 0.687934, 0.061343, 0.108507],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "石階上的粗麻布袋",
+      "nameEn": "Burlap sack on the marble step",
+      "reason": "粗麻布袋是搬運墓穴填土與陪葬骨殖的器具，綁著束口擱在天堂階上十分突兀。",
+      "hint": "畫面中央偏右的石階上，一只米黃色鼓脹的布袋綁著束口，袋口邊還斜插著一枝小花。",
+      "bbox": [0.551505, 0.577257, 0.053241, 0.039063],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "石階下段平躺的木槌",
+      "nameEn": "Wooden mallet lying on the lower step",
+      "reason": "木槌在葬儀與封棺時用來敲打棺釘，是墳前與墓穴裡的器具，不該躺在天堂階上。",
+      "hint": "石階下段的平台邊，一個深色圓筒狀的槌頭接著短柄平躺著，槌面朝著右方。",
+      "bbox": [0.594907, 0.815972, 0.079861, 0.033854],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "暗紅長袍老者身旁的古銅鑰匙",
+      "nameEn": "Bronze key floating beside the elder in the crimson robe",
+      "reason": "這種古銅鑰匙用來開啟墓室與石棺的鎖，是通往地底墓道的門戶之物。",
+      "hint": "畫面右側身披暗紅長袍的長者胸前，一把暗金色細長小物浮在半空，尾端還帶著齒狀構造。",
+      "bbox": [0.811921, 0.639323, 0.028935, 0.031684],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "雲階下橫曳的長鎖鏈",
+      "nameEn": "Long iron chain draped across the cloud steps",
+      "reason": "鎖鏈是地牢與墓穴裡用來鎖住棺木、束縛囚徒的鐵器，卻橫曳在天堂的雲階前。",
+      "hint": "畫面下半的雲霧之間，一串相扣的黑鐵環從左側垂落，在階前盪出一道弧線，末端勾在石階邊緣。",
+      "bbox": [0.144676, 0.802951, 0.30787, 0.146267],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "拱頂垂鏈下的鐵錨",
+      "nameEn": "Iron anchor hanging at the end of a chain under the arch",
+      "reason": "鐵錨是沉入水底、埋進泥沙深處的沉重鐵器，垂在天堂拱頂下，宛如地底深淵之物。",
+      "hint": "畫面右側布幔前，一條細鏈垂下來，末端吊著一個帶圓環與雙鉤的深色鐵件，正懸在半空。",
+      "bbox": [0.701389, 0.368924, 0.032986, 0.032986],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "天使臂彎上盤繞的鐵鎖環",
+      "nameEn": "Iron chain loop draped over the angel's arm",
+      "reason": "鐵鏈是捆鎖棺木與亡者的束縛之物，纏繞在天使臂上，像是地牢留下的痕跡。",
+      "hint": "畫面右側白衣天使的臂彎上，一圈黑色鐵環串成的環狀物垂掛著，正好在暗紅長袍長者的上方。",
+      "bbox": [0.809028, 0.569444, 0.049769, 0.038194],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "雲霧中斜插的木製墓碑",
+      "nameEn": "Wooden grave marker stuck in the mist",
+      "reason": "插在土裡的木牌是無名墓標記亡者的簡樸墓碑，竟斜插在天堂花園的雲霧中。",
+      "hint": "畫面右下角的雲霧裡，一塊斜插的舊木板連著短木柄，板面上還留著模糊的刻痕。",
+      "bbox": [0.697338, 0.923611, 0.094329, 0.073785],
+      "confidence": "medium"
+    }
+  ]
+}

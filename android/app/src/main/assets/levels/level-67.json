@@ -1,0 +1,103 @@
+{
+  "id": 67,
+  "slug": "chapter-67-fairies-in-the-old-town-street",
+  "collection": "卷七・妖精尋蹤",
+  "title": "第六十七章・老街拱門覓妖精",
+  "subtitle": "午後的石磚老街擠滿了閒逛的遊客，窗台、屋簷與人群之間，幾隻拍著薄翅的發光小身影正悄悄混在其中。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-67.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "綠牆上窗的展翅妖精",
+      "nameEn": "Winged fairy at the upper green facade window",
+      "reason": "左側綠色樓房最上面那扇窗的玻璃前浮著一個細小身影，兩片翅脈清楚的薄翅張開、中間是一小團白光，這種帶翅的發光小人不該停在普通的住宅窗上。",
+      "hint": "畫面左側那棟綠色樓房，最上面一扇窗的玻璃前，兩片薄翅張開，中間是一小點白光。",
+      "bbox": [0.0891, 0.3181, 0.0515, 0.0456],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "綠牆中窗的發光妖精",
+      "nameEn": "Glowing fairy at the middle green facade window",
+      "reason": "同一棟綠色樓房往下數第二扇窗的位置，有一小團暖黃亮光長著左右各半邊的半透明翅翼，是會飛的發光小人而不是窗裡的燈。",
+      "hint": "同一棟綠色樓房往下數第二扇窗，一小團暖黃亮光，左右各展開半邊透明的翼。",
+      "bbox": [0.1418, 0.3442, 0.0457, 0.0326],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "綠牆下窗的黃光妖精",
+      "nameEn": "Golden glowing fairy at the lower green facade window",
+      "reason": "綠色樓房最底層窗戶的遮簷上方，一團黃光擺出對稱張翼的姿勢、身體細小，明顯是有翅的發光小人貼在牆面上。",
+      "hint": "綠色樓房最底層窗戶的遮簷上，一團黃光擺出對稱張翼的姿勢，貼在牆面。",
+      "bbox": [0.1030, 0.3898, 0.0388, 0.0352],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "拱門上方的巨翅妖精",
+      "nameEn": "Great winged fairy above the archway",
+      "reason": "畫面正中央、圓拱通道上方的米白色牆面上，懸著一個發亮、看得出手腳與頭、還撐開兩片大翅的細小身影，完全不是這個年代街景該有的東西。",
+      "hint": "畫面正中央、圓拱通道上方的米白色牆面，一個發亮的細小身影撐開兩片大翼，腳尖點在紅瓦上。",
+      "bbox": [0.4126, 0.2925, 0.0914, 0.0621],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "右上橙樓旁的透翅妖精",
+      "nameEn": "Translucent-winged fairy by the orange house at top right",
+      "reason": "右上角橘色樓房的窗玻璃外浮著一團白亮的光，拖著細長的手臂與半透明的翅膀，是懸在半空中的發光小人。",
+      "hint": "畫面最右上角，橘色樓房的窗玻璃外，白亮的光點拖著細長手臂，翅膀貼在窗上。",
+      "bbox": [0.8935, 0.2509, 0.0995, 0.0651],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "尖帽上的紫翅妖精",
+      "nameEn": "Purple-winged fairy on the pointed hat",
+      "reason": "右側戴著黑色尖頂帽的人，帽尖左方懸著一團白光並拖著淡紫色的半透明翅膀，是一隻停在帽邊的發光小人。",
+      "hint": "右側戴著黑色尖頂帽的人，帽尖左方懸著一團白光，拖著淡紫色的翅膀。",
+      "bbox": [0.8750, 0.6276, 0.0405, 0.0313],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "黑長裙女孩的粉翼妖精",
+      "nameEn": "Pink-winged fairy behind the girl in the long black dress",
+      "reason": "人群中一位穿黑色洋裝的女孩頭上別著粉紅花飾，右肩後伸出一大片粉紅色的半透明大翼，翅脈分明，人形配上昆蟲翅膀正是混在遊客裡的妖精。",
+      "hint": "人群中一位穿黑色洋裝、髮色微棕的女孩，頭上別著粉紅花飾，右肩後伸出一片粉紅色的半透明大翼。",
+      "bbox": [0.5810, 0.6354, 0.0903, 0.0451],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "綠背包女孩背後的透翅妖精",
+      "nameEn": "Translucent-winged fairy behind the green-backpack girl",
+      "reason": "人群前方那位背著綠色背包的女孩左後方，展開一對金黃色、翅脈清楚的半透明大翼，翅根還透出強烈的黃光，是人類不該擁有的妖精翅膀。",
+      "hint": "人群前方那位背著綠色背包、綁著馬尾的女孩左後方，一對金黃色半透明的大翼正張開。",
+      "bbox": [0.4063, 0.6641, 0.0810, 0.0477],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "石磚路上的低飛妖精",
+      "nameEn": "Low-flying fairy on the cobblestones",
+      "reason": "前景地面上有一團發亮的小身影貼地低飛，兩片薄翼朝斜上方敞開、中間是亮黃色的身體，是會飛的發光小人而不是地上的反光。",
+      "hint": "前景石板地面的中央偏左，一小團黃光貼地低飛，兩片薄翼朝斜上方敞開。",
+      "bbox": [0.3264, 0.7830, 0.0694, 0.0295],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "黑袍巫師背上的金翅妖精",
+      "nameEn": "Golden-winged fairy on the cloaked wizard's back",
+      "reason": "右下角那位穿黑色長袍、戴尖帽的人背上，貼著一個發亮的小人：看得見頭、雙臂與兩片透光的大翅，還拖著幾條細長的流光，是攀在袍上的發光妖精。",
+      "hint": "畫面右下角那位穿黑色長袍、戴尖帽的人背上，貼著一個發亮的小身影，張著兩片透光翅膀並拖著幾條細長的光尾。",
+      "bbox": [0.8843, 0.8134, 0.0775, 0.0434],
+      "confidence": "high"
+    }
+  ]
+}

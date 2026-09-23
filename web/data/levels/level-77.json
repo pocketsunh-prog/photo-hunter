@@ -1,0 +1,153 @@
+{
+  "id": 77,
+  "slug": "chapter-77-grave-relics-in-paradise",
+  "collection": "卷八・地底尋物",
+  "title": "第七十七章・雲階下的墓物",
+  "subtitle": "天使踏上雲梯天堂花園，石階與浮雕間卻混進了墳墓、鎖鍊與掘墓的痕跡",
+  "era": "奇幻場景（天堂花園）",
+  "image": "chapter-77.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "左側柱頭上的雕刻骷髏頭",
+      "nameEn": "Carved skull on the left column capital",
+      "reason": "骷髏是死亡與墳墓的標記，理應長埋地下，卻被雕在天堂花園的白石柱頭上。",
+      "hint": "畫面左上方、飾有金色葉紋的白色石柱頂端，嵌著一顆有空洞眼窩的灰白頭形雕刻。",
+      "bbox": [
+        0.0556,
+        0.0503,
+        0.037,
+        0.0417
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "拱門左壁的骷髏與交叉骨浮雕",
+      "nameEn": "Skull-and-crossbones relief on the wall left of the arch",
+      "reason": "骷髏配交叉骨是典型的海盜與墓園墓碑圖騰，象徵埋葬與地底，不該出現在天堂拱門旁。",
+      "hint": "左側白色牆面上、拱門外緣之左，浮著一組灰白浮雕：一顆側轉的頭骨下方交叉著兩根長骨。",
+      "bbox": [
+        0.0914,
+        0.112,
+        0.0532,
+        0.0564
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "空中花台懸掛的黑色鐵鳥籠",
+      "nameEn": "Black iron birdcage hanging on the floating flower terrace",
+      "reason": "鳥籠是墓園與靈骨塔常見的懸掛物，帶著囚禁與死亡的殯葬意味，卻吊在天堂的花台邊。",
+      "hint": "畫面右側中段，浮空石台上方懸著一座深色金屬細條格籠，頂端有圓形提環，籠內塞滿花朵。",
+      "bbox": [
+        0.8484,
+        0.2951,
+        0.1215,
+        0.2604
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "石柱壁上的黃銅掛燈",
+      "nameEn": "Brass hanging lantern on the column wall",
+      "reason": "這種長明油燈是墓園與墓室裡為亡者長燃的燈，屬於墳墓器物，卻掛在天堂的柱壁上。",
+      "hint": "畫面左上方偏中間，白色柱身側面伸出捲曲的金屬臂，臂下吊著一盞正發著暖黃光的六角燈。",
+      "bbox": [
+        0.5168,
+        0.1888,
+        0.0492,
+        0.0564
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "階梯右側的方形墓石",
+      "nameEn": "Square burial stone on the right of the steps",
+      "reason": "這塊粗糙方石像一口小石棺或壓墓的石塊，還穿掛著鐵環，是墳墓的遺物，卻橫在天堂的雲階上。",
+      "hint": "畫面右下方石階上，一塊灰褐色的方形粗石，左側接著一截黑色鐵環鏈。",
+      "bbox": [
+        0.8275,
+        0.9036,
+        0.0723,
+        0.0651
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "左下角白雲中的麻布袋",
+      "nameEn": "Burlap sack in the clouds at the lower left",
+      "reason": "粗麻布袋是裝土、裝骨或裝陪葬品的掘墓行囊，帶著地底的塵土氣息，卻擺在天堂的雲上。",
+      "hint": "畫面左下角，一團打了結的土黃色粗布囊袋靠在雲邊，袋口綁成一個布結。",
+      "bbox": [
+        0.0093,
+        0.6866,
+        0.1001,
+        0.0543
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "石階上斜靠的掘墓鐵鎬",
+      "nameEn": "Grave-digger's iron pick leaning on the stone steps",
+      "reason": "鐵鎬是掘墓破土的重工具，沾滿地底土氣，卻斜靠在天堂花園的雲梯石階上。",
+      "hint": "畫面下半中央偏右，一支深色長柄自左下斜伸而上，頂端接成一顆圓鈍外凸的握柄頭，柄身正被鐵鍊橫過。",
+      "bbox": [
+        0.5903,
+        0.8225,
+        0.0417,
+        0.112
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "橫過中央階梯的粗鐵鍊",
+      "nameEn": "Thick iron chain strung across the central steps",
+      "reason": "粗鐵鍊是鎖棺、鎖墓門與綑綁遺骸的器物，屬於地底的束縛之物，卻橫掛在天堂的石階上。",
+      "hint": "畫面下半中央，一長串粗黑鐵環自左側垂落，環環相扣地斜過好幾層台階，右端串著一個大鐵環後續往下。",
+      "bbox": [
+        0.4965,
+        0.7899,
+        0.2558,
+        0.092
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "階梯上的鏽蝕鏟頭",
+      "nameEn": "Rusted spade blade on the steps",
+      "reason": "鏟子是挖墳掘墓的工具，鏽蝕的鏟頭帶著泥土與墓穴的氣息，絕不該擱在天堂的雲梯上。",
+      "hint": "畫面左下方中央，台階上斜著一片深褐生鏽的扁平方形鐵刃，上端有套筒接柄，刃角朝下沒入雲霧。",
+      "bbox": [
+        0.4948,
+        0.8889,
+        0.088,
+        0.066
+      ],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "階梯右側的厚重鐵鎖",
+      "nameEn": "Heavy iron padlock on the right of the steps",
+      "reason": "大鐵鎖用來鎖住墓室與棺木，是封閉墳墓的器物，卻落在天堂花園的雲階上。",
+      "hint": "畫面右下方，階梯上一枚黑色厚重的金屬鎖，上方有拱形環扣，尾端仍掛著鐵環鏈。",
+      "bbox": [
+        0.7037,
+        0.8902,
+        0.0394,
+        0.0347
+      ],
+      "confidence": "high"
+    }
+  ]
+}

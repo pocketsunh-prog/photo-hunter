@@ -1,0 +1,103 @@
+{
+  "id": 63,
+  "slug": "chapter-63-seaside-fairy-stroll",
+  "collection": "卷七・妖精尋蹤",
+  "title": "第六十三章・晴空下的海濱妖精",
+  "subtitle": "陽光下的海濱步道人來人往，透明的翅膀正悄悄混在人群與樹影之間。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-63.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "棕櫚葉間的大妖精",
+      "nameEn": "Large fairy among the palm fronds",
+      "reason": "葉叢間浮著一個金黃發光的小人，長著兩對半透明翅膜與細長手腳，白天的棕櫚樹上不該有這種光體。",
+      "hint": "畫面左上方，棕櫚樹垂下的羽狀葉片之間浮著一團金黃光暈，光裡有半透明的翅與細細的手腳。",
+      "bbox": [0.1319, 0.1128, 0.1563, 0.1285],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "燈柱托架上的小妖精",
+      "nameEn": "Little fairy on the lamp-post bracket",
+      "reason": "路燈柱的喇叭托架上停著一個只有幾公分高的小人，背後展開兩對透光翅膀並散出暖黃光暈，尋常街燈上不該有這種生物。",
+      "hint": "畫面中央偏左的高燈柱上，喇叭狀托架旁邊有一小團暖黃的光，光裡張著兩對透明小翅。",
+      "bbox": [0.4051, 0.1267, 0.0278, 0.0286],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "棕櫚樹右側上空的飛翼妖精",
+      "nameEn": "Winged fairy in the sky right of the palm",
+      "reason": "晴朗的天空中浮著一個帶翅的發光小人，翅膜與身體都清楚可辨，卻憑空懸著沒有任何依附物。",
+      "hint": "畫面右上方的晴空中，棕櫚樹冠右邊浮著一團帶翅的金白光點，下方還拖著幾縷細光。",
+      "bbox": [0.8380, 0.1128, 0.0671, 0.0365],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "晴空中的微光妖精",
+      "nameEn": "Faint glowing fairy in the clear sky",
+      "reason": "天空中有一點帶翅的微光，白色身形與翅膜依稀可見，普通的海濱晴空不該出現這種飄浮的光精靈。",
+      "hint": "畫面中上方、燈柱左邊的晴空裡，有一點帶著翅狀白影的微弱亮光獨自飄著。",
+      "bbox": [0.4647, 0.1272, 0.0266, 0.0191],
+      "confidence": "low"
+    },
+    {
+      "id": 5,
+      "name": "步道上空的蝶翼妖精",
+      "nameEn": "Butterfly-winged fairy above the promenade",
+      "reason": "海濱步道上空浮著一個淡紫翅膜、金黃身軀的妖精，四片翅膀張開停在空中，四周行人卻完全沒有察覺。",
+      "hint": "左側步道上方的半空中，浮著一個淡紫翅膜的發光身形，正好在燈柱與人群之間。",
+      "bbox": [0.3877, 0.3029, 0.0729, 0.0538],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "揹包旁的綠翅妖精",
+      "nameEn": "Green-winged fairy beside the backpack",
+      "reason": "人群中有個揹著黑色背包的人，背後長著一對帶葉脈的翠綠半透明翅膜，普通人類不會有這種翅膀。",
+      "hint": "畫面左下角的人群裡，有人揹著黑色背包，背後張開一對帶葉脈的翠綠透光翅膜。",
+      "bbox": [0.1319, 0.5538, 0.1435, 0.1519],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "人群中的粉翅妖精",
+      "nameEn": "Pink-winged fairy among the crowd",
+      "reason": "走在人群裡的白裙身影背後展開一對粉紫色半透明翅膜，翅脈清晰分明，顯然不是人類該有的東西。",
+      "hint": "畫面左下角最靠邊，一位穿白裙的人背後展開粉紫色的半透明翅膜，翅脈清楚。",
+      "bbox": [0.0336, 0.5946, 0.0752, 0.0729],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "花冠上的發光妖精",
+      "nameEn": "Glowing fairy on the flower crown",
+      "reason": "長椅前金髮女子的花冠上停著一個發光的透翅小人，翅膜與光暈都清晰可見，不是頭飾的一部分。",
+      "hint": "畫面右下方長椅前，金髮女子頭上的花冠上停著一團張翅的光，光暈往兩側散開。",
+      "bbox": [0.7049, 0.6406, 0.0660, 0.0486],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "欄杆旁的紫翅妖精",
+      "nameEn": "Lilac-winged fairy by the railing",
+      "reason": "護欄上方的空氣裡浮著一個淡紫透翅的發光身形，張著四片翅膜停在半空，沒有任何東西支撐牠。",
+      "hint": "畫面右下方護欄的上方，浮著一個淡紫色透翅的發光身形，剛好貼在金屬橫桿上緣。",
+      "bbox": [0.8808, 0.7274, 0.0521, 0.0356],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "長椅旁的透翅妖精",
+      "nameEn": "Clear-winged fairy beside the bench",
+      "reason": "白衣女子伸手托著一個張開透翅的發光妖精，翅膜與身形都看得見，牠卻憑空浮在她手邊。",
+      "hint": "畫面右下方長椅邊，穿白衣的人伸手托著一團張開透翅的黃綠光體，翅膜寬大。",
+      "bbox": [0.7731, 0.7405, 0.0752, 0.0616],
+      "confidence": "high"
+    }
+  ]
+}

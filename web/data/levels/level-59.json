@@ -1,0 +1,103 @@
+{
+  "id": 59,
+  "slug": "chapter-59-undead-among-the-festival",
+  "collection": "卷六・活屍尋蹤",
+  "title": "第五十九章・活屍音樂祭",
+  "subtitle": "陽光普照的草地音樂祭裡，購物袋沾著血、餐車邊卻坐著不該站起來的人。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-59.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "餐車旁的坐屍",
+      "nameEn": "Seated zombie beside the food truck",
+      "reason": "牠皮膚泛著灰綠、眼窩深陷發黑，穿著破爛的連帽外套蹲坐在草地上，根本不是來逛音樂祭的活人。",
+      "hint": "畫面右下角白色餐車邊，靠近紙箱與草地的位置，有個縮著身體、外套破爛的身影。",
+      "bbox": [0.6944, 0.6597, 0.1296, 0.1453],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "白斗篷血屍",
+      "nameEn": "Blood-soaked figure in a white cloak",
+      "reason": "整件白色斗篷被鮮血浸染成片片紅斑，連兜帽都染血，這種傷勢下還站著走動的絕非活人。",
+      "hint": "畫面中央偏右的草地中景，一個披著長斗篷的背影緩步往前走，衣料上滿是暗紅污漬。",
+      "bbox": [0.5671, 0.5056, 0.0955, 0.1606],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "染血花朵背包",
+      "nameEn": "Flower-patterned backpack smeared with blood",
+      "reason": "米色花朵背包上濺著大片乾涸血跡，是剛從襲擊現場逃出或被拖行過的活屍遺物。",
+      "hint": "畫面左側中段，穿黑衣牛仔裙的人背後背著一個米色印花背包，背袋上有一整片暗紅污痕。",
+      "bbox": [0.1088, 0.5881, 0.0822, 0.0694],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "拖血布條的活屍",
+      "nameEn": "Zombie trailing bloodied cloth strips",
+      "reason": "灰衣白褲上爬滿血痕，腰間還垂著一條條染血的破布，正是被啃咬後仍繼續行走的活屍特徵。",
+      "hint": "畫面中景偏左，一個背著卡其色背包的背影往前走，淺色衣褲上血跡斑斑、腰後拖著紅色布條。",
+      "bbox": [0.3414, 0.5165, 0.1157, 0.1632],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "草地上的繃帶斷臂",
+      "nameEn": "Bandaged severed arm on the grass",
+      "reason": "一截從肘部斷開的手臂攤在草皮上，斷口血肉模糊、前臂纏著滲血的繃帶，是活屍撕咬後留下的殘肢。",
+      "hint": "畫面最左下角的草地上，橫躺著一截帶著手掌的物體，末端纏著一圈圈淺色帶子。",
+      "bbox": [0.1383, 0.8911, 0.1329, 0.0734],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "盆栽裡的骷髏頭",
+      "nameEn": "Skull planted in the flower pot",
+      "reason": "一顆白森森的人頭骨被當成裝飾插在盆栽泥土上，出現在花盆裡完全不合常理。",
+      "hint": "畫面右下角餐車前的紅陶花盆中，泥土上立著一顆灰白圓球狀的東西，有兩個深黑的凹洞。",
+      "bbox": [0.8287, 0.7726, 0.0654, 0.0425],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "草地上的白骨遺骸",
+      "nameEn": "Skeleton remains on the grass",
+      "reason": "一整副連著骨盆與腿骨的骸骨攤在音樂祭草地上，旁人都視若無睹，這絕不是正常場景該有的東西。",
+      "hint": "畫面下方偏右的草皮上，一長條灰白色、節節分明的物體橫躺著。",
+      "bbox": [0.6655, 0.8325, 0.0950, 0.0530],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "帳篷旁的骷髏旗",
+      "nameEn": "Skull emblem on the festival banner",
+      "reason": "紫色旗面上的圖樣是一顆眼窩塗紅、咧嘴露牙的人頭骨，這種駭人圖騰掛在歡樂的活動會場格外突兀。",
+      "hint": "畫面右上方，樹梢旁一面深紫色長條旗上，印著一個淺色、兩個黑洞的圓形圖樣。",
+      "bbox": [0.7604, 0.2743, 0.0440, 0.0556],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "垃圾桶邊的血瓶",
+      "nameEn": "Blood-filled bottle beside the bin",
+      "reason": "寶特瓶裡裝著濃稠的暗紅色液體，被人提在垃圾桶旁，像是從傷口收集下來的血，與現場的飲料格格不入。",
+      "hint": "畫面左側黑色垃圾桶的左前方，有一隻手提著一個裝滿暗紅色液體的透明瓶子。",
+      "bbox": [0.1910, 0.5998, 0.0318, 0.0417],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "餐車側面的食屍鬼圖",
+      "nameEn": "Ghoul artwork on the food truck side",
+      "reason": "白色餐車車身畫著一張戴黑兜帽的爛臉，綠色皮膚、血紅眼睛與尖牙，是活屍形象的巨大彩繪。",
+      "hint": "畫面最右側白色餐車的側板上，有一張戴著深色頭罩的綠色大臉，眼睛發紅、露著尖牙。",
+      "bbox": [0.9387, 0.4688, 0.0613, 0.1389],
+      "confidence": "medium"
+    }
+  ]
+}

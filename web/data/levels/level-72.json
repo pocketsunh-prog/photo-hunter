@@ -1,0 +1,103 @@
+{
+  "id": 72,
+  "slug": "chapter-72-heavenly-garden-grave",
+  "collection": "卷八・地底尋物",
+  "title": "第七十二章・雲上花園的墓影",
+  "subtitle": "天使與雲海簇擁的天堂花園裡，竟混進了墳前的石碑與掘土的工具，樂土之下藏著地底的陰影。",
+  "era": "奇幻場景（天堂花園）",
+  "image": "chapter-72.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "崖邊平台的鳥籠",
+      "nameEn": "Iron birdcage on the cliff ledge",
+      "reason": "這種高聳的細鐵籠常見於墓園與靈骨塔，用來懸掛亡者的籠鳥，屬於埋葬場所的器物。",
+      "hint": "畫面右側浮島邊緣，一座圓頂的細鐵籠立在小石台上，籠裡還亮著一團昏黃的光。",
+      "bbox": [0.803241, 0.236545, 0.057292, 0.076823],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "花叢中的石十字墓碑",
+      "nameEn": "Stone cross grave marker among the flowers",
+      "reason": "十字形石碑是立在墳頭的標記，天堂花園裡不該有一座墳前的十字碑。",
+      "hint": "畫面右側樹叢旁，一座灰白色的十字形石碑立在花圃中，腳邊簇擁著橙紅色的小花。",
+      "bbox": [0.84838, 0.519965, 0.059028, 0.096354],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "樹樁旁的粗麻布袋",
+      "nameEn": "Burlap sack beside the tree stump",
+      "reason": "粗麻布袋是搬運屍骨、陪葬土與墓穴填土的器具，屬於地底的營生。",
+      "hint": "畫面左側被鋸斷的粗樹幹下方，一只米黃色鼓脹的布袋綁著束口，躺在草地上。",
+      "bbox": [0.130208, 0.602431, 0.052662, 0.039063],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "石橋欄柱上的骷髏頭",
+      "nameEn": "Skull on the bridge baluster",
+      "reason": "骷髏是墓穴與亂葬崗裡的遺骨，出現在天堂的石橋上，正是地底死亡的記號。",
+      "hint": "石橋左側第一根欄柱的頂端，一顆灰白色的圓形骨骸頭，兩個黑洞正對著你。",
+      "bbox": [0.673032, 0.646701, 0.026042, 0.021701],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "草地上的古銅鑰匙",
+      "nameEn": "Antique bronze key on the grass",
+      "reason": "這種大鑰匙是開啟墓室與石棺的鎖具，屬於地底墓道的門戶。",
+      "hint": "石板路左側的綠草上，一枝長條形的暗銅色小物斜躺著，兩端各帶著圓環。",
+      "bbox": [0.39294, 0.669271, 0.043403, 0.030382],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "吊鏈末端的小鐵錨",
+      "nameEn": "Small iron anchor at the end of a hanging chain",
+      "reason": "鐵錨是沉入水底、埋進泥沙深處的沉重鐵器，屬於地底與深淵的物件。",
+      "hint": "浮島左緣垂下一串鏈子，末端掛著一個帶雙鉤與圓環的深色小鐵件，正在雲上打轉。",
+      "bbox": [0.091435, 0.734375, 0.024306, 0.042535],
+      "confidence": "medium"
+    },
+    {
+      "id": 7,
+      "name": "石橋上拖著的腳鐐",
+      "nameEn": "Shackle and chain dragging on the bridge",
+      "reason": "腳鐐是鎖住囚徒與亡者的刑具，屬於地牢與墓穴深處的束縛之物。",
+      "hint": "石階橋的踏板中央，一條黑鐵長鏈末端套著一圈厚重的鐵環，正拖在石板上。",
+      "bbox": [0.771412, 0.791667, 0.040509, 0.03125],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "崖邊吊鏈上的十字鎬",
+      "nameEn": "Pickaxe hanging on a chain at the cliff edge",
+      "reason": "十字鎬是掘墓破土的重工具，掛在天堂浮島的崖邊十分突兀。",
+      "hint": "浮島左下緣的雲霧間，一條細鏈垂下來，末端吊著一把橫頭帶尖的暗紅鐵器。",
+      "bbox": [0.145833, 0.805556, 0.072917, 0.067708],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "崖下搖晃的油燈",
+      "nameEn": "Oil lantern swaying under the cliff",
+      "reason": "提燈是守墓人夜間掛在墳前的照明，屬於墳場與墓道。",
+      "hint": "浮島底部的岩影旁，鏈子末端吊著一個方形的玻璃小燈，透出昏黃的橘光。",
+      "bbox": [0.352431, 0.87066, 0.024884, 0.026042],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "崖壁下懸吊的鏟子",
+      "nameEn": "Spade hanging below the cliff wall",
+      "reason": "鏟子是挖墳掘土最基本的工具，卻吊在天堂浮島底下的半空中。",
+      "hint": "島底左下方的霧氣裡，另一條鏈子上掛著一片深色的圓肩鐵片，尖頭朝下。",
+      "bbox": [0.233218, 0.892361, 0.046296, 0.046875],
+      "confidence": "high"
+    }
+  ]
+}

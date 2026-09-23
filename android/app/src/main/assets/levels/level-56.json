@@ -1,0 +1,103 @@
+{
+  "id": 56,
+  "slug": "chapter-56-market-of-the-undead",
+  "collection": "卷六・活屍尋蹤",
+  "title": "第五十六章・市集活屍漫步",
+  "subtitle": "尋常的週末露天市集裡，攤販與遊客之間竟混進了活屍與駭人的骨頭道具",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-56.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "左側攤位纏血繃帶的活屍",
+      "nameEn": "Bandaged zombie at the left market stall",
+      "reason": "牠的頭部纏著滲血的布條，臉皮灰白潰爛、手指發黑，還向攤外伸出手討東西，正常市集攤販不會是這副模樣。",
+      "hint": "畫面左側攤架旁，頭部纏著沾染血跡布條、伸手朝前的人影。",
+      "bbox": [0.0, 0.3958, 0.0764, 0.1997],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "攤架旁的蒼白活屍",
+      "nameEn": "Pale-faced zombie by the stall frame",
+      "reason": "白髮凌亂、眼窩發黑凹陷，臉與手都是灰綠色的屍斑，從攤架後方緩緩伸出手。",
+      "hint": "畫面左半攤架旁，一頭散亂白髮、臉色發青的人影。",
+      "bbox": [0.1736, 0.4245, 0.1765, 0.2396],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "垃圾桶旁蹲坐的活屍",
+      "nameEn": "Crouching zombie beside the bin",
+      "reason": "頭顱已成白骨卻仍穿著破爛長袖衣褲，骨手垂在膝上，蹲坐在垃圾桶邊。",
+      "hint": "右下角大垃圾桶左邊，蹲著一具頭骨外露、衣袖撕裂的身影。",
+      "bbox": [0.6667, 0.674, 0.1348, 0.3194],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "左下角戴帽的女活屍",
+      "nameEn": "Hat-wearing female zombie at bottom left",
+      "reason": "她臉頰上有血痕、皮膚蠟黃毫無血色，眼神空洞地貼著人群走動，是混在遊客裡的活屍。",
+      "hint": "左下角戴棕色寬緣帽、金髮、臉上有紅色擦傷的女子。",
+      "bbox": [0.0116, 0.7713, 0.1273, 0.1267],
+      "confidence": "medium"
+    },
+    {
+      "id": 5,
+      "name": "玻璃櫥窗裡的骷髏怪人",
+      "nameEn": "Skeleton figure inside the shop window",
+      "reason": "櫥窗內立著一具骨頭外露、長髮垂落、指骨枯白的怪物，是店裡展示的駭人活屍道具。",
+      "hint": "右側綠色木框玻璃櫥窗內，隔著玻璃站著、露出白骨臉孔的身影。",
+      "bbox": [0.8767, 0.3885, 0.1233, 0.1888],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "櫥窗木箱上的骷髏頭",
+      "nameEn": "Skull on the crate inside the shop window",
+      "reason": "玻璃窗內一只白骨骷髏頭端正擺在木箱上，空洞的眼窩直盯著窗外。",
+      "hint": "右側櫥窗下方，一顆擺在方形木箱上的白色頭骨。",
+      "bbox": [0.8935, 0.5851, 0.0347, 0.0291],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "攤頭玻璃匣裡的大骷髏頭",
+      "nameEn": "Large skull in the glass case at the stall",
+      "reason": "攤架上層玻璃匣裡陳列著一顆下顎沾滿暗紅血漬的大骷髏頭，旁邊還散著骨頭。",
+      "hint": "右下木造攤位左側的玻璃匣內，帶有暗紅色下顎的大頭骨。",
+      "bbox": [0.7847, 0.5707, 0.0451, 0.0339],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "攤頭玻璃匣裡的小骷髏頭",
+      "nameEn": "Small skull in the glass case at the stall",
+      "reason": "同一個玻璃匣下層還躺著一顆前端沾血的小骷髏頭與散落白骨，是駭人的陳列道具。",
+      "hint": "玻璃匣裡大頭骨的下方，旁邊帶著紅色碎肉的小顆頭骨。",
+      "bbox": [0.8079, 0.6059, 0.0289, 0.0234],
+      "confidence": "medium"
+    },
+    {
+      "id": 9,
+      "name": "攤架高處的骷髏手掌標本",
+      "nameEn": "Skeletal hand specimen atop the stall frame",
+      "reason": "攤位高處立著一隻五指張開、皮肉盡失的骨手掌，像標本般對著街心舉起。",
+      "hint": "右半攤位上方玻璃窗內，五根細長指骨張開舉起的手掌。",
+      "bbox": [0.7847, 0.4232, 0.0405, 0.0321],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "麻布袋裡的骷髏頭",
+      "nameEn": "Skull poking out of the burlap sack",
+      "reason": "攤位旁的麻布袋口露出一顆帶著骨頭的白骷髏頭，像剛從袋子裡滾出來。",
+      "hint": "右下角垃圾桶左前方那只粗麻布袋，袋口露出的一顆白色頭骨。",
+      "bbox": [0.6308, 0.714, 0.0359, 0.0252],
+      "confidence": "medium"
+    }
+  ]
+}

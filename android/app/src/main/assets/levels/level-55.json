@@ -1,0 +1,103 @@
+{
+  "id": 55,
+  "slug": "chapter-55-zombies-in-the-piazza",
+  "collection": "卷六・活屍尋蹤",
+  "title": "第五十五章・廣場咖啡座的活屍",
+  "subtitle": "午後廣場噴泉人潮如常，露天咖啡座旁卻混進了活屍與一地的駭人殘骸",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-55.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "店面櫥窗裡的活屍臉孔",
+      "nameEn": "Zombie Face in the Shop Window",
+      "reason": "牠皮膚灰綠、眼窩深陷、額頭與臉頰帶著血痕，從深色店面玻璃後探出半身，根本不是逛街的活人。",
+      "hint": "畫面右側石造店面的二樓，深色玻璃後探出一張帶傷的灰綠臉孔，就靠在窗框邊。",
+      "bbox": [0.8767, 0.3403, 0.1088, 0.1163],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "紙箱旁的活屍",
+      "nameEn": "Crouching Zombie by the Cardboard Box",
+      "reason": "牠光頭、皮膚泛灰綠、眼白發亮、嘴邊帶血，穿著破爛大衣蹲坐在咖啡座地上翻紙箱，正常人不會這樣窩在牆角。",
+      "hint": "畫面右下角，深色垃圾桶與牆邊之間有人蹲坐在地，面前是一只打開的紙箱，身上衣物破爛發灰。",
+      "bbox": [0.7338, 0.6944, 0.1076, 0.2344],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "紙箱裡的骷髏頭",
+      "nameEn": "Skull Inside the Cardboard Box",
+      "reason": "一只帶齒列與深眼窩的頭骨從敞開的紙箱口露出來，是活屍蒐集的駭人道具，不該出現在露天咖啡座的紙箱裡。",
+      "hint": "右下角那只打開的紙箱，箱口邊緣露出一顆灰白色頭骨，就靠在蹲坐者伸出的手旁邊。",
+      "bbox": [0.5683, 0.8160, 0.0700, 0.0391],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "地上的骷髏頭",
+      "nameEn": "Skull on the Ground",
+      "reason": "一顆完整的人類頭骨被放在石板路上，緊貼著活屍的腳邊，是典型的活屍題材道具。",
+      "hint": "畫面右下角的石板地上，靠牆邊有一顆灰白色圓形頭骨，就在蹲坐者的鞋子旁。",
+      "bbox": [0.8032, 0.8989, 0.0619, 0.0783],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "石窗台上的活屍斷手",
+      "nameEn": "Severed Zombie Hand on the Stone Ledge",
+      "reason": "一隻發黑腐爛的手掌扣在石造窗台上，腕部斷開，還垂著一條長長的黑條殘骸，是活屍留下的駭人殘肢。",
+      "hint": "右側石牆中段，深色手指從石台邊緣抓出來，下面掛著一條長長的黑條物。",
+      "bbox": [0.9178, 0.7101, 0.0822, 0.0425],
+      "confidence": "medium"
+    },
+    {
+      "id": 6,
+      "name": "椅子下的血跡斷骨",
+      "nameEn": "Bloodied Bone Fragment under the Chair",
+      "reason": "黑色藤椅下方的石板地上躺著一段沾著鮮紅血塊的白骨殘骸，是活屍啃剩後隨手丟下的痕跡。",
+      "hint": "左下角咖啡座，黑色椅子正下方、桌面底座旁的地上，有一小截白色骨狀物被紅色血塊纏著。",
+      "bbox": [0.2639, 0.8212, 0.0694, 0.0391],
+      "confidence": "medium"
+    },
+    {
+      "id": 7,
+      "name": "櫥窗活屍伸出的繃帶斷臂",
+      "nameEn": "Bandaged Arm Reaching from the Shop Window",
+      "reason": "櫥窗裡另一條手臂整段伸到窗台外，腕部纏滿髒污的層層布條、尾端撕裂垂掛，是活屍身上駭人的斷臂殘肢。",
+      "hint": "右側店面玻璃下方，一條纏滿布條的手臂橫伸過窗台，尾端垂著撕裂的碎布。",
+      "bbox": [0.8507, 0.4774, 0.0897, 0.0955],
+      "confidence": "medium"
+    },
+    {
+      "id": 8,
+      "name": "紙箱邊的白骨手掌",
+      "nameEn": "Pale Bony Hand on the Box Edge",
+      "reason": "紙箱邊緣攀著一隻灰綠發白、指節細瘦的手掌，正把箱子裡的頭骨往裡推，是活屍身上的駭人肢體。",
+      "hint": "右下角紙箱的右上緣，幾根灰白色細長手指扣在紙板邊上，旁邊是纏著布條的手臂。",
+      "bbox": [0.6979, 0.7795, 0.0463, 0.0521],
+      "confidence": "medium"
+    },
+    {
+      "id": 9,
+      "name": "石縫間垂掛的腐爛斷臂",
+      "nameEn": "Rotting Limb Hanging in the Stone Crevice",
+      "reason": "右側石牆轉角的縫隙間垂著一團灰青色的條狀殘骸，層層纏布、末端散開，像活屍被夾在牆縫裡的斷肢。",
+      "hint": "右側石牆轉角、深色窗框左邊的窄縫裡，垂著一團灰青色、末端散開的條狀物。",
+      "bbox": [0.7303, 0.5069, 0.0440, 0.0642],
+      "confidence": "low"
+    },
+    {
+      "id": 10,
+      "name": "石窗台上的暗紅血漬",
+      "nameEn": "Dried Blood Stains on the Stone Sill",
+      "reason": "石造窗台邊散著幾處暗紅色的噴濺污漬，像血滴乾在石面上，是活屍在這裡拖行留下的痕跡。",
+      "hint": "右側石窗台靠左的檯面邊緣，散著幾小點暗紅色的污漬，就在深色木窗框下方。",
+      "bbox": [0.8681, 0.6372, 0.0521, 0.0408],
+      "confidence": "low"
+    }
+  ]
+}

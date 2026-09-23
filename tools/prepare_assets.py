@@ -55,6 +55,9 @@ VOLUMES = [
     ("images3", 21),
     ("images4", 31),
     ("images5", 41),
+    ("images6", 51),
+    ("images7", 61),
+    ("image8", 71),
 ]
 
 # Pinned chapter -> photo mapping. The annotations in shared/levels/*.json are
@@ -115,6 +118,43 @@ PINNED: dict[int, tuple[str, str]] = {
     48: ("images5", "生成吉卜力风格古代照片 (7).png"),
     49: ("images5", "生成吉卜力风格古代照片 (8).png"),
     50: ("images5", "生成吉卜力风格古代照片 (9).png"),
+    # 卷六・活屍尋蹤 - modern everyday scenes with zombies / zombie props hidden in them
+    51: ("images6", "生成吉卜力风格古代照片.png"),
+    52: ("images6", "生成吉卜力风格古代照片 (1).png"),
+    53: ("images6", "生成吉卜力风格古代照片 (2).png"),
+    54: ("images6", "生成吉卜力风格古代照片 (3).png"),
+    55: ("images6", "生成吉卜力风格古代照片 (4).png"),
+    56: ("images6", "生成吉卜力风格古代照片 (5).png"),
+    57: ("images6", "生成吉卜力风格古代照片 (6).png"),
+    58: ("images6", "生成吉卜力风格古代照片 (7).png"),
+    59: ("images6", "生成吉卜力风格古代照片 (8).png"),
+    60: ("images6", "生成吉卜力风格古代照片 (9).png"),
+    # 卷七・妖精尋蹤 - modern street scenes with luminous winged fairies hidden in them.
+    # The last photo of this volume uses a full-width ９ instead of "(9)", so every
+    # chapter here is pinned explicitly rather than left to name sorting.
+    61: ("images7", "生成吉卜力风格古代照片.png"),
+    62: ("images7", "生成吉卜力风格古代照片 (1).png"),
+    63: ("images7", "生成吉卜力风格古代照片 (2).png"),
+    64: ("images7", "生成吉卜力风格古代照片 (3).png"),
+    65: ("images7", "生成吉卜力风格古代照片 (4).png"),
+    66: ("images7", "生成吉卜力风格古代照片 (5).png"),
+    67: ("images7", "生成吉卜力风格古代照片 (6).png"),
+    68: ("images7", "生成吉卜力风格古代照片 (7).png"),
+    69: ("images7", "生成吉卜力风格古代照片 (8).png"),
+    70: ("images7", "生成吉卜力风格古代照片９.png"),
+    # 卷八・地底尋物 - heavenly gardens hiding grave / underground objects.
+    # Note the folder is "image8" (singular) and its photos skip "(5)" while
+    # keeping "(10)", so every chapter is pinned explicitly.
+    71: ("image8", "生成吉卜力风格古代照片.png"),
+    72: ("image8", "生成吉卜力风格古代照片 (1).png"),
+    73: ("image8", "生成吉卜力风格古代照片 (2).png"),
+    74: ("image8", "生成吉卜力风格古代照片 (3).png"),
+    75: ("image8", "生成吉卜力风格古代照片 (4).png"),
+    76: ("image8", "生成吉卜力风格古代照片 (6).png"),
+    77: ("image8", "生成吉卜力风格古代照片 (7).png"),
+    78: ("image8", "生成吉卜力风格古代照片 (8).png"),
+    79: ("image8", "生成吉卜力风格古代照片 (9).png"),
+    80: ("image8", "生成吉卜力风格古代照片 (10).png"),
 }
 
 FULL_SIZE = (1440, 1920)

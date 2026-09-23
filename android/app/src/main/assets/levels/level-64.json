@@ -1,0 +1,103 @@
+{
+  "id": 64,
+  "slug": "chapter-64-fairies-in-the-pub-lane",
+  "collection": "卷七・妖精尋蹤",
+  "title": "第六十四章・酒館巷弄的妖精",
+  "subtitle": "傍晚的酒館巷弄擠滿舉杯的人們，透明的翅膀與點點綠光就藏在燈火、花箱與人群之間。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-64.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "天空中的白翼妖精",
+      "nameEn": "White-winged fairy in the sky",
+      "reason": "兩棟樓房之間的半空浮著一個巴掌大的小人，全身透出白光，背後張開兩對帶著脈紋的半透明蝶翼，尋常街景的天空不會出現這種發光生物。",
+      "hint": "兩棟磚造樓房之間的半空，有一對攤開的透亮翅膀正微微發亮，翅膀中央還藏著細小的身軀。",
+      "bbox": [0.4491, 0.2661, 0.0868, 0.0508],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "綠色招牌前的蝶翼妖精",
+      "nameEn": "Butterfly-winged fairy before the green sign",
+      "reason": "巷底店門口上方懸著一個發光小人，四肢細長、背後張著兩對透光翅膜，是活生生的妖精而不是燈飾。",
+      "hint": "巷子盡頭綠底金字的招牌前，浮著一團帶翅膀的白色亮光，光裡看得出細細的手腳。",
+      "bbox": [0.3704, 0.4436, 0.0694, 0.0404],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "樓上窗台的紫妖精",
+      "nameEn": "Violet fairy on the upper windowsill",
+      "reason": "灰磚樓房的窗台邊站著一個紫白色小人，身旁張開一對透明翅膜並透出微光，普通窗台不會有這種東西。",
+      "hint": "畫面中上方灰磚樓房的窗格下緣，有一小團淡紫與白色交疊的透亮身影，兩側各撐著一片薄翅。",
+      "bbox": [0.4769, 0.3446, 0.0359, 0.0269],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "綠窗邊的紫翼妖精",
+      "nameEn": "Purple-winged fairy at the green window",
+      "reason": "深綠色窗框邊緣出現一個帶著紫光的小人，翅膜如花瓣般張開、中央有一顆明亮的核心，不是街上的燈火。",
+      "hint": "畫面右側深綠窗框的下緣，有一團紫紅色發亮的薄翅與細小身軀貼在窗邊。",
+      "bbox": [0.9514, 0.5747, 0.0451, 0.0434],
+      "confidence": "medium"
+    },
+    {
+      "id": 5,
+      "name": "花冠少女蝶翼妖精",
+      "nameEn": "Flower-crowned fairy with butterfly wings",
+      "reason": "坐在高腳椅上的少女背後長出一對巨大的半透明妖精翅膜，頭上還戴著花冠、身上泛著微光，人類不會有這種翅膀。",
+      "hint": "人群中央那位穿白上衣綠裙、頭戴花飾的人背後，張著一對會透光的巨大翅膜。",
+      "bbox": [0.3773, 0.5556, 0.1701, 0.1502],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "啤酒桶旁的綠妖精",
+      "nameEn": "Green fairy beside the beer barrel",
+      "reason": "大木桶左側的深色衣物上停著一個翠綠發光的小人，四片透光翼瓣與明亮的核心清楚可見，並不是花。",
+      "hint": "畫面左下方的大木桶旁邊，深色衣物上浮著一團四片透光翼瓣的翠綠光源。",
+      "bbox": [0.1296, 0.7188, 0.1140, 0.0920],
+      "confidence": "medium"
+    },
+    {
+      "id": 7,
+      "name": "木箱邊的綠妖精",
+      "nameEn": "Green fairy beside the wooden box",
+      "reason": "紙箱旁的地面附近浮出一個綠色發光的小人，兩片透光葉狀翅膀包著白亮的身軀，明顯是活的妖精。",
+      "hint": "畫面左下角紙箱與椅腳之間的地面附近，有一小團綠色透光的翅狀身影。",
+      "bbox": [0.2002, 0.8785, 0.0451, 0.0330],
+      "confidence": "low"
+    },
+    {
+      "id": 8,
+      "name": "高腳椅下的綠妖精",
+      "nameEn": "Green fairy under the bar stool",
+      "reason": "白色球鞋旁的高腳椅下藏著一個綠色發光的小精靈，明亮的身軀外張著葉狀薄翅，不會是掉在地上的裝飾品。",
+      "hint": "畫面中下方白色運動鞋左側、椅腳之間，有一小團綠色發光的葉狀薄翼。",
+      "bbox": [0.3877, 0.8203, 0.0289, 0.0339],
+      "confidence": "low"
+    },
+    {
+      "id": 9,
+      "name": "玻璃門上的紫妖精",
+      "nameEn": "Violet fairy on the glass door",
+      "reason": "深色玻璃門上附著一個淡紫發光的小人，頭上有細長觸鬚、身旁張開薄翅，不是門上的裝飾貼紙。",
+      "hint": "畫面右側酒館的深色玻璃門上，有一小團淡紫透亮的翅影與細長鬚狀線條。",
+      "bbox": [0.9444, 0.4922, 0.0231, 0.0278],
+      "confidence": "medium"
+    },
+    {
+      "id": 10,
+      "name": "窗玻璃後的紫妖精",
+      "nameEn": "Violet fairy behind the window glass",
+      "reason": "右側亮著的窗格後面透出一大片淡紫色的翅膜與細小身影，像是貼在玻璃內側的妖精，而非窗內的商品。",
+      "hint": "畫面右側透出暖光的窗格裡，隔著玻璃浮著一片淡紫色的透光薄翅。",
+      "bbox": [0.8576, 0.4505, 0.0278, 0.0321],
+      "confidence": "low"
+    }
+  ]
+}

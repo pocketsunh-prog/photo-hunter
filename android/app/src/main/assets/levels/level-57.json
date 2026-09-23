@@ -1,0 +1,103 @@
+{
+  "id": 57,
+  "slug": "chapter-57-zombies-in-the-old-town",
+  "collection": "卷六・活屍尋蹤",
+  "title": "第五十七章・石板街上的活屍",
+  "subtitle": "熙來攘往的觀光石板街上，賞花散步的人潮之間竟混進了活屍，以及骷髏、斷掌與殘肢等駭人物件。",
+  "era": "現代（約 2020 年代）",
+  "image": "chapter-57.jpg",
+  "imageWidth": 1440,
+  "imageHeight": 1920,
+  "objects": [
+    {
+      "id": 1,
+      "name": "橋邊披白布的活屍",
+      "nameEn": "Shrouded zombie by the bridge",
+      "reason": "裹著染血布幔、臉孔灰白凹陷的身影是活屍，正常觀光拱橋旁不可能站著這種亡者。",
+      "hint": "畫面右側拱橋中段、鐵欄杆後方，站著一個全身罩著染血布幔、面容慘白的身影。",
+      "bbox": [0.6713, 0.5026, 0.059, 0.0781],
+      "confidence": "high"
+    },
+    {
+      "id": 2,
+      "name": "運河邊跪爬的活屍",
+      "nameEn": "Kneeling zombie by the canal railing",
+      "reason": "灰綠膚色、光禿頭部與染血雙手是活屍的特徵，卻跪在正常遊客來往的運河護欄前。",
+      "hint": "畫面中央運河護欄前，有個皮膚灰綠、頭部光禿的瘦長身影跪在地上，雙手帶血向前伸。",
+      "bbox": [0.4051, 0.6632, 0.1366, 0.1115],
+      "confidence": "high"
+    },
+    {
+      "id": 3,
+      "name": "石板路上匍匐的活屍",
+      "nameEn": "Crawling zombie on the cobblestones",
+      "reason": "破爛土黃外衣與整隻血手是活屍的樣貌，正伏在現代路人腳邊的石板路上爬行。",
+      "hint": "畫面下方石板路上，一名穿破舊土黃外衣的身影跪伏著，一隻沾滿鮮血的手撐在地面。",
+      "bbox": [0.408, 0.8216, 0.1244, 0.1398],
+      "confidence": "high"
+    },
+    {
+      "id": 4,
+      "name": "木架車旁蜷坐的活屍",
+      "nameEn": "Hunched zombie beside the wooden cart",
+      "reason": "臉部乾癟發黑、裹著破布斗篷蜷坐地上的是活屍，不該出現在白天的市集攤車邊。",
+      "hint": "右側木架推車旁邊，靠著綠色鑄鐵柱子蜷坐著一個披灰斗篷、臉部凹陷發黑的身影。",
+      "bbox": [0.7199, 0.7344, 0.0567, 0.1345],
+      "confidence": "high"
+    },
+    {
+      "id": 5,
+      "name": "垃圾桶旁倒地的活屍",
+      "nameEn": "Fallen zombie by the trash bin",
+      "reason": "趴在地上、破布裹身、手染鮮血的軀體是活屍，就倒在現代街道的垃圾桶邊。",
+      "hint": "畫面右下角黑色大垃圾桶旁，地上趴著一具穿褐色破布的軀體，一隻染血的手伸向前方石地。",
+      "bbox": [0.7228, 0.8889, 0.1019, 0.0903],
+      "confidence": "high"
+    },
+    {
+      "id": 6,
+      "name": "木桌上的紅骷髏頭",
+      "nameEn": "Red skull on the wooden table",
+      "reason": "暗紅色的人類頭骨是活屍題材的駭人物件，卻被當成擺飾放在街邊木架上。",
+      "hint": "右側木架平台左邊，擺著一顆暗紅色、眼窩深陷的頭骨。",
+      "bbox": [0.6377, 0.6957, 0.0301, 0.0256],
+      "confidence": "high"
+    },
+    {
+      "id": 7,
+      "name": "木桌上的白骨頭顱",
+      "nameEn": "Bone-white skull on the wooden table",
+      "reason": "灰白人類頭骨是活屍與恐怖場景的道具，混在正常街景的攤位木架上。",
+      "hint": "同一張木架平台右側、大陶盆旁邊，還有一顆灰白色的頭骨，牙齒清晰可見。",
+      "bbox": [0.6858, 0.6957, 0.0324, 0.0256],
+      "confidence": "high"
+    },
+    {
+      "id": 8,
+      "name": "架子上的血紅斷掌",
+      "nameEn": "Bloody severed hand on the shelf",
+      "reason": "鮮紅色的斷掌是活屍相關的血腥殘肢，正常市集攤架不會擺這種東西。",
+      "hint": "木架中層的木板上，躺著一隻鮮紅色、五指張開的手掌。",
+      "bbox": [0.6632, 0.7509, 0.0394, 0.0165],
+      "confidence": "high"
+    },
+    {
+      "id": 9,
+      "name": "紙箱裡的斷肢殘肉",
+      "nameEn": "Severed flesh in the cardboard box",
+      "reason": "紙箱裡血淋淋的斷肢殘肉是活屍場景的駭人物件，出現在日常街道的紙箱中。",
+      "hint": "推車下方的開口紙箱裡，堆著幾塊血淋淋、還帶著皮的肉塊與肢體。",
+      "bbox": [0.669, 0.7943, 0.0538, 0.0191],
+      "confidence": "high"
+    },
+    {
+      "id": 10,
+      "name": "地上的白骨骷髏頭",
+      "nameEn": "Skull on the cobblestones",
+      "reason": "滾落在石地上的白骨骷髏頭是活屍題材道具，不該出現在正常觀光街道的地面。",
+      "hint": "紙箱前方的石板地上，滾落著一顆灰白的頭骨，正面朝向鏡頭。",
+      "bbox": [0.6603, 0.8438, 0.0307, 0.026],
+      "confidence": "high"
+    }
+  ]
+}
