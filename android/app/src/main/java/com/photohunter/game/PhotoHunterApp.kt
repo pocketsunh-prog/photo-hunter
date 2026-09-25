@@ -113,10 +113,10 @@ fun PhotoHunterApp(viewModel: GameViewModel = viewModel()) {
         }
     }
 
-    // The locate ring stays on screen for five seconds, like the web build.
+    // The locate ring stays on screen for fifteen seconds, like the web build.
     LaunchedEffect(state.hintTargetId) {
         if (state.hintTargetId != null) {
-            delay(5000)
+            delay(15000)
             viewModel.clearHintTarget()
         }
     }

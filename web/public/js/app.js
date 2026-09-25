@@ -475,7 +475,7 @@ function showHintRing(object) {
   state.hintRingTimer = window.setTimeout(() => {
     ring.remove();
     state.hintRingTimer = null;
-  }, 5000);
+  }, 15000);
 }
 
 function clearHintRing() {
@@ -672,7 +672,7 @@ async function useHint(mode) {
       if (response.completed) await onLevelComplete(response);
     } else if (response.object) {
       showHintRing(response.object);
-      toast(`錦囊指路：${response.object.hint}`, 'info', 5200);
+      toast(`錦囊指路：${response.object.hint}`, 'info', 15200);
       renderHud();
     }
     if (response.reward?.awarded) {

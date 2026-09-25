@@ -271,10 +271,10 @@ async function main() {
     check('hint text is shown to the player', /錦囊指路/.test(toastText), toastText);
     await page.screenshot({ path: path.join(SHOTS, '05-locate-hint.png') });
     const ringGone = await page
-      .waitForFunction(() => document.querySelectorAll('.hint-ring').length === 0, { timeout: 8000 })
+      .waitForFunction(() => document.querySelectorAll('.hint-ring').length === 0, { timeout: 20000 })
       .then(() => true)
       .catch(() => false);
-    check('locate ring clears itself after 5 seconds', ringGone);
+    check('locate ring clears itself after 15 seconds', ringGone);
     await clearChapter(page, 1);
     await page.click('#btnNextLevel');
 
